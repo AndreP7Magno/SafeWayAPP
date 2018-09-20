@@ -47,7 +47,7 @@
             android:gravity="center_vertical|center_horizontal"
             android:text="+"
             android:textSize="15dp"
-            android:textColor="@color/black"/>
+            android:textColor="#fff"/>
 
         <Button
             android:id="@+id/btnPerigo"
@@ -58,7 +58,7 @@
             android:text="+"
             android:textSize="15dp"
             android:layout_marginLeft="10dp"
-            android:textColor="@color/black"/>
+            android:textColor="#fff"/>
 
     </LinearLayout>
 
