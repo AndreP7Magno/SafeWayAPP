@@ -47,6 +47,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private void login() {
 
+        //Validações
+
+        Intent main = new Intent(this, MainActivity.class);
+
+        startActivity(main);
     }
 
     private void pedirPermissoes() {
