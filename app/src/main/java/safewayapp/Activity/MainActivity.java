@@ -10,7 +10,6 @@ import com.eightbitlab.bottomnavigationbar.BottomNavigationBar;
 
 import Fragment.HomeFragment;
 import Fragment.ContactFragment;
-import Fragment.ChatFragment;
 import Fragment.ProfileFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,9 +35,6 @@ public class MainActivity extends AppCompatActivity {
         BottomBarItem contact = new BottomBarItem(R.drawable.contact, R.string.contactMenuBottom);
         bottomBar.addTab(contact);
 
-        BottomBarItem chat = new BottomBarItem(R.drawable.chat, R.string.chaMenuBottom);
-        bottomBar.addTab(chat);
-
         BottomBarItem profile = new BottomBarItem(R.drawable.profile, R.string.profileMenuBottom);
         bottomBar.addTab(profile);
 
@@ -56,9 +52,6 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new ContactFragment();
                         break;
                     case 2:
-                        fragment = new ChatFragment();
-                        break;
-                    case 3:
                         fragment = new ProfileFragment();
                         break;
                     default:
