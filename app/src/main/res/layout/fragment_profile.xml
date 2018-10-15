@@ -4,13 +4,145 @@
     android:layout_height="match_parent"
     tools:context="Fragment.ProfileFragment">
 
+    <ImageView
+        android:id="@+id/imgFundoPerfil"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/fundo"
+        android:contentDescription="FundoPerfil"
+
+        />
+
+    <ImageView
+        android:id="@+id/imgPerfil"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="88dp"
+        android:background="@drawable/anne"
+        android:contentDescription="ImgPerfil" />
+
     <TextView
-        android:id="@+id/titlePage"
+        android:id="@+id/lblTelefone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
+        android:layout_alignLeft="@+id/lblCidade"
+        android:layout_alignStart="@+id/lblCidade"
+        android:layout_below="@+id/lblCidade"
+        android:layout_marginTop="12dp"
+        android:textStyle="bold"
+        android:text="Telefone: (99) 99999-9999"
+        android:textColor="@color/colorPrimary" />
+
+    <TextView
+        android:id="@+id/lblNome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="Perfil"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+        android:textColor="@color/colorPrimary"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:text="Jane Doe"/>
+
+    <TextView
+        android:id="@+id/lblCidade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/lblNome"
+        android:layout_marginLeft="22dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="18dp"
+        android:textStyle="bold"
+        android:text="Cidade: Porto Alegre - RS"
+        android:textColor="@color/colorPrimary" />
+
+    <TextView
+        android:id="@+id/lblEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignLeft="@+id/lblTelefone"
+        android:layout_alignStart="@+id/lblTelefone"
+        android:layout_below="@+id/lblTelefone"
+        android:layout_marginTop="12dp"
+        android:textStyle="bold"
+        android:text="E-mail: abcdefgh@email.com.br"
+        android:textColor="@color/colorPrimary" />
+
+
+    <ImageView
+        android:id="@+id/imgEdit"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+
+        android:layout_alignBottom="@+id/lblTelefone"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="13dp"
+        android:layout_marginRight="13dp"
+        android:background="@drawable/edit"
+        android:contentDescription="imgEdit" />
+
+    <ImageView
+        android:id="@+id/imgHistorico"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+
+        android:layout_alignLeft="@+id/imgLogout"
+        android:layout_alignStart="@+id/imgLogout"
+        android:layout_below="@+id/lblEmail"
+        android:layout_marginTop="19dp"
+        android:background="@drawable/history"
+        android:contentDescription="imgHistorico" />
+
+    <TextView
+        android:id="@+id/lblHistorico"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignBottom="@+id/imgHistorico"
+        android:layout_centerHorizontal="true"
+        android:text="Histórico de atividades"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18dp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/imgLogout"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+
+        android:layout_alignLeft="@+id/lblEmail"
+        android:layout_alignStart="@+id/lblEmail"
+        android:layout_below="@+id/imgHistorico"
+        android:layout_marginTop="11dp"
+        android:background="@drawable/logout2"
+        android:contentDescription="imgLogout" />
+
+    <TextView
+        android:id="@+id/lblLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignBottom="@+id/imgLogout"
+        android:layout_alignLeft="@+id/lblHistorico"
+        android:layout_alignStart="@+id/lblHistorico"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:text="Logout"
+        android:textColor="@color/colorPrimary" />
+
+
+
 
 </RelativeLayout>
