@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -17,8 +18,14 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.btn_login)
     Button _loginButton;
 
-    @BindView(R.id.link_cadastro)
-    TextView _cadastroLink;
+    @BindView(R.id.btn_cadastro)
+    Button _cadastroButton;
+
+    @BindView(R.id.btn_gmail)
+    Button _gmailButton;
+
+    @BindView(R.id.btn_facebook)
+    Button _facebookButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,13 +41,27 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        _cadastroLink.setOnClickListener(new View.OnClickListener() {
+        _cadastroButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
                 startActivityForResult(intent, REQUEST_CADASTRO);
                 finish();
+            }
+        });
+
+        _gmailButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Gmail", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        _facebookButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Facebook", Toast.LENGTH_SHORT).show();
             }
         });
     }
