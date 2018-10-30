@@ -43,6 +43,9 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     implementation 'gun0912.ted:tedpermission:2.2.2'
+
+    //Maps
+    implementation 'com.google.android.gms:play-services-maps:8.4.0'
 }
 
 
