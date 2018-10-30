@@ -26,7 +26,7 @@
                 android:layout_width="240dp"
                 android:layout_height="120dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="15dp"
                 android:layout_marginTop="5dp"
                 android:padding="16dp"
                 android:src="@drawable/ic_directions_bike_white_24dp" />
@@ -100,15 +100,17 @@
                 android:theme="@style/TextLabel">
 
                 <EditText
+                    android:id="@+id/txtCPFLogin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="60dp"
+                    android:layout_marginTop="30dp"
                     android:background="@android:color/transparent"
-                    android:drawableLeft="@drawable/ic_email_white_24dp"
+                    android:drawableLeft="@drawable/ic_branding_watermark_white_24dp"
                     android:drawablePadding="12dp"
                     android:ems="10"
-                    android:hint="Email"
-                    android:inputType="textEmailAddress"
+                    android:hint="CPF"
+                    android:maxLength="11"
+                    android:inputType="number"
                     android:maxLines="1"
                     android:padding="8dp"
                     android:singleLine="true" />
@@ -121,6 +123,7 @@
                 android:theme="@style/TextLabel">
 
                 <EditText
+                    android:id="@+id/txtSenhaLogin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -140,7 +143,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                android:padding="10dp"
+                android:padding="8dp"
                 android:text="Esqueceu sua senha?"
                 android:textColor="#FFF"
                 android:textSize="15sp" />

@@ -12,7 +12,7 @@
     tools:context="safewayapp.Activity.SignUpActivity">
 
     <ScrollView
-        android:id="@+id/login_form"
+        android:id="@+id/signup_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -37,9 +37,10 @@
                 android:theme="@style/TextLabel">
 
                 <EditText
+                    android:id="@+id/txtNome"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="60dp"
+                    android:layout_marginTop="40dp"
                     android:background="@android:color/transparent"
                     android:drawableLeft="@drawable/ic_person_white_24dp"
                     android:drawablePadding="12dp"
@@ -59,11 +60,12 @@
                 android:theme="@style/TextLabel">
 
                 <EditText
+                    android:id="@+id/txtCpf"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="60dp"
+                    android:layout_marginTop="10dp"
                     android:background="@android:color/transparent"
-                    android:drawableLeft="@drawable/ic_check_white_24dp"
+                    android:drawableLeft="@drawable/ic_branding_watermark_white_24dp"
                     android:drawablePadding="12dp"
                     android:ems="10"
                     android:hint="CPF"
@@ -82,9 +84,10 @@
                 android:theme="@style/TextLabel">
 
                 <EditText
+                    android:id="@+id/txtEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="60dp"
+                    android:layout_marginTop="10dp"
                     android:background="@android:color/transparent"
                     android:drawableLeft="@drawable/ic_email_white_24dp"
                     android:drawablePadding="12dp"
@@ -103,6 +106,7 @@
                 android:theme="@style/TextLabel">
 
                 <EditText
+                    android:id="@+id/txtSenha"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
