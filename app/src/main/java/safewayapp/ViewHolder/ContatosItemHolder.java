@@ -5,6 +5,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import safewayapp.Adapter.RecyclerAdapter;
@@ -19,8 +20,8 @@ public class ContatosItemHolder extends RecyclerView.ViewHolder implements View.
     public CardView cardView;
     public TextView txtNome;
     public TextView txtTelefone;
-    public Button btnEdit;
-    public Button btnDelete;
+    public ImageButton btnEdit;
+    public ImageButton btnDelete;
 
     public RecyclerAdapter listaRecyclerAdapter;
     private Context context;
@@ -32,8 +33,8 @@ public class ContatosItemHolder extends RecyclerView.ViewHolder implements View.
         this.cardView = (CardView) convertView.findViewById(R.id.cardViewContatos);
         this.txtNome = (TextView) convertView.findViewById(R.id.txtItemNome);
         this.txtTelefone = (TextView) convertView.findViewById(R.id.txtItemTelefone);
-        this.btnEdit = (Button) convertView.findViewById(R.id.btnEdit);
-        this.btnDelete = (Button) convertView.findViewById(R.id.btnDelete);
+        this.btnEdit = (ImageButton) convertView.findViewById(R.id.btnEdit);
+        this.btnDelete = (ImageButton) convertView.findViewById(R.id.btnDelete);
         convertView.setTag(this);
         this.listaRecyclerAdapter = recyclerAdapter;
     }

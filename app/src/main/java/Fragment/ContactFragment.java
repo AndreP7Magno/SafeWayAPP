@@ -20,6 +20,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import safewayapp.Activity.NovoContatoActivity;
 import safewayapp.Adapter.RecyclerAdapter;
 import safewayapp.Model.Contatos;
 import safewayapp.R;
@@ -28,6 +29,7 @@ import static android.provider.MediaStore.ACTION_IMAGE_CAPTURE;
 
 
 public class ContactFragment extends Fragment {
+    private static final int REQUEST_FILTRO = 998;
 
     @BindView(R.id.listViewContatos)
     RecyclerView mRecyclerView;
@@ -42,6 +44,7 @@ public class ContactFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
 
         View rootView = inflater.inflate(R.layout.fragment_contact, container, false);
 
@@ -57,7 +60,8 @@ public class ContactFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Contatos", Toast.LENGTH_SHORT).show();
+                Intent it = new Intent(getActivity(), NovoContatoActivity.class);
+                startActivityForResult(it, REQUEST_FILTRO);
             }
         });
 
@@ -82,10 +86,10 @@ public class ContactFragment extends Fragment {
     public List<Contatos> getDadosGerais(){
         List<Contatos> contatos = new ArrayList<Contatos>();
 
-        for (int i = 1; i <= 5; i++){
+        for (int i = 1; i <= 8; i++){
             Contatos dados = new Contatos();
-            dados.setNome("Usuário " + i);
-            dados.setTelefone("Telefone " + i);
+            dados.setNome("André Magno " + i);
+            dados.setTelefone("(51) 3232-3232 " + i);
             contatos.add(dados);
         }
 

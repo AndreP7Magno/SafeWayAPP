@@ -37,13 +37,13 @@ dependencies {
     implementation 'com.airbnb.android:lottie:2.2.0'
     implementation 'com.github.clans:fab:1.6.4'
     testImplementation 'junit:junit:4.12'
-
     //ButterKnife
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-
+    //tedpermission
     implementation 'gun0912.ted:tedpermission:2.2.2'
-
+    //loader
+    implementation 'com.tuyenmonkey:mkloader:1.4.0'
     //Maps
     implementation 'com.google.android.gms:play-services-maps:8.4.0'
 }

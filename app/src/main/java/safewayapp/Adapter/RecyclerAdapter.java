@@ -23,7 +23,7 @@ import safewayapp.ViewHolder.ContatosItemHolder;
  * Created by Pichau on 05/10/2018.
  */
 
-public class RecyclerAdapter extends RecyclerView.Adapter<ContatosItemHolder> implements Filterable {
+public class RecyclerAdapter extends RecyclerView.Adapter<ContatosItemHolder> {
 
     private List<Contatos> mContatos;
     private List<Contatos> mOriginalListContatos;
@@ -42,7 +42,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<ContatosItemHolder> im
         View convertView = LayoutInflater.from(context).inflate(R.layout.layout_listview_contatos_itens, parent, false);
 
         ContatosItemHolder holder = new ContatosItemHolder(context, convertView, this);
-
         return holder;
     }
 
@@ -73,46 +72,5 @@ public class RecyclerAdapter extends RecyclerView.Adapter<ContatosItemHolder> im
     @Override
     public int getItemCount() {
         return mContatos.size();
-    }
-
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                constraint = constraint.toString().toLowerCase();
-                FilterResults result = new FilterResults();
-
-                if (constraint != null && constraint.toString().length() > 0) {
-                    List<Contatos> founded = new ArrayList<>();
-                    for (Contatos item : getOriginalListContatos()) {
-                        if (item.getNome().toString().toLowerCase().contains(constraint) ||
-                                item.getTelefone().toString().toLowerCase().contains(constraint)){
-                            founded.add(item);
-                        }
-                    }
-
-                    result.values = founded;
-                    result.count = founded.size();
-                } else {
-                    result.values = getOriginalListContatos();
-                    result.count = getOriginalListContatos().size();
-                }
-                return result;
-            }
-
-            @Override
-            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                mContatos.clear();
-                for (Contatos item : (List<Contatos>) filterResults.values)
-                    mContatos.add(item);
-
-                notifyDataSetChanged();
-            }
-        };
-    }
-
-    public List<Contatos> getOriginalListContatos() {
-        return mOriginalListContatos;
     }
 }
