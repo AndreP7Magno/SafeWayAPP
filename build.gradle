@@ -19,9 +19,17 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url "https://jitpack.io" }
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext {
+    //android
+    archLifecycleVersion = '1.0.0'
+    roomLifecycleVersion = '1.0.0'
+    daggerVersion = '2.15'
 }

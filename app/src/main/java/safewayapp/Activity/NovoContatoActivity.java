@@ -197,4 +197,3 @@ class BrPhoneNumberFormatter implements TextWatcher {
         return formattedString.toString();
     }
 }
-

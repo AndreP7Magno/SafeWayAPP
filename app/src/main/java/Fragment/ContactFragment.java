@@ -1,41 +1,46 @@
 package Fragment;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import safewayapp.Activity.NovoContatoActivity;
-import safewayapp.Adapter.RecyclerAdapter;
-import safewayapp.Model.Contatos;
+import safewayapp.Adapter.ContatosAdapter;
+import safewayapp.Module.AppModule;
+import safewayapp.Module.RoomModule;
+import safewayapp.Persistence.Contato;
 import safewayapp.R;
-
-import static android.provider.MediaStore.ACTION_IMAGE_CAPTURE;
+import safewayapp.Repository.ContatoDataSource;
+import safewayapp.Repository.IContatoDataSource;
 
 
 public class ContactFragment extends Fragment {
     private static final int REQUEST_FILTRO = 998;
 
     @BindView(R.id.listViewContatos)
-    RecyclerView mRecyclerView;
+    RecyclerView recycleContatos;
 
     @BindView(R.id.fab)
     FloatingActionButton fab;
+
+    @Inject
+    public IContatoDataSource contatoDataSource;
 
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -65,34 +70,23 @@ public class ContactFragment extends Fragment {
             }
         });
 
-        mRecyclerView.setHasFixedSize(true);
+        recycleContatos.setHasFixedSize(true);
+
         mLayoutManager = new LinearLayoutManager(getContext());
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        updateLista();
-    }
+        recycleContatos.setLayoutManager(mLayoutManager);
 
-    public void updateLista(){
-        mAdapter = new RecyclerAdapter(getContext(), getDadosGerais());
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.notifyDataSetChanged();
+        /*DaggerMainComponent.builder()
+                .appModule(new AppModule(getActivity().getApplication()))
+                .roomModule(new RoomModule(getActivity().getApplication()))
+                .build()
+                .inject(this);*/
 
-        if (mAdapter.getItemCount() == 0) {
-            mRecyclerView.setVisibility(View.GONE);
-        } else {
-            mRecyclerView.setVisibility(View.VISIBLE);
-        }
-    }
-
-    public List<Contatos> getDadosGerais(){
-        List<Contatos> contatos = new ArrayList<Contatos>();
-
-        for (int i = 1; i <= 8; i++){
-            Contatos dados = new Contatos();
-            dados.setNome("André Magno " + i);
-            dados.setTelefone("(51) 3232-3232 " + i);
-            contatos.add(dados);
-        }
-
-        return contatos;
+        /*contatoDataSource.getAll().observe(this, new Observer<List<Contato>>() {
+            @Override
+            public void onChanged(@Nullable List<Contato> contatos) {
+                mAdapter = new ContatosAdapter(contatos, contatoDataSource, ContactFragment.this);
+                recycleContatos.setAdapter(mAdapter);
+            }
+        });*/
     }
 }
