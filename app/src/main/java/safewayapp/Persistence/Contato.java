@@ -8,12 +8,13 @@ import android.support.annotation.NonNull;
 public class Contato {
 
     @NonNull
-    @PrimaryKey
     private String Nome;
 
+    @NonNull
+    @PrimaryKey
     private String Telefone;
 
-    public Contato() {}
+    public Contato(){}
 
     public Contato(String nome, String telefone) {
         this.Nome = nome;

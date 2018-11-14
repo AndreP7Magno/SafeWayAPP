@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -42,21 +41,6 @@ public class ContatosAdapter extends RecyclerView.Adapter<ContatosItemHolder> {
     public void onBindViewHolder(ContatosItemHolder holder, int position) {
         holder.txtNome.setText(mDataset.get(position).getNome());
         holder.txtTelefone.setText(mDataset.get(position).getTelefone());
-
-        holder.btnEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mContext.getContext(), "Edit", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mContext.getContext(), "Delete", Toast.LENGTH_SHORT).show();
-            }
-        });
-
     }
 
     @Override

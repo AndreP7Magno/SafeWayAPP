@@ -4,23 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="16dp"
-    tools:context="safewayapp.Activity.NovoContatoActivity">
+    tools:context="safewayapp.Activity.NovoContatoActivity"
+    android:background="@drawable/login_gradients">
 
     <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_centerInParent="true"
+        android:layout_height="210dp"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
-        app:cardCornerRadius="10dp">
+        android:layout_marginTop="2dp"
+        app:cardCornerRadius="10dp"
+        app:cardBackgroundColor="@color/greenPrimary">
 
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/greenPrimary">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/lblTitulo"
@@ -34,77 +34,74 @@
                 android:textSize="25sp" />
 
             <LinearLayout
-                android:id="@+id/linearNome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lblTitulo"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="15dp"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/lblNome"
-                    android:layout_width="105dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="7dp"
-                    android:text="Nome:"
-                    android:textColor="@color/white"
-                    android:textSize="25dp" />
-
-                <EditText
-                    android:id="@+id/txtNomeContato"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/white"
-                    android:inputType="text"
-                    android:textColor="@color/white" />
-            </LinearLayout>
+                    android:theme="@style/TextLabel">
 
-            <LinearLayout
-                android:id="@+id/linearTelefone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/linearNome"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:orientation="horizontal">
+                    <EditText
+                        android:id="@+id/txtNomeContato"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:backgroundTint="@color/white"
+                        android:hint="Nome"
+                        android:inputType="textCapSentences"
+                        android:maxLines="1"
+                        android:padding="8dp"
+                        android:singleLine="true"
+                        android:textColor="@color/white" />
 
-                <TextView
-                    android:id="@+id/lblTelefone"
-                    android:layout_width="105dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="7dp"
-                    android:text="Telefone:"
-                    android:textColor="@color/white"
-                    android:textSize="25dp" />
+                </android.support.design.widget.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/txtTelefoneContato"
+
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/white"
-                    android:textColor="@color/white"
-                    android:inputType="phone"
-                    android:digits="1234567890"
-                    android:maxLength="17"
-                    />
-            </LinearLayout>
+                    android:theme="@style/TextLabel">
 
-            <Button
-                android:id="@+id/btnSalvarContato"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_alignParentBottom="true"
-                android:layout_margin="15dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/roundedbutton"
-                android:text="SALVAR"
-                android:textColor="@color/white" />
+                    <EditText
+                        android:id="@+id/txtTelefoneContato"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:backgroundTint="@color/white"
+                        android:digits="1234567890"
+                        android:hint="Telefone"
+                        android:inputType="phone"
+                        android:maxLength="17"
+                        android:maxLines="1"
+                        android:padding="8dp"
+                        android:singleLine="true"
+                        android:textColor="@color/white" />
+
+                </android.support.design.widget.TextInputLayout>
+
+
+            </LinearLayout>
 
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btnSalvarContato"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="15dp"
+        android:background="@drawable/background_novo_contato"
+        android:padding="16dp"
+        android:text="Salvar"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
 
 </RelativeLayout>

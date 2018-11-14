@@ -1,13 +1,13 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="100dp">
+    android:layout_height="70dp">
 
     <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/cardViewContatos"
         android:layout_width="match_parent"
-        android:layout_height="95dp"
+        android:layout_height="65dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         app:cardCornerRadius="10dp">
@@ -22,11 +22,12 @@
                 android:id="@+id/linearSituacao"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp">
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="7dp">
 
                 <TextView
                     android:id="@+id/lblItemNome"
-                    android:layout_width="165dp"
+                    android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:paddingRight="2dp"
                     android:paddingTop="5dp"
@@ -36,8 +37,8 @@
 
                 <TextView
                     android:id="@+id/txtItemNome"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20sp"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/lblItemNome"
                     android:paddingRight="2dp"
                     android:paddingTop="2dp"
@@ -48,20 +49,21 @@
 
                 <TextView
                     android:id="@+id/lblItemTelefone"
-                    android:layout_width="165dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtItemNome"
+                    android:layout_toEndOf="@+id/txtItemNome"
                     android:paddingRight="2dp"
                     android:paddingLeft="5dp"
-                    android:paddingTop="2dp"
+                    android:paddingTop="5dp"
                     android:textColor="@color/white"
                     android:text="Telefone: " />
 
                 <TextView
                     android:id="@+id/txtItemTelefone"
-                    android:layout_width="165dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/lblItemTelefone"
+                    android:layout_toEndOf="@+id/txtItemNome"
                     android:paddingRight="2dp"
                     android:paddingTop="2dp"
                     android:paddingLeft="5dp"
@@ -69,27 +71,6 @@
                     android:textStyle="bold"
                     android:textColor="@color/white"
                     android:text="(51) 3232323232" />
-
-
-                <ImageButton
-                    android:id="@+id/btnEdit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:background="@drawable/ic_edit_white_24dp"
-                    android:clickable="true"
-                    android:layout_marginTop="15px"
-                    android:layout_marginRight="50dp"/>
-
-                <ImageButton
-                    android:id="@+id/btnDelete"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:background="@drawable/ic_delete_white_24dp"
-                    android:clickable="true"
-                    android:layout_marginTop="15px"
-                    android:layout_marginRight="20dp"/>
 
             </RelativeLayout>
 

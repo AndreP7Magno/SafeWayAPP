@@ -20,6 +20,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import safewayapp.Helper.ProgressDialogHelper;
 import safewayapp.Helper.ValidateCPFHelper;
 import safewayapp.R;
 
@@ -62,7 +63,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        pedirPermissoes();
 
         TedPermission.with(this)
                 .setPermissionListener(permissionlistener)
@@ -103,10 +103,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login() {
+        final ProgressDialogHelper dialog = new ProgressDialogHelper(LoginActivity.this, "Aguarde", "Validando Usuário...");
+        dialog.show();
+
         _loginButton.setEnabled(false);
         _cadastroButton.setEnabled(false);
 
         if(!validaCampos()){
+            dialog.dismiss();
             _loginButton.setEnabled(true);
             _cadastroButton.setEnabled(true);
             Toast.makeText(getApplicationContext(), "Dados de preenchimento inválidos.", Toast.LENGTH_LONG).show();
@@ -117,6 +121,7 @@ public class LoginActivity extends AppCompatActivity {
 
         Intent main = new Intent(this, MainActivity.class);
         startActivity(main);
+        dialog.dismiss();
 
         _loginButton.setEnabled(true);
         _cadastroButton.setEnabled(true);
@@ -133,16 +138,6 @@ public class LoginActivity extends AppCompatActivity {
             return false;
 
         return true;
-    }
-
-    private void pedirPermissoes() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_DENIED)
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
-                == PackageManager.PERMISSION_DENIED)
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.INTERNET}, 2);
     }
 
 }

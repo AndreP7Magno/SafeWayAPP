@@ -13,6 +13,7 @@ import java.util.InputMismatchException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import safewayapp.Helper.ProgressDialogHelper;
 import safewayapp.Helper.ValidateCPFHelper;
 import safewayapp.R;
 
@@ -55,16 +56,19 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
-                finish();
             }
         });
     }
 
     public void cadastrar() {
+        final ProgressDialogHelper dialog = new ProgressDialogHelper(SignUpActivity.this, "Aguarde", "Validando Usuário...");
+        dialog.show();
+
         _cadastrarButton.setEnabled(false);
         _voltarButton.setEnabled(false);
 
         if(!validaCampos()){
+            dialog.dismiss();
             _cadastrarButton.setEnabled(true);
             _voltarButton.setEnabled(true);
             Toast.makeText(getApplicationContext(), "Dados de preenchimento inválidos.", Toast.LENGTH_LONG).show();
@@ -75,6 +79,8 @@ public class SignUpActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        finish();
+        dialog.dismiss();
 
         _cadastrarButton.setEnabled(true);
         _voltarButton.setEnabled(true);
