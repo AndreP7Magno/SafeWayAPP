@@ -1,8 +1,12 @@
 package Fragment;
 
+import android.arch.lifecycle.Observer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.telephony.SmsManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +24,21 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.List;
+
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import safewayapp.Activity.LoginActivity;
+import safewayapp.Component.DaggerContatoComponent;
+import safewayapp.Helper.ProgressDialogHelper;
+import safewayapp.Helper.SnackBarHelper;
+import safewayapp.Module.AppModule;
+import safewayapp.Module.RoomModule;
+import safewayapp.Persistence.Contato;
 import safewayapp.R;
+import safewayapp.Repository.IContatoDataSource;
 
 public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
@@ -41,6 +57,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     @BindView(R.id.fabReportarSituacaoPerigo)
     FloatingActionButton fabReportarSituacaoPerigo;
 
+    @BindView(R.id.home_coordinator)
+    CoordinatorLayout home_coordinator;
+
+    @Inject
+    IContatoDataSource contatoDataSource;
+
     private boolean fabExpanded = false;
 
     @Override
@@ -52,6 +74,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
         ButterKnife.bind(this, rootView);
 
+        DaggerContatoComponent.builder()
+                .appModule(new AppModule(getActivity().getApplication()))
+                .roomModule(new RoomModule(getActivity().getApplication()))
+                .build()
+                .inject(this);
+
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
@@ -59,11 +87,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState){
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         closeSubMenusFab();
 
-        fabReportarAssedio.setOnClickListener(new View.OnClickListener(){
+        fabReportarAssedio.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -74,14 +102,27 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         fabReportarSituacaoPerigo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Perigo", Toast.LENGTH_SHORT).show();
+                final ProgressDialogHelper dialog = new ProgressDialogHelper(getActivity(), "Aguarde", "Enviando mensagem aos seus contatos...");
+                dialog.show();
+                contatoDataSource.getAll().observe(getActivity(), new Observer<List<Contato>>() {
+                    @Override
+                    public void onChanged(@Nullable List<Contato> contatos) {
+                        if (contatos.isEmpty())
+                            SnackBarHelper.getInstance(home_coordinator).showBottomNaviagtion("Lista de contatos vazia", Snackbar.LENGTH_LONG);
+                        for (Contato item:
+                             contatos) {
+                            sendSMS(item.getTelefone(), "Teste msg");
+                        }
+                        dialog.dismiss();
+                    }
+                });
             }
         });
 
         fabAddReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (fabExpanded == true){
+                if (fabExpanded == true) {
                     closeSubMenusFab();
                 } else {
                     openSubMenusFab();
@@ -90,14 +131,23 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         });
     }
 
-    private void closeSubMenusFab(){
+    public void sendSMS(String phoneNo, String msg) {
+        try {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(phoneNo, null, msg, null, null);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void closeSubMenusFab() {
         layoutFabReportarAssedio.setVisibility(View.INVISIBLE);
         layoutFabReportarSituacaoPerigo.setVisibility(View.INVISIBLE);
         fabAddReport.setImageResource(R.drawable.ic_add_white_24dp);
         fabExpanded = false;
     }
 
-    private void openSubMenusFab(){
+    private void openSubMenusFab() {
         layoutFabReportarAssedio.setVisibility(View.VISIBLE);
         layoutFabReportarSituacaoPerigo.setVisibility(View.VISIBLE);
         fabAddReport.setImageResource(R.drawable.ic_close_white_24dp);

@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
         TedPermission.with(this)
                 .setPermissionListener(permissionlistener)
                 .setDeniedMessage("Se você recusar a permissão, você não poderá usar este serviço\n\nPor favor ative as permissões em [Configuração] > [Permissão]")
-                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET)
+                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET, Manifest.permission.SEND_SMS)
                 .setDeniedCloseButtonText("Fechar")
                 .setGotoSettingButtonText("Configuração")
                 .check();

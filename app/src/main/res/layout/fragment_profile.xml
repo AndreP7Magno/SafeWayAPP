@@ -83,26 +83,26 @@
                 <RelativeLayout
                     android:id="@+id/relativeHistoricoAtividades"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="60dp"
                     android:layout_marginTop="15dp"
                     android:background="@drawable/background_configuracao">
 
                     <ImageView
                         android:id="@+id/iconHistoricoAtividades"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_marginLeft="25dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="15dp"
                         android:src="@drawable/icon_clock" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="25dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="15dp"
                         android:layout_toEndOf="@+id/iconHistoricoAtividades"
                         android:text="Histórico de Ativades"
-                        android:textSize="15sp" />
+                        android:textSize="20sp" />
 
                     <View
                         android:layout_width="match_parent"
@@ -117,25 +117,25 @@
                 <RelativeLayout
                     android:id="@+id/relativeHistoricoSituacaoPerigo"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="60dp"
                     android:background="@drawable/background_configuracao">
 
                     <ImageView
                         android:id="@+id/iconHistoricoSituacaoPerigo"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_marginLeft="25dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="15dp"
                         android:src="@drawable/icon_settings" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="25dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="15dp"
                         android:layout_toEndOf="@+id/iconHistoricoSituacaoPerigo"
-                        android:text="Histórico de Situações de Perigos"
-                        android:textSize="15sp" />
+                        android:text="Histórico de Chamados"
+                        android:textSize="20sp" />
 
                     <View
                         android:layout_width="match_parent"
@@ -150,26 +150,26 @@
                 <RelativeLayout
                     android:id="@+id/relativeSair"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="60dp"
                     android:background="@drawable/background_configuracao"
                     android:clickable="true">
 
                     <ImageView
                         android:id="@+id/iconSair"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_marginLeft="25dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="15dp"
                         android:src="@drawable/icon_exit" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="25dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="15dp"
                         android:layout_toEndOf="@+id/iconSair"
                         android:text="Sair"
-                        android:textSize="15sp" />
+                        android:textSize="20sp" />
 
                 </RelativeLayout>
 

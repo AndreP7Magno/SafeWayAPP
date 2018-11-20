@@ -5,6 +5,7 @@ import android.app.Application;
 import javax.inject.Singleton;
 
 import Fragment.ContactFragment;
+import Fragment.HomeFragment;
 import dagger.Component;
 import safewayapp.Activity.NovoContatoActivity;
 import safewayapp.Dao.ContatoDao;
@@ -19,6 +20,8 @@ public interface ContatoComponent {
     void inject(ContactFragment fragment);
 
     void inject(NovoContatoActivity activity);
+
+    void inject(HomeFragment homeFragment);
 
     ContatoDao contatoDao();
 
