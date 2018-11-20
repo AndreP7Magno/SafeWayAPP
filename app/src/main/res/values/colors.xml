@@ -5,6 +5,8 @@
     <color name="colorAccent">#9E9E9E</color>
     <color name="colorAccentPressed">#616161</color>
 
+    <color name="colorPrimary_semi_transparent">#D9D84315</color>
+
     <color name="dialogPrimary">#E43F3F</color>
     <color name="dialogIron">#CCCCCC</color>
     <color name="dialogWhite">#FFFFFF</color>

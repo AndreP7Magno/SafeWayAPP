@@ -1,148 +1,183 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="Fragment.ProfileFragment">
 
-    <ImageView
-        android:id="@+id/imgFundoPerfil"
-        android:layout_width="wrap_content"
-        android:layout_height="150dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/fundo"
-        android:contentDescription="FundoPerfil"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        />
+        <ImageView
+            android:id="@+id/imgAvatar"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:elevation="10dp"
+            android:src="@drawable/ic_check_black_24dp" />
 
-    <ImageView
-        android:id="@+id/imgPerfil"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/cardIdentificacao"
+            android:layout_width="match_parent"
+            android:layout_height="115dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="65dp"
+            android:layout_marginRight="15dp"
+            app:cardCornerRadius="10dp">
 
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="88dp"
-        android:background="@drawable/anne"
-        android:contentDescription="ImgPerfil" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/lblTelefone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+                <TextView
+                    android:id="@+id/txtNomeUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:text="André Magno da Fonseca"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
 
-        android:layout_alignLeft="@+id/lblCidade"
-        android:layout_alignStart="@+id/lblCidade"
-        android:layout_below="@+id/lblCidade"
-        android:layout_marginTop="12dp"
-        android:textStyle="bold"
-        android:text="Telefone: (99) 99999-9999"
-        android:textColor="@color/colorPrimary" />
+                <TextView
+                    android:id="@+id/txtCPFUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="86278746034"
+                    android:textAlignment="center"
+                    android:textSize="12sp" />
 
-    <TextView
-        android:id="@+id/lblNome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+                <TextView
+                    android:id="@+id/txtEmailUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="andremagno14@gmail.com"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
 
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:textColor="@color/colorPrimary"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        android:text="Jane Doe"/>
+            </LinearLayout>
 
-    <TextView
-        android:id="@+id/lblCidade"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        </android.support.v7.widget.CardView>
 
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/lblNome"
-        android:layout_marginLeft="22dp"
-        android:layout_marginStart="22dp"
-        android:layout_marginTop="18dp"
-        android:textStyle="bold"
-        android:text="Cidade: Porto Alegre - RS"
-        android:textColor="@color/colorPrimary" />
+        <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/cardAcoes"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/cardIdentificacao"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="10dp"
+            app:cardCornerRadius="10dp">
 
-    <TextView
-        android:id="@+id/lblEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-        android:layout_alignLeft="@+id/lblTelefone"
-        android:layout_alignStart="@+id/lblTelefone"
-        android:layout_below="@+id/lblTelefone"
-        android:layout_marginTop="12dp"
-        android:textStyle="bold"
-        android:text="E-mail: abcdefgh@email.com.br"
-        android:textColor="@color/colorPrimary" />
+                <RelativeLayout
+                    android:id="@+id/relativeHistoricoAtividades"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/background_configuracao">
+
+                    <ImageView
+                        android:id="@+id/iconHistoricoAtividades"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginTop="10dp"
+                        android:src="@drawable/icon_clock" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toEndOf="@+id/iconHistoricoAtividades"
+                        android:text="Histórico de Ativades"
+                        android:textSize="15sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:background="@color/colorAccentPressed" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativeHistoricoSituacaoPerigo"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/background_configuracao">
+
+                    <ImageView
+                        android:id="@+id/iconHistoricoSituacaoPerigo"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginTop="10dp"
+                        android:src="@drawable/icon_settings" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toEndOf="@+id/iconHistoricoSituacaoPerigo"
+                        android:text="Histórico de Situações de Perigos"
+                        android:textSize="15sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:background="@color/colorAccentPressed" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativeSair"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/background_configuracao"
+                    android:clickable="true">
+
+                    <ImageView
+                        android:id="@+id/iconSair"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginTop="10dp"
+                        android:src="@drawable/icon_exit" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toEndOf="@+id/iconSair"
+                        android:text="Sair"
+                        android:textSize="15sp" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
 
 
-    <ImageView
-        android:id="@+id/imgEdit"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        </android.support.v7.widget.CardView>
 
-        android:layout_alignBottom="@+id/lblTelefone"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginEnd="13dp"
-        android:layout_marginRight="13dp"
-        android:background="@drawable/edit"
-        android:contentDescription="imgEdit" />
+    </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/imgHistorico"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-
-        android:layout_alignLeft="@+id/imgLogout"
-        android:layout_alignStart="@+id/imgLogout"
-        android:layout_below="@+id/lblEmail"
-        android:layout_marginTop="19dp"
-        android:background="@drawable/history"
-        android:contentDescription="imgHistorico" />
-
-    <TextView
-        android:id="@+id/lblHistorico"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_alignBottom="@+id/imgHistorico"
-        android:layout_centerHorizontal="true"
-        android:text="Histórico de atividades"
-        android:textColor="@color/colorPrimary"
-        android:textSize="18dp"
-        android:textStyle="bold" />
-
-    <ImageView
-        android:id="@+id/imgLogout"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-
-        android:layout_alignLeft="@+id/lblEmail"
-        android:layout_alignStart="@+id/lblEmail"
-        android:layout_below="@+id/imgHistorico"
-        android:layout_marginTop="11dp"
-        android:background="@drawable/logout2"
-        android:contentDescription="imgLogout" />
-
-    <TextView
-        android:id="@+id/lblLogout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_alignBottom="@+id/imgLogout"
-        android:layout_alignLeft="@+id/lblHistorico"
-        android:layout_alignStart="@+id/lblHistorico"
-        android:textSize="18dp"
-        android:textStyle="bold"
-        android:text="Logout"
-        android:textColor="@color/colorPrimary" />
-
-
-
-
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>
