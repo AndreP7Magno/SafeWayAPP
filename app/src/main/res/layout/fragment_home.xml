@@ -8,7 +8,7 @@
     tools:context="Fragment.HomeFragment">
 
     <RelativeLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
@@ -92,20 +92,22 @@
 
         </LinearLayout>
 
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fabAddReport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom|right"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/ic_add_white_24dp"
+            fab:fab_colorNormal="@color/colorPrimary"
+            fab:fab_colorPressed="@color/colorPrimaryDark"
+            fab:fab_colorRipple="@color/white" />
 
     </RelativeLayout>
 
-    <com.github.clans.fab.FloatingActionButton
-        android:id="@+id/fabAddReport"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom|right"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:src="@drawable/ic_add_white_24dp"
-        fab:fab_colorNormal="@color/colorPrimary"
-        fab:fab_colorPressed="@color/colorPrimaryDark"
-        fab:fab_colorRipple="@color/white" />
+
+
 </android.support.design.widget.CoordinatorLayout>

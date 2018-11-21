@@ -1,11 +1,15 @@
 package safewayapp.Activity;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.redmadrobot.inputmask.MaskedTextChangedListener;
 
 import javax.inject.Inject;
 
@@ -47,6 +51,20 @@ public class NovoContatoActivity extends AppCompatActivity {
                 .build()
                 .inject(this);
 
+        final MaskedTextChangedListener listener = MaskedTextChangedListener.Companion.installOn(
+                txtTelefoneContato,
+                "([000]) [00000]-[0000]",
+                new MaskedTextChangedListener.ValueListener() {
+                    @Override
+                    public void onTextChanged(boolean maskFilled, @NonNull final String extractedValue) {
+                        Log.d("TAG", extractedValue);
+                        Log.d("TAG", String.valueOf(maskFilled));
+                    }
+                }
+        );
+
+        txtTelefoneContato.setHint(listener.placeholder());
+
         btnSalvarContato.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,7 +75,14 @@ public class NovoContatoActivity extends AppCompatActivity {
 
     private void salvaContato(){
         if(validaCampos()){
-            long codigo = contatoDataSource.insert(new Contato(txtNomeContato.getText().toString(), txtTelefoneContato.getText().toString()));
+
+            String telefoneSemMascara = txtTelefoneContato.getText().toString()
+                    .replace("(", "")
+                    .replace(")", "")
+                    .replace("-", "")
+                    .replace(" ", "")
+                    .trim();
+            long codigo = contatoDataSource.insert(new Contato(txtNomeContato.getText().toString(), telefoneSemMascara));
 
             if (codigo != 0){
                 getIntent().putExtra("Resultado", "OK");
@@ -77,7 +102,7 @@ public class NovoContatoActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Nome não informado", Toast.LENGTH_SHORT).show();
             return false;
         }
-        else if (txtTelefoneContato.getText().toString().equals("")){
+        else if (txtTelefoneContato.getText().toString().equals("")) {
             Toast.makeText(getApplicationContext(), "Telefone não informado", Toast.LENGTH_SHORT).show();
             return false;
         }

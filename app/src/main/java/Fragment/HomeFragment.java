@@ -107,12 +107,16 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 contatoDataSource.getAll().observe(getActivity(), new Observer<List<Contato>>() {
                     @Override
                     public void onChanged(@Nullable List<Contato> contatos) {
-                        if (contatos.isEmpty())
+                        if (contatos.isEmpty()) {
                             SnackBarHelper.getInstance(home_coordinator).showBottomNaviagtion("Lista de contatos vazia", Snackbar.LENGTH_LONG);
+                            dialog.dismiss();
+                            return;
+                        }
                         for (Contato item:
                              contatos) {
                             sendSMS(item.getTelefone(), "Teste msg");
                         }
+                        SnackBarHelper.getInstance(home_coordinator).showBottomNaviagtion("Mensagens sendo enviadas ao seus contatos", Snackbar.LENGTH_LONG);
                         dialog.dismiss();
                     }
                 });

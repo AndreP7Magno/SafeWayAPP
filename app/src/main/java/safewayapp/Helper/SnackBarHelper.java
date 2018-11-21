@@ -62,7 +62,7 @@ public class SnackBarHelper {
 
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams)
                 snackbar.getView().getLayoutParams();
-        params.setMargins(0, 0, 0, 112);
+        params.setMargins(0, 0, 0, 12);
 
         snackbar.getView().setLayoutParams(params);
         snackBarView.setBackgroundResource(mBackgroundColor);
