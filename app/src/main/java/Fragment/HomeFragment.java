@@ -1,10 +1,19 @@
 package Fragment;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.Observer;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.telephony.SmsManager;
 import android.view.LayoutInflater;
@@ -15,6 +24,9 @@ import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -23,8 +35,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -40,7 +55,7 @@ import safewayapp.Persistence.Contato;
 import safewayapp.R;
 import safewayapp.Repository.IContatoDataSource;
 
-public class HomeFragment extends Fragment implements OnMapReadyCallback {
+public class HomeFragment extends Fragment implements OnMapReadyCallback  {
 
     @BindView(R.id.fabAddReport)
     FloatingActionButton fabAddReport;
@@ -65,10 +80,27 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
     private boolean fabExpanded = false;
 
+    private Double latitude;
+    private Double longitude;
+
+    private FusedLocationProviderClient mFusedLocationClient;
+    Geocoder geocoder;
+    List<Address> addresses;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        geocoder = new Geocoder(getActivity(), Locale.getDefault());
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+
+        getLocation();
+
+        /*GoogleApiClient googleApiClient = new GoogleApiClient.Builder(getActivity()).
+                addApi(LocationServices.API).
+                addConnectionCallbacks(this).
+                addOnConnectionFailedListener(this).build();*/
 
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
@@ -104,20 +136,37 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             public void onClick(View v) {
                 final ProgressDialogHelper dialog = new ProgressDialogHelper(getActivity(), "Aguarde", "Enviando mensagem aos seus contatos...");
                 dialog.show();
+
+                boolean continuar = true;
+                while (continuar) {
+                    if (!latitude.isNaN() && !longitude.isNaN())
+                        continuar = false;
+                    else
+                        getLocation();
+                }
+
                 contatoDataSource.getAll().observe(getActivity(), new Observer<List<Contato>>() {
                     @Override
                     public void onChanged(@Nullable List<Contato> contatos) {
-                        if (contatos.isEmpty()) {
-                            SnackBarHelper.getInstance(home_coordinator).showBottomNaviagtion("Lista de contatos vazia", Snackbar.LENGTH_LONG);
+                        try {
+                            if (contatos.isEmpty()) {
+                                SnackBarHelper.getInstance(home_coordinator).showBottomNaviagtion("Lista de contatos vazia", Snackbar.LENGTH_LONG);
+                                dialog.dismiss();
+                                return;
+                            }
+
+                            addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                            String endereco = addresses.get(0).getAddressLine(0);
+
+                            for (Contato item :
+                                    contatos) {
+                                sendSMS(item.getTelefone(), "Olá " + item.getNome() + "!/n Você foi marcado como contato seguro de NOME USUARIO e esta pessoa no momento corre certo perigo./nEla se encontra no seguinte endereço " + endereco + "./nPor favor, entre com contato com ela./n/n MENSAGEM ENVIADA AUTOMATICAMENTE PELO APLICATIVO SAFEWAY");
+                            }
+                            SnackBarHelper.getInstance(home_coordinator).showBottomNaviagtion("Mensagens sendo enviadas ao seus contatos", Snackbar.LENGTH_LONG);
                             dialog.dismiss();
-                            return;
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
-                        for (Contato item:
-                             contatos) {
-                            sendSMS(item.getTelefone(), "Teste msg");
-                        }
-                        SnackBarHelper.getInstance(home_coordinator).showBottomNaviagtion("Mensagens sendo enviadas ao seus contatos", Snackbar.LENGTH_LONG);
-                        dialog.dismiss();
                     }
                 });
             }
@@ -142,6 +191,19 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void getLocation() {
+        mFusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null) {
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
+                }
+            }
+        });
     }
 
     private void closeSubMenusFab() {
