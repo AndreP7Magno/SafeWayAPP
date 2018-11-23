@@ -1,19 +1,12 @@
 package Fragment;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.arch.lifecycle.Observer;
-import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.telephony.SmsManager;
 import android.view.LayoutInflater;
@@ -23,29 +16,20 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
-
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import safewayapp.Activity.LoginActivity;
 import safewayapp.Component.DaggerContatoComponent;
 import safewayapp.Helper.ProgressDialogHelper;
 import safewayapp.Helper.SnackBarHelper;
@@ -83,7 +67,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback  {
     private Double latitude;
     private Double longitude;
 
-    private FusedLocationProviderClient mFusedLocationClient;
+    //private FusedLocationProviderClient mFusedLocationClient;
     Geocoder geocoder;
     List<Address> addresses;
 
@@ -91,16 +75,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        geocoder = new Geocoder(getActivity(), Locale.getDefault());
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
-
-        getLocation();
-
-        /*GoogleApiClient googleApiClient = new GoogleApiClient.Builder(getActivity()).
-                addApi(LocationServices.API).
-                addConnectionCallbacks(this).
-                addOnConnectionFailedListener(this).build();*/
 
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
@@ -114,6 +88,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback  {
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        //geocoder = new Geocoder(getActivity(), Locale.getDefault());
+        //mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+
+        //getLocation();
 
         return rootView;
     }
@@ -141,8 +120,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback  {
                 while (continuar) {
                     if (!latitude.isNaN() && !longitude.isNaN())
                         continuar = false;
-                    else
-                        getLocation();
+                    /*else
+                        getLocation();*/
                 }
 
                 contatoDataSource.getAll().observe(getActivity(), new Observer<List<Contato>>() {
@@ -193,7 +172,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback  {
         }
     }
 
-    @SuppressLint("MissingPermission")
+    /*@SuppressLint("MissingPermission")
     private void getLocation() {
         mFusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
             @Override
@@ -204,7 +183,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback  {
                 }
             }
         });
-    }
+    }*/
 
     private void closeSubMenusFab() {
         layoutFabReportarAssedio.setVisibility(View.INVISIBLE);
