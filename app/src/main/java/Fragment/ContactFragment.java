@@ -1,15 +1,18 @@
 package Fragment;
 
+import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
@@ -45,6 +48,10 @@ public class ContactFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
+    private Dialog MyDialog;
+    private AppCompatButton btnVoltar;
+    private AppCompatButton btnSalvar;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -71,12 +78,40 @@ public class ContactFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent it = new Intent(getActivity(), NovoContatoActivity.class);
-                startActivityForResult(it, REQUEST_CONTATO);
+                MyCustomAlertDialog();
             }
         });
 
         listaContatos();
+    }
+
+    public void MyCustomAlertDialog(){
+        MyDialog = new Dialog(getActivity());
+        MyDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        MyDialog.setContentView(R.layout.dialog_novo_contato);
+        //MyDialog.setTitle("My Custom Dialog");
+
+        btnVoltar = (AppCompatButton) MyDialog.findViewById(R.id.btnVoltarContato);
+        btnSalvar = (AppCompatButton)MyDialog.findViewById(R.id.btnSalvarContato);
+
+        btnVoltar.setEnabled(true);
+        btnSalvar.setEnabled(true);
+
+        btnSalvar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Hello, I'm Custom Alert Dialog", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        btnVoltar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyDialog.cancel();
+            }
+        });
+
+        MyDialog.show();
     }
 
     @Override

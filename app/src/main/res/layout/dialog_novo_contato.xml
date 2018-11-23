@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="300dp"
-    android:layout_height="300dp"
-    android:layout_centerHorizontal="true"
-    android:layout_centerVertical="true"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="2dp"
         android:layout_marginTop="2dp"
         android:layout_marginRight="2dp"
@@ -28,28 +27,32 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="15dp"
                 android:text="Novo Contato"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textColor="@color/colorPrimary"/>
 
             <LinearLayout
                 android:id="@+id/linearDadosContatos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lblTitulo"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginRight="15dp"
                 android:orientation="vertical">
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:theme="@style/TextLabel">
+                    android:theme="@style/TextLabel"
+                    android:layout_marginTop="5dp">
 
                     <EditText
                         android:id="@+id/txtNomeContato"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
                         android:layout_marginTop="30dp"
-                        android:backgroundTint="@color/white"
+                        android:layout_marginRight="10dp"
+                        android:backgroundTint="@color/colorPrimary"
                         android:hint="Nome"
                         android:inputType="textCapSentences"
                         android:maxLines="1"
@@ -61,15 +64,18 @@
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/TextLabel">
+                    android:layout_height="match_parent"
+                    android:theme="@style/TextLabel"
+                    android:layout_marginTop="5dp">
 
                     <EditText
                         android:id="@+id/txtTelefoneContato"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
                         android:layout_marginTop="30dp"
-                        android:backgroundTint="@color/white"
+                        android:layout_marginRight="10dp"
+                        android:backgroundTint="@color/colorPrimary"
                         android:digits="0123456789 -.+()"
                         android:hint="Telefone"
                         android:inputType="number"
@@ -85,41 +91,39 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_below="@id/linearDadosContatos"
-                android:layout_margin="10dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginBottom="5dp"
                 android:orientation="horizontal">
 
                 <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/btnVoltar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/btnVoltarContato"
+                    android:layout_width="120dp"
+                    android:layout_height="50dp"
                     android:layout_gravity="left"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/background_novo_contato"
-                    android:padding="16dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/background_voltar_botao"
                     android:text="Voltar"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
-                    android:textStyle="bold">
+                    android:textSize="20sp">
 
                 </android.support.v7.widget.AppCompatButton>
 
                 <android.support.v7.widget.AppCompatButton
                     android:id="@+id/btnSalvarContato"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="120dp"
+                    android:layout_height="50dp"
                     android:layout_gravity="right"
-                    android:layout_margin="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:background="@drawable/background_novo_contato"
-                    android:padding="16dp"
                     android:text="Salvar"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textSize="20sp" />
 
 
             </LinearLayout>
@@ -128,4 +132,4 @@
 
     </android.support.v7.widget.CardView>
 
-</LinearLayout>
+</RelativeLayout>
