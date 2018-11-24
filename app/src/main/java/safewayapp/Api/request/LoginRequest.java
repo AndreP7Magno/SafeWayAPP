@@ -9,7 +9,6 @@ public class LoginRequest {
     private String CPF;
     private String password;
 
-
     public LoginRequest(String name, String email, String CPF, String password) {
         this.name = name;
         this.email = email;

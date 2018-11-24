@@ -181,7 +181,8 @@ public class LoginActivity extends AppCompatActivity {
                     new Usuario(
                             data.getCPF(),
                             data.getName(),
-                            data.getEmail()));
+                            data.getEmail(),
+                            data.get_id()));
         }
     }
 

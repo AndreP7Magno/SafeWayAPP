@@ -10,6 +10,8 @@ public class LoginResponse {
     private String token;
     private String message;
     private String ok;
+    @SerializedName("_id")
+    private String _id;
 
     public String getToken() {
         return token;
@@ -33,5 +35,9 @@ public class LoginResponse {
 
     public String getOk() {
         return ok;
+    }
+
+    public String get_id() {
+        return _id;
     }
 }

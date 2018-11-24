@@ -15,15 +15,17 @@ public class Usuario {
     private String Nome;
     private String Email;
     private String Foto;
+    private String id;
 
     public Usuario() {}
 
     @Ignore
-    public Usuario(String CPF,String Nome,String Email) {
+    public Usuario(String CPF,String Nome,String Email, String id) {
         this.Nome = Nome;
         this.CPF = CPF;
         this.Email = Email;
         Foto = "";
+        this.id = id;
     }
 
     public String getNome() {
@@ -56,5 +58,13 @@ public class Usuario {
 
     public void setFoto(String foto) {
         Foto = foto;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
