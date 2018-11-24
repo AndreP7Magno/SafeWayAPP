@@ -29,7 +29,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="20dp"
                 android:padding="16dp"
-                android:src="@drawable/ic_directions_bike_white_24dp" />
+                android:src="@drawable/logo_safeway" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -37,7 +37,7 @@
                 android:theme="@style/TextLabel">
 
                 <EditText
-                    android:id="@+id/txtNome"
+                    android:id="@+id/txtNomeCadastroContato"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"
@@ -59,7 +59,7 @@
                 android:theme="@style/TextLabel">
 
                 <EditText
-                    android:id="@+id/txtCpf"
+                    android:id="@+id/txtCpfCadastroContato"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -82,7 +82,7 @@
                 android:theme="@style/TextLabel">
 
                 <EditText
-                    android:id="@+id/txtEmail"
+                    android:id="@+id/txtEmailCadastroContato"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -103,7 +103,7 @@
                 android:theme="@style/TextLabel">
 
                 <EditText
-                    android:id="@+id/txtSenha"
+                    android:id="@+id/txtSenhaCadastroContato"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"

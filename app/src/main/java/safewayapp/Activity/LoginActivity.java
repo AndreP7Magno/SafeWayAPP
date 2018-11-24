@@ -141,8 +141,10 @@ public class LoginActivity extends AppCompatActivity {
             return false;
         }
         else{
-            if (!ValidateCPFHelper.validaCPF(cpfText.getText().toString()))
+            if (!ValidateCPFHelper.validaCPF(cpfText.getText().toString())){
+                Toast.makeText(getApplicationContext(), "CPF Inválido", Toast.LENGTH_LONG).show();
                 return false;
+            }
         }
 
         if(senhaText.getText().toString().equals("")) {

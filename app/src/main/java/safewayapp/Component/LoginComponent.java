@@ -7,6 +7,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import safewayapp.Activity.LoginActivity;
+import safewayapp.Activity.SignUpActivity;
 import safewayapp.Fragment.ProfileFragment;
 import safewayapp.Module.AppModule;
 import safewayapp.Module.NetModule;
@@ -17,9 +18,8 @@ import safewayapp.Repository.AppDatabase;
 @Component(dependencies = {}, modules = {AppModule.class, RoomModule.class, NetModule.class})
 public interface LoginComponent {
     void inject(LoginActivity activity);
+    void inject(SignUpActivity activity);
     void inject(ProfileFragment fragment);
-
-
 
     AppDatabase appDataBase();
 

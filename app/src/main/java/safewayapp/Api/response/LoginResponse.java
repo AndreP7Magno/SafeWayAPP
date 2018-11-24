@@ -8,6 +8,8 @@ public class LoginResponse {
     @SerializedName("CPF")
     private String CPF;
     private String token;
+    private String message;
+    private String ok;
 
     public String getToken() {
         return token;
@@ -23,5 +25,13 @@ public class LoginResponse {
 
     public String getCPF() {
         return CPF;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public String getOk() {
+        return ok;
     }
 }
