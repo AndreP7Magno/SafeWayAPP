@@ -8,9 +8,9 @@ import android.os.Bundle;
 import com.eightbitlab.bottomnavigationbar.BottomBarItem;
 import com.eightbitlab.bottomnavigationbar.BottomNavigationBar;
 
-import Fragment.HomeFragment;
-import Fragment.ContactFragment;
-import Fragment.ProfileFragment;
+import safewayapp.Fragment.HomeFragment;
+import safewayapp.Fragment.ContactFragment;
+import safewayapp.Fragment.ProfileFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import safewayapp.R;

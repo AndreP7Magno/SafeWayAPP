@@ -1,4 +1,4 @@
-package Fragment;
+package safewayapp.Fragment;
 
 import android.app.Dialog;
 import android.arch.lifecycle.Observer;

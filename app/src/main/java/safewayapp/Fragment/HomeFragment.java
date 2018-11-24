@@ -1,4 +1,4 @@
-package Fragment;
+package safewayapp.Fragment;
 
 import android.arch.lifecycle.Observer;
 import android.location.Address;

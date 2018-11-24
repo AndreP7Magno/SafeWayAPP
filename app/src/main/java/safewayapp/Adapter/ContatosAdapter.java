@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import Fragment.ContactFragment;
+import safewayapp.Fragment.ContactFragment;
 import safewayapp.Persistence.Contato;
 import safewayapp.R;
 import safewayapp.Repository.IContatoDataSource;
