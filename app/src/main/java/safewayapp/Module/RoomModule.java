@@ -8,9 +8,12 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import safewayapp.Dao.ContatoDao;
+import safewayapp.Dao.UsuarioDao;
 import safewayapp.Repository.AppDatabase;
 import safewayapp.Repository.ContatoDataSource;
 import safewayapp.Repository.IContatoDataSource;
+import safewayapp.Repository.IUsuarioDataSource;
+import safewayapp.Repository.UsuarioDataSource;
 
 @Module
 public class RoomModule {
@@ -41,6 +44,18 @@ public class RoomModule {
     @Provides
     IContatoDataSource contatoDataSource(ContatoDao contatoDao) {
         return new ContatoDataSource(contatoDao);
+    }
+
+    @Singleton
+    @Provides
+    UsuarioDao providesUsuarioDao(AppDatabase appDatabase) {
+        return appDatabase.getUsuarioDao();
+    }
+
+    @Singleton
+    @Provides
+    IUsuarioDataSource usuarioDataSource(UsuarioDao usuarioDao) {
+        return new UsuarioDataSource(usuarioDao);
     }
 
 }

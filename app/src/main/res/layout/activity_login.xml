@@ -105,11 +105,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
                     android:background="@android:color/transparent"
+                    android:digits="1234567890"
                     android:drawableLeft="@drawable/ic_branding_watermark_white_24dp"
                     android:drawablePadding="12dp"
                     android:hint="CPF"
                     android:inputType="number"
-                    android:digits="1234567890"
                     android:maxLength="11"
                     android:maxLines="1"
                     android:padding="8dp"
@@ -139,6 +139,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <TextView
+                android:id="@+id/txtForgotPass"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"

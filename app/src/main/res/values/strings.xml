@@ -9,4 +9,6 @@
     <string name="google_maps_key">AIzaSyDjKyfkC3dYJ5Uf7ZDExT1_F0J0gENCpMk</string>
     <string name="deseja_sair">Você deseja realmente sair?</string>
 
+    <string name="baseURL">http://safeway.openode.io/</string>
+
 </resources>

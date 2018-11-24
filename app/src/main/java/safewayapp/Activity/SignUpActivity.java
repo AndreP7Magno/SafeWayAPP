@@ -18,7 +18,6 @@ import safewayapp.Helper.ValidateCPFHelper;
 import safewayapp.R;
 
 public class SignUpActivity extends AppCompatActivity {
-    private static final int REQUEST_LOGIN = 0;
 
     @BindView(R.id.txtNome)
     EditText _nomeText;

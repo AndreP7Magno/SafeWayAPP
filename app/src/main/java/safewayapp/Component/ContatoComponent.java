@@ -22,10 +22,9 @@ public interface ContatoComponent {
 
     ContatoDao contatoDao();
 
-    AppDatabase appDatabase();
-
     IContatoDataSource contatoDataSource();
 
+    AppDatabase appDatabase();
 
     Application application();
 }

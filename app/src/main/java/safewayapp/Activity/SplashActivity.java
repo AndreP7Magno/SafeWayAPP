@@ -80,9 +80,10 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 String Token = sharedPreferences.getString("Token","");
+                String CPF = sharedPreferences.getString("CPF","");
                 Date DataExpiracao = new Date(sharedPreferences.getLong("DataExpericao", 0));
                 Date currentTime = Calendar.getInstance().getTime();
-                if(Token != "" && currentTime.before(DataExpiracao)) {
+                if(CPF != "" && currentTime.before(DataExpiracao)) {
                     Intent it = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(it);
                     finish();

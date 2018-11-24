@@ -2,6 +2,7 @@ package safewayapp.Fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -25,11 +26,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import safewayapp.Activity.LoginActivity;
+import safewayapp.Component.DaggerLoginComponent;
 import safewayapp.Helper.DialogHelper;
 import safewayapp.Helper.IOUtil;
+import safewayapp.Module.AppModule;
+import safewayapp.Module.NetModule;
+import safewayapp.Module.RoomModule;
 import safewayapp.R;
 
 public class ProfileFragment extends Fragment {
@@ -56,6 +63,9 @@ public class ProfileFragment extends Fragment {
     ImageView imgAvatar;
 
     private byte[] diaphragm;
+
+    @Inject
+    public SharedPreferences sharedPreferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -123,7 +133,12 @@ public class ProfileFragment extends Fragment {
     private void initFragment(View view) {
         ButterKnife.bind(this, view);
 
-        //DaggerLoginComponent
+        DaggerLoginComponent.builder()
+                .appModule(new AppModule(getActivity().getApplication()))
+                .roomModule(new RoomModule(getActivity().getApplication()))
+                .netModule(new NetModule(getString(R.string.baseURL)))
+                .build()
+                .inject(this);
     }
 
     View.OnClickListener OnHistoricoAtividades = new View.OnClickListener(){
@@ -150,6 +165,11 @@ public class ProfileFragment extends Fragment {
                     ShowAlertPositiveNegative(getActivity(), R.string.deseja_sair, new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("CPF", "");
+
+                            editor.commit();
+
                             Intent it = new Intent(getActivity(), LoginActivity.class);
                             getActivity().startActivity(it);
                             getActivity().finish();
