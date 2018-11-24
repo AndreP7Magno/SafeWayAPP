@@ -10,7 +10,7 @@ import safewayapp.R;
 
 public class SnackBarHelper {
     private static int mTextColor = Color.WHITE;
-    private static int mBackgroundColor = R.color.colorPrimary;
+    private static int mBackgroundColor = R.color.colorAccent;
     private static int mTime = Snackbar.LENGTH_SHORT;
     private static CoordinatorLayout mCoordinatorLayout;
 

@@ -39,9 +39,6 @@
         <activity
             android:name=".Activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Activity.NovoContatoActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
 
     </application>
 

@@ -7,7 +7,6 @@ import javax.inject.Singleton;
 import Fragment.ContactFragment;
 import Fragment.HomeFragment;
 import dagger.Component;
-import safewayapp.Activity.NovoContatoActivity;
 import safewayapp.Dao.ContatoDao;
 import safewayapp.Module.AppModule;
 import safewayapp.Module.RoomModule;
@@ -18,8 +17,6 @@ import safewayapp.Repository.IContatoDataSource;
 @Component(dependencies = {}, modules = {AppModule.class, RoomModule.class})
 public interface ContatoComponent {
     void inject(ContactFragment fragment);
-
-    void inject(NovoContatoActivity activity);
 
     void inject(HomeFragment homeFragment);
 

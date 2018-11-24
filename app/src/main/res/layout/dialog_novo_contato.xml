@@ -1,135 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="2dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginRight="2dp"
-        app:cardCornerRadius="10dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="2dp"
+            app:cardCornerRadius="10dp">
 
-            <TextView
-                android:id="@+id/lblTitulo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
-                android:text="Novo Contato"
-                android:textSize="20sp"
-                android:textColor="@color/colorPrimary"/>
-
-            <LinearLayout
-                android:id="@+id/linearDadosContatos"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/lblTitulo"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="15dp"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/lblTitulo"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:theme="@style/TextLabel"
-                    android:layout_marginTop="5dp">
-
-                    <EditText
-                        android:id="@+id/txtNomeContato"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="30dp"
-                        android:layout_marginRight="10dp"
-                        android:backgroundTint="@color/colorPrimary"
-                        android:hint="Nome"
-                        android:inputType="textCapSentences"
-                        android:maxLines="1"
-                        android:padding="8dp"
-                        android:singleLine="true"
-                        android:textColor="@color/white" />
-
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:theme="@style/TextLabel"
-                    android:layout_marginTop="5dp">
-
-                    <EditText
-                        android:id="@+id/txtTelefoneContato"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="30dp"
-                        android:layout_marginRight="10dp"
-                        android:backgroundTint="@color/colorPrimary"
-                        android:digits="0123456789 -.+()"
-                        android:hint="Telefone"
-                        android:inputType="number"
-                        android:maxLines="1"
-                        android:padding="8dp"
-                        android:singleLine="true"
-                        android:textColor="@color/white" />
-
-                </android.support.design.widget.TextInputLayout>
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/linearDadosContatos"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="5dp"
-                android:orientation="horizontal">
-
-                <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/btnVoltarContato"
-                    android:layout_width="120dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="left"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/background_voltar_botao"
-                    android:text="Voltar"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="20sp">
-
-                </android.support.v7.widget.AppCompatButton>
-
-                <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/btnSalvarContato"
-                    android:layout_width="120dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="right"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/background_novo_contato"
-                    android:text="Salvar"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="15dp"
+                    android:text="Novo Contato"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="20sp" />
 
+                <LinearLayout
+                    android:id="@+id/linearDadosContatos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/lblTitulo"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="15dp"
+                    android:orientation="vertical">
 
-            </LinearLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:theme="@style/TextLabel">
 
-        </RelativeLayout>
+                        <EditText
+                            android:id="@+id/txtNomeContato"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="30dp"
+                            android:layout_marginRight="10dp"
+                            android:backgroundTint="@color/colorPrimary"
+                            android:hint="Nome"
+                            android:inputType="textCapSentences"
+                            android:maxLines="1"
+                            android:padding="8dp"
+                            android:singleLine="true"
+                            android:textColor="@color/colorPrimary" />
 
-    </android.support.v7.widget.CardView>
+                    </android.support.design.widget.TextInputLayout>
 
-</RelativeLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:theme="@style/TextLabel">
+
+                        <EditText
+                            android:id="@+id/txtTelefoneContato"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="30dp"
+                            android:layout_marginRight="10dp"
+                            android:backgroundTint="@color/colorPrimary"
+                            android:digits="0123456789 -.+()"
+                            android:hint="Telefone"
+                            android:inputType="number"
+                            android:maxLines="1"
+                            android:padding="8dp"
+                            android:singleLine="true"
+                            android:textColor="@color/colorPrimary" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/linearDadosContatos"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.AppCompatButton
+                        android:id="@+id/btnVoltarContato"
+                        android:layout_width="120dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="left"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/background_voltar_botao"
+                        android:text="Voltar"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="20sp">
+
+                    </android.support.v7.widget.AppCompatButton>
+
+                    <android.support.v7.widget.AppCompatButton
+                        android:id="@+id/btnSalvarContato"
+                        android:layout_width="120dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="right"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/background_novo_contato"
+                        android:text="Salvar"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </RelativeLayout>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinator_novo_contato"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</LinearLayout>

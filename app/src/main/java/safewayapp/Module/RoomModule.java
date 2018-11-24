@@ -39,7 +39,7 @@ public class RoomModule {
 
     @Singleton
     @Provides
-    IContatoDataSource usuarioRepository(ContatoDao contatoDao) {
+    IContatoDataSource contatoDataSource(ContatoDao contatoDao) {
         return new ContatoDataSource(contatoDao);
     }
 

@@ -23,7 +23,7 @@
         android:background="@color/colorPrimary"
         android:layout_alignParentBottom="true"
         app:activeTabColor="@android:color/white"
-        app:inactiveTabColor="@color/bottomBarDefaultTextColor"/>
+        app:inactiveTabColor="@color/bottomBarDefaultTextColor" />
 
 
 </RelativeLayout >

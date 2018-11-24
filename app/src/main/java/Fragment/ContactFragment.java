@@ -2,20 +2,24 @@ package Fragment;
 
 import android.app.Dialog;
 import android.arch.lifecycle.Observer;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Toast;
+import android.widget.EditText;
 
 import com.github.clans.fab.FloatingActionButton;
+import com.redmadrobot.inputmask.MaskedTextChangedListener;
 
 import java.util.List;
 
@@ -23,9 +27,9 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import safewayapp.Activity.NovoContatoActivity;
 import safewayapp.Adapter.ContatosAdapter;
 import safewayapp.Component.DaggerContatoComponent;
+import safewayapp.Helper.SnackBarHelper;
 import safewayapp.Module.AppModule;
 import safewayapp.Module.RoomModule;
 import safewayapp.Persistence.Contato;
@@ -34,13 +38,16 @@ import safewayapp.Repository.IContatoDataSource;
 
 
 public class ContactFragment extends Fragment {
-    private static final int REQUEST_CONTATO= 998;
-
     @BindView(R.id.listViewContatos)
     RecyclerView mRecycleContatos;
 
-    @BindView(R.id.fab)
-    FloatingActionButton fab;
+    @BindView(R.id.btnNovoContato)
+    FloatingActionButton btnNovoContato;
+
+    @BindView(R.id.coordinator_contato)
+    CoordinatorLayout coordinatorContato;
+
+    private CoordinatorLayout coordinatorNovoContato;
 
     @Inject
     public IContatoDataSource contatoDataSource;
@@ -51,6 +58,8 @@ public class ContactFragment extends Fragment {
     private Dialog MyDialog;
     private AppCompatButton btnVoltar;
     private AppCompatButton btnSalvar;
+    private EditText txtNomeContato;
+    private EditText txtTelefoneContato;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,41 +67,53 @@ public class ContactFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-        View rootView = inflater.inflate(R.layout.fragment_contact, container, false);
+        View view = inflater.inflate(R.layout.fragment_contact, container, false);
 
-        ButterKnife.bind(this, rootView);
+        initFragment(view);
 
-        DaggerContatoComponent.builder()
-                .appModule(new AppModule(getActivity().getApplication()))
-                .roomModule(new RoomModule(getActivity().getApplication()))
-                .build()
-                .inject(this);
+        initNovoContatoDialog();
 
-        return rootView;
+        initMaskTelefone();
+
+        return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        fab.setOnClickListener(new View.OnClickListener() {
+        btnNovoContato.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MyCustomAlertDialog();
+                txtNomeContato.setText("");
+                txtTelefoneContato.setText("");
+                MyDialog.show();
             }
         });
 
         listaContatos();
     }
 
-    public void MyCustomAlertDialog(){
+    private void initFragment(View view){
+        ButterKnife.bind(this, view);
+
+        DaggerContatoComponent.builder()
+                .appModule(new AppModule(getActivity().getApplication()))
+                .roomModule(new RoomModule(getActivity().getApplication()))
+                .build()
+                .inject(this);
+    }
+
+    private void initNovoContatoDialog(){
         MyDialog = new Dialog(getActivity());
         MyDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         MyDialog.setContentView(R.layout.dialog_novo_contato);
-        //MyDialog.setTitle("My Custom Dialog");
 
         btnVoltar = (AppCompatButton) MyDialog.findViewById(R.id.btnVoltarContato);
         btnSalvar = (AppCompatButton)MyDialog.findViewById(R.id.btnSalvarContato);
+        txtNomeContato = (EditText) MyDialog.findViewById(R.id.txtNomeContato);
+        txtTelefoneContato = (EditText) MyDialog.findViewById(R.id.txtTelefoneContato);
+        coordinatorNovoContato = (CoordinatorLayout) MyDialog.findViewById(R.id.coordinator_novo_contato);
 
         btnVoltar.setEnabled(true);
         btnSalvar.setEnabled(true);
@@ -100,35 +121,76 @@ public class ContactFragment extends Fragment {
         btnSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Hello, I'm Custom Alert Dialog", Toast.LENGTH_LONG).show();
+                salvaContato();
             }
         });
 
         btnVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                txtNomeContato.setText("");
+                txtTelefoneContato.setText("");
                 MyDialog.cancel();
             }
         });
-
-        MyDialog.show();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CONTATO && data != null) {
-            Bundle params = data.getExtras();
-            String resultado = params.getString("Resultado");
+    private void initMaskTelefone(){
+        final MaskedTextChangedListener listener = MaskedTextChangedListener.Companion.installOn(
+                txtTelefoneContato,
+                "([00]) [00000]-[0000]",
+                new MaskedTextChangedListener.ValueListener() {
+                    @Override
+                    public void onTextChanged(boolean maskFilled, @NonNull final String extractedValue) {
+                        Log.d("TAG", extractedValue);
+                        Log.d("TAG", String.valueOf(maskFilled));
+                    }
+                }
+        );
 
-            if (resultado.equals("OK")){
+        txtTelefoneContato.setHint(listener.placeholder());
+    }
+
+    private void salvaContato(){
+        String telefoneSemMascara = txtTelefoneContato.getText().toString()
+                .replace("(", "")
+                .replace(")", "")
+                .replace("-", "")
+                .replace(" ", "")
+                .trim();
+
+        if(validaCampos(telefoneSemMascara)){
+            long codigo = contatoDataSource.insert(new Contato(txtNomeContato.getText().toString(), telefoneSemMascara));
+
+            if (codigo != 0){
                 listaContatos();
-                Toast.makeText(getContext(), "Contato salvo com sucesso", Toast.LENGTH_SHORT).show();
+                MyDialog.cancel();
+                SnackBarHelper.getInstance(coordinatorContato).show("Contato salvo com sucesso", Snackbar.LENGTH_LONG);
+            }
+            else{
+                SnackBarHelper.getInstance(coordinatorContato).show("Erro ao salvar o contato", Snackbar.LENGTH_LONG);
             }
         }
     }
 
-    private void listaContatos(){
+    private boolean validaCampos(String telefone){
+        if (txtNomeContato.getText().toString().equals("")){
+            SnackBarHelper.getInstance(coordinatorNovoContato).show("Nome não informado", Snackbar.LENGTH_LONG);
+            return false;
+        }
+        else if (telefone.equals("")) {
+            SnackBarHelper.getInstance(coordinatorNovoContato).show("Telefone não informado", Snackbar.LENGTH_LONG);
+            return false;
+        }
+        else if (telefone.length() < 10){
+            SnackBarHelper.getInstance(coordinatorNovoContato).show("Telefone inválido", Snackbar.LENGTH_LONG);
+            return false;
+        }
 
+        return true;
+    }
+
+    private void listaContatos(){
         mRecycleContatos.setHasFixedSize(true);
 
         mLayoutManager = new LinearLayoutManager(getContext());
