@@ -80,12 +80,10 @@ public class ProfileFragment extends Fragment {
 
         initFragment(view);
 
-        //Seta labels com dados do usuário
-
-        String cpf = "86278746034";
+        String cpf = sharedPreferences.getString("CPF", "");
         txtCPFUsuario.setText(cpf);
-        txtNomeUsuario.setText("André Magno");
-        txtEmailUsuario.setText("andremagno14@gmail.com");
+        txtNomeUsuario.setText(sharedPreferences.getString("NomeUsuario", ""));
+        txtEmailUsuario.setText(sharedPreferences.getString("EmailUsuario", ""));
 
         formatImage(cpf);
 

@@ -168,6 +168,7 @@ public class LoginActivity extends AppCompatActivity {
         editor.putLong("DataExpericao", cal.getTime().getTime());
         editor.putString("CPF",data.getCPF());
         editor.putString("NomeUsuario",data.getName());
+        editor.putString("EmailUsuario",data.getEmail());
         editor.commit();
     }
 
