@@ -102,7 +102,7 @@
                         android:layout_marginTop="15dp"
                         android:layout_toEndOf="@+id/iconHistoricoAtividades"
                         android:text="Histórico de Ativades"
-                        android:textSize="20sp" />
+                        android:textSize="18dp" />
 
                     <View
                         android:layout_width="match_parent"
@@ -135,7 +135,7 @@
                         android:layout_marginTop="15dp"
                         android:layout_toEndOf="@+id/iconHistoricoSituacaoPerigo"
                         android:text="Histórico de Chamados"
-                        android:textSize="20sp" />
+                        android:textSize="18dp" />
 
                     <View
                         android:layout_width="match_parent"
@@ -147,6 +147,40 @@
 
                 </RelativeLayout>
 
+                <RelativeLayout
+                    android:id="@+id/relativeAtualizarRecord"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/background_configuracao">
+
+                    <ImageView
+                        android:id="@+id/iconAtualizarRecord"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginTop="15dp"
+                        android:src="@drawable/icon_refresh" />
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_toEndOf="@+id/iconAtualizarRecord"
+                        android:text="Atualizar Registros de Assédio"
+                        android:textSize="18dp"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:background="@color/colorAccentPressed" />
+
+                </RelativeLayout>
+                
+                
                 <RelativeLayout
                     android:id="@+id/relativeSair"
                     android:layout_width="match_parent"
@@ -169,7 +203,7 @@
                         android:layout_marginTop="15dp"
                         android:layout_toEndOf="@+id/iconSair"
                         android:text="Sair"
-                        android:textSize="20sp" />
+                        android:textSize="18dp" />
 
                 </RelativeLayout>
 

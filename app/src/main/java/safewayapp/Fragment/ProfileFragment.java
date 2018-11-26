@@ -47,6 +47,9 @@ public class ProfileFragment extends Fragment {
     @BindView(R.id.relativeHistoricoSituacaoPerigo)
     RelativeLayout relativeHistoricoSituacaoPerigo;
 
+    @BindView(R.id.relativeAtualizarRecord)
+    RelativeLayout relativeAtualizarRecord;
+
     @BindView(R.id.relativeSair)
     RelativeLayout relativeSair;
 
@@ -89,6 +92,7 @@ public class ProfileFragment extends Fragment {
 
         relativeHistoricoAtividades.setOnClickListener(OnHistoricoAtividades);
         relativeHistoricoSituacaoPerigo.setOnClickListener(OnHistoricoSituacaoPerigo);
+        relativeAtualizarRecord.setOnClickListener(onAtualizarRecordClickListener);
         relativeSair.setOnClickListener(OnSairListener);
 
         return view;
@@ -102,7 +106,7 @@ public class ProfileFragment extends Fragment {
 
         requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
         requestOptions.skipMemoryCache(true);
-        requestOptions.override(100,100);
+        requestOptions.override(100, 100);
         requestOptions.transforms(new CircleCrop());
         requestOptions.signature(new Key() {
             @Override
@@ -139,7 +143,7 @@ public class ProfileFragment extends Fragment {
                 .inject(this);
     }
 
-    View.OnClickListener OnHistoricoAtividades = new View.OnClickListener(){
+    View.OnClickListener OnHistoricoAtividades = new View.OnClickListener() {
 
         @Override
         public void onClick(View v) {
@@ -147,11 +151,18 @@ public class ProfileFragment extends Fragment {
         }
     };
 
-    View.OnClickListener OnHistoricoSituacaoPerigo = new View.OnClickListener(){
+    View.OnClickListener OnHistoricoSituacaoPerigo = new View.OnClickListener() {
 
         @Override
         public void onClick(View v) {
             Toast.makeText(getActivity(), "Histórico de Situação de Perigo", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    View.OnClickListener onAtualizarRecordClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(getActivity(), "Atualizar", Toast.LENGTH_SHORT).show();
         }
     };
 
