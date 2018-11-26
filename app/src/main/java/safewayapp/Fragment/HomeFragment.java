@@ -2,6 +2,7 @@ package safewayapp.Fragment;
 
 import android.arch.lifecycle.Observer;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -24,24 +25,39 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.security.auth.callback.Callback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Response;
+import safewayapp.Activity.LoginActivity;
 import safewayapp.Activity.NovoAssedioActivity;
+import safewayapp.Api.RecordApi;
+import safewayapp.Api.request.RecordRequest;
+import safewayapp.Api.response.RecordResponse;
 import safewayapp.Component.DaggerContatoComponent;
 import safewayapp.Helper.ProgressDialogHelper;
 import safewayapp.Helper.SnackBarHelper;
 import safewayapp.Module.AppModule;
+import safewayapp.Module.NetModule;
 import safewayapp.Module.RoomModule;
 import safewayapp.Persistence.Contato;
+import safewayapp.Persistence.Usuario;
 import safewayapp.R;
 import safewayapp.Repository.IContatoDataSource;
+import safewayapp.Repository.IUsuarioDataSource;
 
-public class HomeFragment extends Fragment implements OnMapReadyCallback  {
+public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private static final int REQUEST_NOVO_ASSEDIO = 998;
 
     @BindView(R.id.fabAddReport)
@@ -63,7 +79,16 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback  {
     CoordinatorLayout home_coordinator;
 
     @Inject
+    public RecordApi recordApi;
+
+    @Inject
     IContatoDataSource contatoDataSource;
+
+    @Inject
+    IUsuarioDataSource usuarioDataSource;
+
+    @Inject
+    public SharedPreferences sharedPreferences;
 
     private boolean fabExpanded = false;
 
@@ -94,12 +119,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback  {
         return view;
     }
 
-    private void initFragment(View view){
+    private void initFragment(View view) {
         ButterKnife.bind(this, view);
 
         DaggerContatoComponent.builder()
                 .appModule(new AppModule(getActivity().getApplication()))
                 .roomModule(new RoomModule(getActivity().getApplication()))
+                .netModule(new NetModule(getString(R.string.baseURL)))
                 .build()
                 .inject(this);
     }
@@ -116,9 +142,90 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback  {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_NOVO_ASSEDIO && data != null){
-            //Lógica para quando retornar da activity de registro novo assédio
+        if (requestCode == REQUEST_NOVO_ASSEDIO && data != null) {
+            final ProgressDialogHelper dialog = new ProgressDialogHelper(getActivity(), "Aguarde", "Registrando Assédio...");
+            dialog.show();
+
+            Bundle params = data.getExtras();
+            String Endereco = params.getString("Endereco");
+            String Descricao = params.getString("Descricao");
+            Boolean Grave = params.getBoolean("cbGrave");
+            Boolean Medio = params.getBoolean("cbMedio");
+            Boolean Baixa = params.getBoolean("cbBaixa");
+            String DataAssedio = "2017-02-02"; //alterar dps
+
+            String cpf = sharedPreferences.getString("CPF", "");
+            Usuario usuario = usuarioDataSource.getByCPF(cpf);
+            String user = usuario.getId();
+
+            LatLng position = getLocationFromAddress(Endereco);
+            String latitude = String.valueOf(position.latitude);
+            String longitude = String.valueOf(position.longitude);
+
+            String severety;
+            if (Grave)
+                severety = "alta";
+            else if (Medio)
+                severety = "media";
+            else
+                severety = "baixa";
+
+
+            recordApi.postCreate(new RecordRequest(user, latitude, longitude, severety, Descricao, DataAssedio)).enqueue(new retrofit2.Callback<RecordResponse>() {
+                @Override
+                public void onResponse(Call<RecordResponse> call, Response<RecordResponse> response) {
+                    if (response.code() == HttpURLConnection.HTTP_OK) {
+                        RecordResponse data = response.body();
+
+                        //salvar no banco local
+
+                        //getAllRegistros
+
+                        SnackBarHelper.getInstance(home_coordinator).showBottomNaviagtion("Registro salvo com sucesso", Snackbar.LENGTH_LONG);
+                        dialog.dismiss();
+                    }
+                    else{
+                        try {
+                            dialog.dismiss();
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            Toast.makeText(getContext(), jObjError.getString("message"), Toast.LENGTH_LONG).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<RecordResponse> call, Throwable t) {
+                    dialog.dismiss();
+                    Toast.makeText(getContext(), "ERRO AO SALVAR", Toast.LENGTH_LONG).show();
+                }
+            });
         }
+    }
+
+    public LatLng getLocationFromAddress(String strAddress) {
+        Geocoder coder = new Geocoder(getActivity());
+        List<Address> address;
+        LatLng p1 = null;
+
+        try {
+            // May throw an IOException
+            address = coder.getFromLocationName(strAddress, 5);
+            if (address == null) {
+                return null;
+            }
+
+            Address location = address.get(0);
+            p1 = new LatLng(location.getLatitude(), location.getLongitude());
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        return p1;
     }
 
     private void closeSubMenusFab() {

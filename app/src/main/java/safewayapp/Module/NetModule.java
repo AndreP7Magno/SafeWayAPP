@@ -17,6 +17,7 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import safewayapp.Api.AuthenticateApi;
+import safewayapp.Api.RecordApi;
 
 @Module
 public class NetModule {
@@ -66,6 +67,12 @@ public class NetModule {
     @Singleton
     AuthenticateApi getAuthenticateApi(Retrofit retroFit) {
         return retroFit.create(AuthenticateApi.class);
+    }
+
+    @Provides
+    @Singleton
+    RecordApi getRecordApi(Retrofit retroFit) {
+        return retroFit.create(RecordApi.class);
     }
 
 }

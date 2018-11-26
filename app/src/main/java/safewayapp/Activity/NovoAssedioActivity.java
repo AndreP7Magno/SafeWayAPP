@@ -89,7 +89,9 @@ public class NovoAssedioActivity extends AppCompatActivity {
             if (validaCampos()){
                 getIntent().putExtra("Endereco", txtEndereco.getText().toString());
                 getIntent().putExtra("Descricao", txtDescricao.getText().toString());
-
+                getIntent().putExtra("cbGrave", cbGrave.isChecked());
+                getIntent().putExtra("cbMedio", cbMedio.isChecked());
+                getIntent().putExtra("cbBaixa", cbBaixa.isChecked());
 
                 setResult(REQUEST_NOVO_ASSEDIO, getIntent());
                 finish();
