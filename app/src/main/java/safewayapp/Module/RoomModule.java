@@ -8,11 +8,14 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import safewayapp.Dao.ContatoDao;
+import safewayapp.Dao.RecordDao;
 import safewayapp.Dao.UsuarioDao;
 import safewayapp.Repository.AppDatabase;
 import safewayapp.Repository.ContatoDataSource;
 import safewayapp.Repository.IContatoDataSource;
+import safewayapp.Repository.IRecordDataSource;
 import safewayapp.Repository.IUsuarioDataSource;
+import safewayapp.Repository.RecordDataSource;
 import safewayapp.Repository.UsuarioDataSource;
 
 @Module
@@ -48,6 +51,18 @@ public class RoomModule {
 
     @Singleton
     @Provides
+    RecordDao getRecordDao(AppDatabase appDatabase) {
+        return appDatabase.getRecordDao();
+    }
+
+    @Singleton
+    @Provides
+    IRecordDataSource recordDataSource(RecordDao recordDao) {
+        return new RecordDataSource(recordDao);
+    }
+
+    @Singleton
+    @Provides
     UsuarioDao providesUsuarioDao(AppDatabase appDatabase) {
         return appDatabase.getUsuarioDao();
     }
@@ -57,5 +72,4 @@ public class RoomModule {
     IUsuarioDataSource usuarioDataSource(UsuarioDao usuarioDao) {
         return new UsuarioDataSource(usuarioDao);
     }
-
 }

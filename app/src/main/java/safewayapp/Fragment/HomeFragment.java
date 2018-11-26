@@ -49,15 +49,18 @@ import safewayapp.Api.RecordApi;
 import safewayapp.Api.request.RecordRequest;
 import safewayapp.Api.response.RecordResponse;
 import safewayapp.Component.DaggerContatoComponent;
+import safewayapp.Component.DaggerHomeComponent;
 import safewayapp.Helper.ProgressDialogHelper;
 import safewayapp.Helper.SnackBarHelper;
 import safewayapp.Module.AppModule;
 import safewayapp.Module.NetModule;
 import safewayapp.Module.RoomModule;
 import safewayapp.Persistence.Contato;
+import safewayapp.Persistence.Record;
 import safewayapp.Persistence.Usuario;
 import safewayapp.R;
 import safewayapp.Repository.IContatoDataSource;
+import safewayapp.Repository.IRecordDataSource;
 import safewayapp.Repository.IUsuarioDataSource;
 
 public class HomeFragment extends Fragment implements OnMapReadyCallback {
@@ -91,6 +94,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     IUsuarioDataSource usuarioDataSource;
 
     @Inject
+    IRecordDataSource recordDataSource;
+
+    @Inject
     public SharedPreferences sharedPreferences;
 
     private boolean fabExpanded = false;
@@ -102,6 +108,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     Geocoder geocoder;
     List<Address> addresses;
 
+    SupportMapFragment mapFragment;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -111,7 +119,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
         initFragment(view);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         //geocoder = new Geocoder(getActivity(), Locale.getDefault());
@@ -125,7 +133,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private void initFragment(View view) {
         ButterKnife.bind(this, view);
 
-        DaggerContatoComponent.builder()
+        DaggerHomeComponent.builder()
                 .appModule(new AppModule(getActivity().getApplication()))
                 .roomModule(new RoomModule(getActivity().getApplication()))
                 .netModule(new NetModule(getString(R.string.baseURL)))
@@ -151,21 +159,21 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
             Bundle params = data.getExtras();
             String Endereco = params.getString("Endereco");
-            String Descricao = params.getString("Descricao");
+            final String Descricao = params.getString("Descricao");
             Boolean Grave = params.getBoolean("cbGrave");
             Boolean Medio = params.getBoolean("cbMedio");
             Boolean Baixa = params.getBoolean("cbBaixa");
-            String DataAssedio = params.getString("data");
+            final String DataAssedio = params.getString("data");
 
             String cpf = sharedPreferences.getString("CPF", "");
             Usuario usuario = usuarioDataSource.getByCPF(cpf);
-            String user = usuario.getId();
+            final String user = usuario.getId();
 
             LatLng position = getLocationFromAddress(Endereco);
-            String latitude = String.valueOf(position.latitude);
-            String longitude = String.valueOf(position.longitude);
+            final String latitude = String.valueOf(position.latitude);
+            final String longitude = String.valueOf(position.longitude);
 
-            String severety;
+            final String severety;
             if (Grave)
                 severety = "alta";
             else if (Medio)
@@ -180,14 +188,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                     if (response.code() == HttpURLConnection.HTTP_OK) {
                         RecordResponse data = response.body();
 
-                        //salvar no banco local
-
-                        //getAllRegistros
+                        salvarRecord(data, DataAssedio, Descricao, latitude, longitude, severety, user);
 
                         SnackBarHelper.getInstance(home_coordinator).showBottomNaviagtion("Registro salvo com sucesso", Snackbar.LENGTH_LONG);
                         dialog.dismiss();
-                    }
-                    else{
+                    } else {
                         try {
                             dialog.dismiss();
                             JSONObject jObjError = new JSONObject(response.errorBody().string());
@@ -207,6 +212,18 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 }
             });
         }
+    }
+
+    private void salvarRecord(RecordResponse data, String date, String descricao, String latitute, String longitude, String severity, String user) {
+        recordDataSource.insert(
+                new Record(
+                        data.get_id(),
+                        date,
+                        descricao,
+                        latitute,
+                        longitude,
+                        severity,
+                        user));
     }
 
     public LatLng getLocationFromAddress(String strAddress) {
@@ -250,30 +267,28 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         final ProgressDialogHelper dialog = new ProgressDialogHelper(getActivity(), "Aguarde", "Buscando dados cadastrados...");
         dialog.show();
 
+        //initRecordMap(map);
+
         recordApi.getAll().enqueue(new retrofit2.Callback<List<RecordResponse>>() {
             @SuppressLint("MissingPermission")
             @Override
             public void onResponse(Call<List<RecordResponse>> call, Response<List<RecordResponse>> response) {
-                if (response.code() == HttpURLConnection.HTTP_OK){
+                if (response.code() == HttpURLConnection.HTTP_OK) {
                     boolean sucess = map.setMapStyle(MapStyleOptions.loadRawResourceStyle(
                             getContext(), R.raw.style_json));
                     List<RecordResponse> data = response.body();
 
-                    for (RecordResponse item: data
-                         ) {
+                    for (RecordResponse item : data
+                            ) {
                         double latitude = Double.parseDouble(item.getLatitude());
                         double longitude = Double.parseDouble(item.getLongitude());
                         map.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(item.getDescription()));
-
-                        //Zoom da câmera
                         map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 15));
                     }
 
                     map.setMyLocationEnabled(true);
-
                     dialog.dismiss();
-                }
-                else{
+                } else {
                     try {
                         dialog.dismiss();
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
@@ -292,18 +307,23 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 Toast.makeText(getContext(), "ERRO AO SALVAR", Toast.LENGTH_LONG).show();
             }
         });
+    }
 
-        //Polyline polyline1 = map.addPolyline(new PolylineOptions()
-        //.clickable(true)
-        //.add(
-        //new LatLng(-35.016, 143.321),
-        //new LatLng(-34.747, 145.592),
-        //new LatLng(-34.364, 147.891),
-        //new LatLng(-33.501, 150.217),
-        //new LatLng(-32.306, 149.248),
-        //new LatLng(-32.491, 147.309)));
-        // Store a data object with the polyline, used here to indicate an arbitrary type.
-        //polyline1. setTag("A");
+    private void initRecordMap(final GoogleMap map){
+        recordDataSource.getAll().observe(this, new Observer<List<Record>>() {
+            @SuppressLint("MissingPermission")
+            @Override
+            public void onChanged(@Nullable List<Record> records) {
+                for (Record item : records
+                     ) {
+                    double latitude = Double.parseDouble(item.getLatitute());
+                    double longitude = Double.parseDouble(item.getLongitude());
+                    map.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(item.getDescricao()));
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 15));
+                }
+                map.setMyLocationEnabled(true);
+            }
+        });
     }
 
     private View.OnClickListener onReportAssedioClickListener = new View.OnClickListener() {
