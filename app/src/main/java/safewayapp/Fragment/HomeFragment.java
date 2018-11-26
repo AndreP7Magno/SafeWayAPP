@@ -152,7 +152,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             Boolean Grave = params.getBoolean("cbGrave");
             Boolean Medio = params.getBoolean("cbMedio");
             Boolean Baixa = params.getBoolean("cbBaixa");
-            String DataAssedio = "2017-02-02"; //alterar dps
+            String DataAssedio = params.getString("data");
 
             String cpf = sharedPreferences.getString("CPF", "");
             Usuario usuario = usuarioDataSource.getByCPF(cpf);

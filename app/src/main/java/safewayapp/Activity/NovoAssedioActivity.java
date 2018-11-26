@@ -4,10 +4,18 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,6 +28,9 @@ public class NovoAssedioActivity extends AppCompatActivity {
 
     @BindView(R.id.coordinator_novo_assedio)
     CoordinatorLayout coordinatorNovoAssedio;
+
+    @BindView(R.id.edtDataOcorrencia)
+    EditText edtDataOcorrencia;
 
     @BindView(R.id.txtEndereco)
     EditText txtEndereco;
@@ -55,11 +66,30 @@ public class NovoAssedioActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        inicializaDatas();
+
         txtGrave.setOnClickListener(onGraveListener);
         txtMedio.setOnClickListener(onMedioListener);
         txtBaixa.setOnClickListener(onBaixaListener);
 
         btnSalvarRegistroAssedio.setOnClickListener(onSalvarRegistroAssedioClickListener);
+    }
+
+    private void inicializaDatas(){
+        Date today = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(today);
+
+        calendar.add(Calendar.MONTH, 1);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.add(Calendar.DATE, -1);
+
+        DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String firstDay = sdf.format(today);
+
+        edtDataOcorrencia.setOnFocusChangeListener(null);
+        edtDataOcorrencia.setText(firstDay);
+        edtDataOcorrencia.addTextChangedListener(DataOcorrenciaListener);
     }
 
     private void CheckCombos(String tipoCheck) {
@@ -92,6 +122,16 @@ public class NovoAssedioActivity extends AppCompatActivity {
                 getIntent().putExtra("cbGrave", cbGrave.isChecked());
                 getIntent().putExtra("cbMedio", cbMedio.isChecked());
                 getIntent().putExtra("cbBaixa", cbBaixa.isChecked());
+
+                Date date = null;
+                try {
+                    date = new SimpleDateFormat("dd/MM/yyyy").parse(edtDataOcorrencia.getText().toString());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                String formattedDate = new SimpleDateFormat("yyyy-MM-dd").format(date);
+
+                getIntent().putExtra("data", formattedDate);
 
                 setResult(REQUEST_NOVO_ASSEDIO, getIntent());
                 finish();
@@ -141,6 +181,68 @@ public class NovoAssedioActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             CheckCombos("baixa");
+        }
+    };
+
+    TextWatcher DataOcorrenciaListener = new TextWatcher() {
+        private String current = "";
+        private String ddmmyyyy = "ddmmyyyy";
+        private Calendar cal = Calendar.getInstance();
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (!s.toString().equals(current)) {
+                String clean = s.toString().replaceAll("[^\\d.]|\\.", "");
+                String cleanC = current.replaceAll("[^\\d.]|\\.", "");
+
+                int cl = clean.length();
+                int sel = cl;
+                for (int i = 2; i <= cl && i < 6; i += 2) {
+                    sel++;
+                }
+                //Fix for pressing delete next to a forward slash
+                if (clean.equals(cleanC)) sel--;
+
+                if (clean.length() < 8) {
+                    clean = clean + ddmmyyyy.substring(clean.length());
+                } else {
+                    //This part makes sure that when we finish entering numbers
+                    //the date is correct, fixing it otherwise
+                    int day = Integer.parseInt(clean.substring(0, 2));
+                    int mon = Integer.parseInt(clean.substring(2, 4));
+                    int year = Integer.parseInt(clean.substring(4, 8));
+
+                    mon = mon < 1 ? 1 : mon > 12 ? 12 : mon;
+                    cal.set(Calendar.MONTH, mon - 1);
+                    year = (year < 1900) ? 1900 : (year > 2100) ? 2100 : year;
+                    cal.set(Calendar.YEAR, year);
+                    // ^ first set year for the line below to work correctly
+                    //with leap years - otherwise, date e.g. 29/02/2012
+                    //would be automatically corrected to 28/02/2012
+
+                    day = (day > cal.getActualMaximum(Calendar.DATE)) ? cal.getActualMaximum(Calendar.DATE) : day;
+                    clean = String.format("%02d%02d%02d", day, mon, year);
+                }
+
+                clean = String.format("%s/%s/%s", clean.substring(0, 2),
+                        clean.substring(2, 4),
+                        clean.substring(4, 8));
+
+                sel = sel < 0 ? 0 : sel;
+                current = clean;
+                edtDataOcorrencia.setText(current);
+                edtDataOcorrencia.setSelection(sel < current.length() ? sel : current.length());
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
         }
     };
 }
