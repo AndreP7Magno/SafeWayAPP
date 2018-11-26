@@ -31,6 +31,7 @@ import safewayapp.Adapter.ContatosAdapter;
 import safewayapp.Component.DaggerContatoComponent;
 import safewayapp.Helper.SnackBarHelper;
 import safewayapp.Module.AppModule;
+import safewayapp.Module.NetModule;
 import safewayapp.Module.RoomModule;
 import safewayapp.Persistence.Contato;
 import safewayapp.R;
@@ -100,6 +101,7 @@ public class ContactFragment extends Fragment {
         DaggerContatoComponent.builder()
                 .appModule(new AppModule(getActivity().getApplication()))
                 .roomModule(new RoomModule(getActivity().getApplication()))
+                .netModule(new NetModule(getString(R.string.baseURL)))
                 .build()
                 .inject(this);
     }

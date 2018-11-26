@@ -1,5 +1,7 @@
 package safewayapp.Api;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -13,5 +15,5 @@ public interface RecordApi {
     Call<RecordResponse> postCreate(@Body RecordRequest body);
 
     @GET("/record/")
-    Call<RecordResponse> getAll(@Body RecordRequest body);
+    Call<List<RecordResponse>> getAll();
 }

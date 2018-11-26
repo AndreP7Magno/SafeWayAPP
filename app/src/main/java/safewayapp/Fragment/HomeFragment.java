@@ -1,10 +1,12 @@
 package safewayapp.Fragment;
 
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -23,6 +25,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONException;
@@ -243,17 +246,52 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     }
 
     @Override
-    public void onMapReady(GoogleMap map) {
-        double latitude = -30.083389;
-        double longitude = -51.2239894;
-        map.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Casa"));
+    public void onMapReady(final GoogleMap map) {
+        final ProgressDialogHelper dialog = new ProgressDialogHelper(getActivity(), "Aguarde", "Buscando dados cadastrados...");
+        dialog.show();
 
-        //map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        //map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-        //map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+        recordApi.getAll().enqueue(new retrofit2.Callback<List<RecordResponse>>() {
+            @SuppressLint("MissingPermission")
+            @Override
+            public void onResponse(Call<List<RecordResponse>> call, Response<List<RecordResponse>> response) {
+                if (response.code() == HttpURLConnection.HTTP_OK){
+                    boolean sucess = map.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                            getContext(), R.raw.style_json));
+                    List<RecordResponse> data = response.body();
 
-        //Zoom da câmera
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 15));
+                    for (RecordResponse item: data
+                         ) {
+                        double latitude = Double.parseDouble(item.getLatitude());
+                        double longitude = Double.parseDouble(item.getLongitude());
+                        map.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(item.getDescription()));
+
+                        //Zoom da câmera
+                        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 15));
+                    }
+
+                    map.setMyLocationEnabled(true);
+
+                    dialog.dismiss();
+                }
+                else{
+                    try {
+                        dialog.dismiss();
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        Toast.makeText(getContext(), jObjError.getString("message"), Toast.LENGTH_LONG).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<RecordResponse>> call, Throwable t) {
+                dialog.dismiss();
+                Toast.makeText(getContext(), "ERRO AO SALVAR", Toast.LENGTH_LONG).show();
+            }
+        });
 
         //Polyline polyline1 = map.addPolyline(new PolylineOptions()
         //.clickable(true)
@@ -266,13 +304,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         //new LatLng(-32.491, 147.309)));
         // Store a data object with the polyline, used here to indicate an arbitrary type.
         //polyline1. setTag("A");
-
-
-        //Mostrar a localização atual do dispositivo
-        //map.setMyLocationEnabled(true);
-
-        //Informações de tráfico
-        //map.setTrafficEnabled(true);
     }
 
     private View.OnClickListener onReportAssedioClickListener = new View.OnClickListener() {
