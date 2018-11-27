@@ -271,47 +271,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         dialog.show();
 
         initRecordMap(map, dialog);
-
-        //dialog.dismiss();
-
-        /*recordApi.getAll().enqueue(new retrofit2.Callback<List<RecordResponse>>() {
-            @SuppressLint("MissingPermission")
-            @Override
-            public void onResponse(Call<List<RecordResponse>> call, Response<List<RecordResponse>> response) {
-                if (response.code() == HttpURLConnection.HTTP_OK) {
-                    boolean sucess = map.setMapStyle(MapStyleOptions.loadRawResourceStyle(
-                            getContext(), R.raw.style_json));
-                    List<RecordResponse> data = response.body();
-
-                    for (RecordResponse item : data
-                            ) {
-                        double latitude = Double.parseDouble(item.getLatitude());
-                        double longitude = Double.parseDouble(item.getLongitude());
-                        map.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(item.getDescription()));
-                        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 15));
-                    }
-
-                    map.setMyLocationEnabled(true);
-                    dialog.dismiss();
-                } else {
-                    try {
-                        dialog.dismiss();
-                        JSONObject jObjError = new JSONObject(response.errorBody().string());
-                        Toast.makeText(getContext(), jObjError.getString("message"), Toast.LENGTH_LONG).show();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<RecordResponse>> call, Throwable t) {
-                dialog.dismiss();
-                Toast.makeText(getContext(), "ERRO AO SALVAR", Toast.LENGTH_LONG).show();
-            }
-        });*/
     }
 
     private void initRecordMap(final GoogleMap map, final ProgressDialogHelper dialog){

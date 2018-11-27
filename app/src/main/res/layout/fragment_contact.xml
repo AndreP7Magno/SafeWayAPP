@@ -32,4 +32,5 @@
             fab:fab_colorPressed="@color/colorPrimaryDark" />
 
     </RelativeLayout>
+
 </android.support.design.widget.CoordinatorLayout>

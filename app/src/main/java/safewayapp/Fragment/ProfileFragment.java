@@ -38,7 +38,9 @@ import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import safewayapp.Activity.HistoricoAtividades;
 import safewayapp.Activity.LoginActivity;
+import safewayapp.Activity.NovoAssedioActivity;
 import safewayapp.Api.RecordApi;
 import safewayapp.Api.response.RecordResponse;
 import safewayapp.Component.DaggerLoginComponent;
@@ -163,10 +165,10 @@ public class ProfileFragment extends Fragment {
     }
 
     View.OnClickListener OnHistoricoAtividades = new View.OnClickListener() {
-
         @Override
         public void onClick(View v) {
-            Toast.makeText(getActivity(), "Histórico de Atividades", Toast.LENGTH_SHORT).show();
+            Intent it = new Intent(getActivity(), HistoricoAtividades.class);
+            startActivity(it);
         }
     };
 
