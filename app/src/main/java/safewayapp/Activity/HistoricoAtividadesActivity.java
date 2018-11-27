@@ -16,7 +16,7 @@ import safewayapp.Module.NetModule;
 import safewayapp.Module.RoomModule;
 import safewayapp.R;
 
-public class HistoricoAtividades extends AppCompatActivity {
+public class HistoricoAtividadesActivity extends AppCompatActivity {
 
     @BindView(R.id.recycleViewHistoricoAtividade)
     RecyclerView mRecycleHistoricoAtividades;

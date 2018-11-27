@@ -5,7 +5,7 @@ import android.app.Application;
 import javax.inject.Singleton;
 
 import dagger.Component;
-import safewayapp.Activity.HistoricoAtividades;
+import safewayapp.Activity.HistoricoAtividadesActivity;
 import safewayapp.Dao.RecordDao;
 import safewayapp.Module.AppModule;
 import safewayapp.Module.NetModule;
@@ -16,7 +16,7 @@ import safewayapp.Repository.IRecordDataSource;
 @Singleton
 @Component(dependencies = {}, modules = {AppModule.class, RoomModule.class, NetModule.class})
 public interface HistoricoAtividadesComponent {
-    void inject(HistoricoAtividades historicoAtividades);
+    void inject(HistoricoAtividadesActivity historicoAtividadesActivity);
 
     RecordDao recordDao();
 

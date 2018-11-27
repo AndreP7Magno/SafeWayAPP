@@ -4,7 +4,7 @@
     android:id="@+id/coordinator_historico_atividades"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="safewayapp.Activity.HistoricoAtividades">
+    tools:context="safewayapp.Activity.HistoricoAtividadesActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"

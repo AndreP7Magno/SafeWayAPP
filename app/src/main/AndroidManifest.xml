@@ -46,7 +46,7 @@
             android:name=".Activity.NovoAssedioActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden"></activity>
-        <activity android:name=".Activity.HistoricoAtividades"></activity>
+        <activity android:name=".Activity.HistoricoAtividadesActivity"></activity>
     </application>
 
 </manifest>
