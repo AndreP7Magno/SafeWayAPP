@@ -170,6 +170,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             final String user = usuario.getId();
 
             LatLng position = getLocationFromAddress(Endereco);
+            if (position == null){
+                //chamar intent
+            }
+
             final String latitude = String.valueOf(position.latitude);
             final String longitude = String.valueOf(position.longitude);
 
@@ -187,8 +191,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 public void onResponse(Call<RecordResponse> call, Response<RecordResponse> response) {
                     if (response.code() == HttpURLConnection.HTTP_OK) {
                         RecordResponse data = response.body();
-
-                        salvarRecord(data, DataAssedio, Descricao, latitude, longitude, severety, user);
+                        salvarRecord(data);
 
                         SnackBarHelper.getInstance(home_coordinator).showBottomNaviagtion("Registro salvo com sucesso", Snackbar.LENGTH_LONG);
                         dialog.dismiss();
@@ -214,16 +217,16 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    private void salvarRecord(RecordResponse data, String date, String descricao, String latitute, String longitude, String severity, String user) {
+    private void salvarRecord(RecordResponse data) {
         recordDataSource.insert(
                 new Record(
                         data.get_id(),
-                        date,
-                        descricao,
-                        latitute,
-                        longitude,
-                        severity,
-                        user));
+                        data.getDate(),
+                        data.getDescription(),
+                        data.getLatitude(),
+                        data.getLongitude(),
+                        data.getSeverity(),
+                        data.getUser()));
     }
 
     public LatLng getLocationFromAddress(String strAddress) {
@@ -267,9 +270,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         final ProgressDialogHelper dialog = new ProgressDialogHelper(getActivity(), "Aguarde", "Buscando dados cadastrados...");
         dialog.show();
 
-        //initRecordMap(map);
+        initRecordMap(map, dialog);
 
-        recordApi.getAll().enqueue(new retrofit2.Callback<List<RecordResponse>>() {
+        //dialog.dismiss();
+
+        /*recordApi.getAll().enqueue(new retrofit2.Callback<List<RecordResponse>>() {
             @SuppressLint("MissingPermission")
             @Override
             public void onResponse(Call<List<RecordResponse>> call, Response<List<RecordResponse>> response) {
@@ -306,10 +311,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 dialog.dismiss();
                 Toast.makeText(getContext(), "ERRO AO SALVAR", Toast.LENGTH_LONG).show();
             }
-        });
+        });*/
     }
 
-    private void initRecordMap(final GoogleMap map){
+    private void initRecordMap(final GoogleMap map, final ProgressDialogHelper dialog){
         recordDataSource.getAll().observe(this, new Observer<List<Record>>() {
             @SuppressLint("MissingPermission")
             @Override
@@ -322,6 +327,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                     map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 15));
                 }
                 map.setMyLocationEnabled(true);
+                boolean sucess = map.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                        getContext(), R.raw.style_json));
+                dialog.dismiss();
             }
         });
     }

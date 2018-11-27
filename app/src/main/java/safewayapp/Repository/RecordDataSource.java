@@ -37,4 +37,9 @@ public class RecordDataSource implements IRecordDataSource {
     public void update(Record record) {
         recordDao.update(record);
     }
+
+    @Override
+    public void deleteAll() {
+        recordDao.deleteAll();
+    }
 }

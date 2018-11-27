@@ -15,4 +15,6 @@ public interface IRecordDataSource {
     int delete(Record record);
 
     void update(Record record);
+
+    void deleteAll();
 }

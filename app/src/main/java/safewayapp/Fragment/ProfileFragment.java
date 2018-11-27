@@ -22,22 +22,35 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.security.MessageDigest;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import safewayapp.Activity.LoginActivity;
+import safewayapp.Api.RecordApi;
+import safewayapp.Api.response.RecordResponse;
 import safewayapp.Component.DaggerLoginComponent;
 import safewayapp.Helper.DialogHelper;
 import safewayapp.Helper.IOUtil;
+import safewayapp.Helper.ProgressDialogHelper;
 import safewayapp.Module.AppModule;
 import safewayapp.Module.NetModule;
 import safewayapp.Module.RoomModule;
+import safewayapp.Persistence.Record;
 import safewayapp.R;
+import safewayapp.Repository.IRecordDataSource;
 
 public class ProfileFragment extends Fragment {
 
@@ -66,6 +79,12 @@ public class ProfileFragment extends Fragment {
     ImageView imgAvatar;
 
     private byte[] diaphragm;
+
+    @Inject
+    IRecordDataSource recordDataSource;
+
+    @Inject
+    RecordApi recordApi;
 
     @Inject
     public SharedPreferences sharedPreferences;
@@ -166,8 +185,47 @@ public class ProfileFragment extends Fragment {
                     ShowAlertPositiveNegative(getActivity(), R.string.deseja_atualizar, new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            recordDataSource.deleteAll();
+                            final ProgressDialogHelper d = new ProgressDialogHelper(getActivity(), "Atualizando dados", "Aguarde enquanto estamos atualizando os registros...");
+                            d.show();
 
+                            recordApi.getAll().enqueue(new Callback<List<RecordResponse>>() {
+                                @Override
+                                public void onResponse(Call<List<RecordResponse>> call, Response<List<RecordResponse>> response) {
+                                    if (response.code() == HttpURLConnection.HTTP_OK) {
+                                        List<RecordResponse> data = response.body();
+                                        for (RecordResponse item : data
+                                             ) {
+                                            salvarRecord(item);
+                                        }
 
+                                        d.dismiss();
+
+                                        Intent i = getActivity().getBaseContext().getPackageManager()
+                                                .getLaunchIntentForPackage(getActivity().getBaseContext().getPackageName());
+                                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        getActivity().startActivity(i);
+                                        getActivity().finish();
+
+                                    }else {
+                                        try {
+                                            d.dismiss();
+                                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                                            Toast.makeText(getContext(), jObjError.getString("message"), Toast.LENGTH_LONG).show();
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<List<RecordResponse>> call, Throwable t) {
+                                    d.dismiss();
+                                    Toast.makeText(getContext(), "ERRO AO SALVAR", Toast.LENGTH_LONG).show();
+                                }
+                            });
                         }
                     }, new MaterialDialog.SingleButtonCallback() {
 
@@ -178,6 +236,18 @@ public class ProfileFragment extends Fragment {
                     });
         }
     };
+
+    private void salvarRecord(RecordResponse data) {
+        recordDataSource.insert(
+                new Record(
+                        data.get_id(),
+                        data.getDate(),
+                        data.getDescription(),
+                        data.getLatitude(),
+                        data.getLongitude(),
+                        data.getSeverity(),
+                        data.getUser()));
+    }
 
     View.OnClickListener OnSairListener = new View.OnClickListener() {
         @Override

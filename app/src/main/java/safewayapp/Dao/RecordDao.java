@@ -25,4 +25,7 @@ public interface RecordDao {
 
     @Delete
     int delete(Record record);
+
+    @Query("DELETE FROM record")
+    void deleteAll();
 }
