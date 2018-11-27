@@ -8,9 +8,11 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.clans.fab.FloatingActionButton;
 import com.redmadrobot.inputmask.MaskedTextChangedListener;
 
@@ -29,6 +33,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import safewayapp.Adapter.ContatosAdapter;
 import safewayapp.Component.DaggerContatoComponent;
+import safewayapp.Helper.DialogHelper;
+import safewayapp.Helper.RecyclerItemTouchHelper;
 import safewayapp.Helper.SnackBarHelper;
 import safewayapp.Module.AppModule;
 import safewayapp.Module.NetModule;
@@ -36,9 +42,10 @@ import safewayapp.Module.RoomModule;
 import safewayapp.Persistence.Contato;
 import safewayapp.R;
 import safewayapp.Repository.IContatoDataSource;
+import safewayapp.ViewHolder.ContatosItemHolder;
 
 
-public class ContactFragment extends Fragment {
+public class ContactFragment extends Fragment implements RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
     @BindView(R.id.listViewContatos)
     RecyclerView mRecycleContatos;
 
@@ -76,6 +83,9 @@ public class ContactFragment extends Fragment {
 
         initMaskTelefone();
 
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecycleContatos);
+
         return view;
     }
 
@@ -95,7 +105,7 @@ public class ContactFragment extends Fragment {
         listaContatos();
     }
 
-    private void initFragment(View view){
+    private void initFragment(View view) {
         ButterKnife.bind(this, view);
 
         DaggerContatoComponent.builder()
@@ -106,13 +116,13 @@ public class ContactFragment extends Fragment {
                 .inject(this);
     }
 
-    private void initNovoContatoDialog(){
+    private void initNovoContatoDialog() {
         MyDialog = new Dialog(getActivity());
         MyDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         MyDialog.setContentView(R.layout.dialog_novo_contato);
 
         btnVoltar = (AppCompatButton) MyDialog.findViewById(R.id.btnVoltarContato);
-        btnSalvar = (AppCompatButton)MyDialog.findViewById(R.id.btnSalvarContato);
+        btnSalvar = (AppCompatButton) MyDialog.findViewById(R.id.btnSalvarContato);
         txtNomeContato = (EditText) MyDialog.findViewById(R.id.txtNomeContato);
         txtTelefoneContato = (EditText) MyDialog.findViewById(R.id.txtTelefoneContato);
         coordinatorNovoContato = (CoordinatorLayout) MyDialog.findViewById(R.id.coordinator_novo_contato);
@@ -137,7 +147,7 @@ public class ContactFragment extends Fragment {
         });
     }
 
-    private void initMaskTelefone(){
+    private void initMaskTelefone() {
         final MaskedTextChangedListener listener = MaskedTextChangedListener.Companion.installOn(
                 txtTelefoneContato,
                 "([00]) [00000]-[0000]",
@@ -153,7 +163,7 @@ public class ContactFragment extends Fragment {
         txtTelefoneContato.setHint(listener.placeholder());
     }
 
-    private void salvaContato(){
+    private void salvaContato() {
         String telefoneSemMascara = txtTelefoneContato.getText().toString()
                 .replace("(", "")
                 .replace(")", "")
@@ -161,30 +171,27 @@ public class ContactFragment extends Fragment {
                 .replace(" ", "")
                 .trim();
 
-        if(validaCampos(telefoneSemMascara)){
+        if (validaCampos(telefoneSemMascara)) {
             long codigo = contatoDataSource.insert(new Contato(txtNomeContato.getText().toString(), telefoneSemMascara));
 
-            if (codigo != 0){
+            if (codigo != 0) {
                 listaContatos();
                 MyDialog.cancel();
                 SnackBarHelper.getInstance(coordinatorContato).show("Contato salvo com sucesso", Snackbar.LENGTH_LONG);
-            }
-            else{
+            } else {
                 SnackBarHelper.getInstance(coordinatorContato).show("Erro ao salvar o contato", Snackbar.LENGTH_LONG);
             }
         }
     }
 
-    private boolean validaCampos(String telefone){
-        if (txtNomeContato.getText().toString().equals("")){
+    private boolean validaCampos(String telefone) {
+        if (txtNomeContato.getText().toString().equals("")) {
             SnackBarHelper.getInstance(coordinatorNovoContato).show("Nome não informado", Snackbar.LENGTH_LONG);
             return false;
-        }
-        else if (telefone.equals("")) {
+        } else if (telefone.equals("")) {
             SnackBarHelper.getInstance(coordinatorNovoContato).show("Telefone não informado", Snackbar.LENGTH_LONG);
             return false;
-        }
-        else if (telefone.length() < 10){
+        } else if (telefone.length() < 10) {
             SnackBarHelper.getInstance(coordinatorNovoContato).show("Telefone inválido", Snackbar.LENGTH_LONG);
             return false;
         }
@@ -192,7 +199,7 @@ public class ContactFragment extends Fragment {
         return true;
     }
 
-    private void listaContatos(){
+    private void listaContatos() {
         mRecycleContatos.setHasFixedSize(true);
 
         mLayoutManager = new LinearLayoutManager(getContext());
@@ -206,5 +213,31 @@ public class ContactFragment extends Fragment {
                 mAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    @Override
+    public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        if (viewHolder instanceof ContatosItemHolder) {
+            DialogHelper.getInstance().ShowAlert(getActivity(), "Deseja realmente excluir o contato?", new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    final Contato deletedItem = ((ContatosAdapter) mAdapter).mDataset.get(viewHolder.getAdapterPosition());
+
+                    ((ContatosAdapter) mAdapter).removeItem(viewHolder.getAdapterPosition());
+                    int del = contatoDataSource.delete(deletedItem);
+
+                    /*contatoDataSource.getByNome(deletedItem.getNome()).observe(getActivity(), new Observer<Contato>() {
+                        @Override
+                        public void onChanged(@Nullable Contato contato) {
+                            contatoDataSource.delete(deletedItem);
+                        }
+                    });*/
+
+                    SnackBarHelper.getInstance(coordinatorContato).show("Excluído com sucesso!", Snackbar.LENGTH_LONG);
+                    return;
+                }
+            });
+            mAdapter.notifyDataSetChanged();
+        }
     }
 }

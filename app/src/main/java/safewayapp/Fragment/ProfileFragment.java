@@ -162,12 +162,24 @@ public class ProfileFragment extends Fragment {
     View.OnClickListener onAtualizarRecordClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Toast.makeText(getActivity(), "Atualizar", Toast.LENGTH_SHORT).show();
+            DialogHelper.getInstance().
+                    ShowAlertPositiveNegative(getActivity(), R.string.deseja_atualizar, new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+
+                        }
+                    }, new MaterialDialog.SingleButtonCallback() {
+
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                        }
+                    });
         }
     };
 
     View.OnClickListener OnSairListener = new View.OnClickListener() {
-
         @Override
         public void onClick(View v) {
             DialogHelper.getInstance().

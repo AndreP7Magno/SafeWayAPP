@@ -1,76 +1,111 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="70dp">
 
-    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/cardViewContatos"
+    <RelativeLayout
+        android:id="@+id/view_background"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="10dp"
-        app:cardCornerRadius="10dp">
+        android:layout_height="match_parent"
+        android:background="@color/bg_row_background">
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/delete_icon"
+            android:layout_width="@dimen/ic_delete"
+            android:layout_height="@dimen/ic_delete"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/padd_10"
+            android:src="@drawable/ic_delete_white_24dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/padd_10"
+            android:layout_toLeftOf="@id/delete_icon"
+            android:text="EXCLUIR"
+            android:textColor="#fff"
+            android:textSize="13dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/view_foreground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/cardViewContatos"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="65dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="10dp"
+            app:cardCornerRadius="10dp">
 
-            <RelativeLayout
-                android:id="@+id/linearSituacao"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="7dp">
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/lblItemNome"
-                    android:layout_width="180dp"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="2dp"
-                    android:paddingTop="5dp"
-                    android:paddingLeft="5dp"
-                    android:text ="Nome:" />
-
-                <TextView
-                    android:id="@+id/txtItemNome"
-                    android:layout_width="180dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/lblItemNome"
-                    android:paddingRight="2dp"
-                    android:paddingTop="2dp"
-                    android:paddingLeft="5dp"
-                    android:textStyle="bold"
-                    android:text="André Magno da Fonseca"/>
-
-                <TextView
-                    android:id="@+id/lblItemTelefone"
+                <RelativeLayout
+                    android:id="@+id/linearSituacao"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/txtItemNome"
-                    android:paddingRight="2dp"
-                    android:paddingLeft="5dp"
-                    android:paddingTop="5dp"
-                    android:text="Telefone: " />
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="7dp">
 
-                <TextView
-                    android:id="@+id/txtItemTelefone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/lblItemTelefone"
-                    android:layout_toEndOf="@+id/txtItemNome"
-                    android:paddingRight="2dp"
-                    android:paddingTop="2dp"
-                    android:paddingLeft="5dp"
-                    android:maxLength="17"
-                    android:textStyle="bold"
-                    android:text="(51) 3232323232" />
+                    <TextView
+                        android:id="@+id/lblItemNome"
+                        android:layout_width="180dp"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingTop="5dp"
+                        android:paddingRight="2dp"
+                        android:text="Nome:" />
 
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/txtItemNome"
+                        android:layout_width="180dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/lblItemNome"
+                        android:paddingLeft="5dp"
+                        android:paddingTop="2dp"
+                        android:paddingRight="2dp"
+                        android:text="André Magno da Fonseca"
+                        android:textStyle="bold" />
 
-        </LinearLayout>
+                    <TextView
+                        android:id="@+id/lblItemTelefone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/txtItemNome"
+                        android:paddingLeft="5dp"
+                        android:paddingTop="5dp"
+                        android:paddingRight="2dp"
+                        android:text="Telefone: " />
 
-    </android.support.v7.widget.CardView>
+                    <TextView
+                        android:id="@+id/txtItemTelefone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/lblItemTelefone"
+                        android:layout_toEndOf="@+id/txtItemNome"
+                        android:maxLength="17"
+                        android:paddingLeft="5dp"
+                        android:paddingTop="2dp"
+                        android:paddingRight="2dp"
+                        android:text="(51) 3232323232"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </RelativeLayout>
+
 </RelativeLayout>
