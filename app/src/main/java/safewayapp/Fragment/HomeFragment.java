@@ -8,6 +8,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -19,6 +20,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -99,13 +102,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
     private boolean fabExpanded = false;
 
-    private Double latitude;
-    private Double longitude;
-
-    //private FusedLocationProviderClient mFusedLocationClient;
-    Geocoder geocoder;
-    List<Address> addresses;
-
     SupportMapFragment mapFragment;
 
     @Override
@@ -119,11 +115,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        //geocoder = new Geocoder(getActivity(), Locale.getDefault());
-        //mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
-
-        //getLocation();
 
         return view;
     }
@@ -168,7 +159,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             final String user = usuario.getId();
 
             LatLng position = getLocationFromAddress(Endereco);
-            if (position == null){
+            if (position == null) {
                 //chamar intent
             }
 
@@ -271,19 +262,31 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         initRecordMap(map, dialog);
     }
 
-    private void initRecordMap(final GoogleMap map, final ProgressDialogHelper dialog){
+    private void initRecordMap(final GoogleMap map, final ProgressDialogHelper dialog) {
         recordDataSource.getAll().observe(this, new Observer<List<Record>>() {
             @SuppressLint("MissingPermission")
             @Override
             public void onChanged(@Nullable List<Record> records) {
-                Location location = GPSHelper.getInstance().getLocation();
-                if (location == null){
-                    new DialogHelper().showGPSSettingDialog(getActivity());
+                Location location = verificaLocalizacao();
+                if (location == null) {
+                    DialogHelper.getInstance().
+                            ShowMessageGPSLocation(getActivity(), R.string.msg_ativar_gps, new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                                    Intent i = getActivity().getBaseContext().getPackageManager()
+                                            .getLaunchIntentForPackage(getActivity().getBaseContext().getPackageName());
+                                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    getActivity().startActivity(i);
+                                    getActivity().finish();
+                                }
+                            });
                     return;
                 }
 
+                dialog.dismiss();
                 for (Record item : records
-                     ) {
+                        ) {
                     double latitude = Double.parseDouble(item.getLatitute());
                     double longitude = Double.parseDouble(item.getLongitude());
                     map.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(item.getDescricao()));
@@ -292,9 +295,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 map.setMyLocationEnabled(true);
                 boolean sucess = map.setMapStyle(MapStyleOptions.loadRawResourceStyle(
                         getContext(), R.raw.style_json));
-                dialog.dismiss();
             }
         });
+    }
+
+    private Location verificaLocalizacao() {
+        return GPSHelper.getInstance().getLocation();
     }
 
     private View.OnClickListener onReportAssedioClickListener = new View.OnClickListener() {
@@ -322,13 +328,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             final ProgressDialogHelper dialog = new ProgressDialogHelper(getActivity(), "Aguarde", "Enviando mensagem aos seus contatos...");
             dialog.show();
 
-            boolean continuar = true;
-            while (continuar) {
-                if (!latitude.isNaN() && !longitude.isNaN())
-                    continuar = false;
-                    /*else
-                        getLocation();*/
-            }
+            final Location location = verificaLocalizacao();
 
             contatoDataSource.getAll().observe(getActivity(), new Observer<List<Contato>>() {
                 @Override
@@ -340,7 +340,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                             return;
                         }
 
-                        addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                        Geocoder coder = new Geocoder(getActivity());
+                        List<Address> addresses = coder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                         String endereco = addresses.get(0).getAddressLine(0);
 
                         for (Contato item :
@@ -365,17 +366,4 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             ex.printStackTrace();
         }
     }
-
-    /*@SuppressLint("MissingPermission")
-    private void getLocation() {
-        mFusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if (location != null) {
-                    latitude = location.getLatitude();
-                    longitude = location.getLongitude();
-                }
-            }
-        });
-    }*/
 }

@@ -28,64 +28,24 @@ public class DialogHelper {
     public DialogHelper() {
     }
 
-    private AlertDialog.Builder getBuilder(int icon, String title, String msg, Activity activity){
-        ContextThemeWrapper ctw = new ContextThemeWrapper(activity.getApplicationContext(), R.style.CustomDialogTheme);
-        AlertDialog.Builder builder = new AlertDialog.Builder(ctw);
-        builder.setIcon(icon)
-                .setTitle(title)
-                .setMessage(msg);
-
-        return builder;
-    }
-
-    public void showGPSSettingDialog(final Activity activity) {
-        AlertDialog.Builder builder = getBuilder(R.drawable.ic_dialog_alert,
-                activity.getApplicationContext().getResources().getString(R.string.txtGPS),
-                activity.getApplicationContext().getResources().getString(R.string.msg_ativar_gps),
-                activity);
-        builder.setPositiveButton(activity.getApplicationContext().getResources().getString(R.string.txtConfiguracoes), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog,int which) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                activity.getApplicationContext().startActivity(intent);
-            }
-        });
-
-        builder.setNegativeButton(activity.getApplicationContext().getResources().getString(R.string.txtVoltar), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        showDialogWithTheme(builder, activity);
-    }
-
-    private void showDialogWithTheme(AlertDialog.Builder builder, Activity activity) {
-        if(! activity.isFinishing()) {
-            Dialog d = builder.show();
-            setDialogTheme(d, activity);
-        }
-    }
-
-    private void setDialogTheme(Dialog d, Activity activity) {
-        int textViewId = d.getContext().getResources().getIdentifier("android:id/alertTitle", null, null);
-        TextView tv = (TextView) d.findViewById(textViewId);
-        tv.setTextColor(activity.getApplicationContext().getResources().getColor(R.color.colorPrimary));
-
-        int dividerId = d.getContext().getResources().getIdentifier("android:id/titleDivider", null, null);
-        View divider = d.findViewById(dividerId);
-        divider.setBackgroundColor(activity.getApplicationContext().getResources().getColor(R.color.colorPrimary));
-
-        Button positiveButton = ((AlertDialog) d).getButton(AlertDialog.BUTTON_POSITIVE);
-        positiveButton.setBackgroundResource(R.drawable.safeway_btn_dialog);
-        Button negativeButton = ((AlertDialog) d).getButton(AlertDialog.BUTTON_NEGATIVE);
-        negativeButton.setBackgroundResource(R.drawable.safeway_btn_dialog);
-    }
-
     public void ShowError(Activity activity, int idResource)
     {
         dialog = new  MaterialDialog
                 .Builder(activity)
                 .title("Erro!")
+                .content(idResource).build();
+
+        dialog.show();
+    }
+
+    public void ShowMessageGPSLocation(Activity activity, int idResource, MaterialDialog.SingleButtonCallback callback){
+        dialog = new MaterialDialog
+                .Builder(activity)
+                .title("Atenção!")
+                .titleColor(activity.getResources().getColor(R.color.colorPrimary))
+                .positiveText("Ok")
+                .positiveColor(activity.getResources().getColor(R.color.colorPrimary))
+                .onPositive(callback)
                 .content(idResource).build();
 
         dialog.show();
