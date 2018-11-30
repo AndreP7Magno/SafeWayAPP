@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.LocationManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -33,23 +33,21 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.security.auth.callback.Callback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Response;
-import safewayapp.Activity.LoginActivity;
 import safewayapp.Activity.NovoAssedioActivity;
 import safewayapp.Api.RecordApi;
 import safewayapp.Api.request.RecordRequest;
 import safewayapp.Api.response.RecordResponse;
-import safewayapp.Component.DaggerContatoComponent;
 import safewayapp.Component.DaggerHomeComponent;
+import safewayapp.Helper.DialogHelper;
+import safewayapp.Helper.GPSHelper;
 import safewayapp.Helper.ProgressDialogHelper;
 import safewayapp.Helper.SnackBarHelper;
 import safewayapp.Module.AppModule;
@@ -278,13 +276,19 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             @SuppressLint("MissingPermission")
             @Override
             public void onChanged(@Nullable List<Record> records) {
+                Location location = GPSHelper.getInstance().getLocation();
+                if (location == null){
+                    new DialogHelper().showGPSSettingDialog(getActivity());
+                    return;
+                }
+
                 for (Record item : records
                      ) {
                     double latitude = Double.parseDouble(item.getLatitute());
                     double longitude = Double.parseDouble(item.getLongitude());
                     map.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(item.getDescricao()));
-                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 15));
                 }
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
                 map.setMyLocationEnabled(true);
                 boolean sucess = map.setMapStyle(MapStyleOptions.loadRawResourceStyle(
                         getContext(), R.raw.style_json));
