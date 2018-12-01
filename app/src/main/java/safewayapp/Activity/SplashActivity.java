@@ -18,6 +18,7 @@ import javax.inject.Inject;
 
 import safewayapp.Component.DaggerSplashComponent;
 import safewayapp.Helper.DialogHelper;
+import safewayapp.Helper.GPSHelper;
 import safewayapp.Module.AppModule;
 import safewayapp.Module.RoomModule;
 import safewayapp.R;
@@ -33,6 +34,8 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         this.getSupportActionBar().hide();
+
+        GPSHelper.getInstance().Inicializa(getApplicationContext());
 
         DaggerSplashComponent.builder()
                 .appModule(new AppModule(getApplication()))

@@ -1,7 +1,17 @@
 package safewayapp.Helper;
 
+
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.view.ContextThemeWrapper;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -15,7 +25,7 @@ public class DialogHelper {
         return ourInstance;
     }
     private MaterialDialog dialog;
-    private DialogHelper() {
+    public DialogHelper() {
     }
 
     public void ShowError(Activity activity, int idResource)
@@ -23,6 +33,19 @@ public class DialogHelper {
         dialog = new  MaterialDialog
                 .Builder(activity)
                 .title("Erro!")
+                .content(idResource).build();
+
+        dialog.show();
+    }
+
+    public void ShowMessageGPSLocation(Activity activity, int idResource, MaterialDialog.SingleButtonCallback callback){
+        dialog = new MaterialDialog
+                .Builder(activity)
+                .title("Atenção!")
+                .titleColor(activity.getResources().getColor(R.color.colorPrimary))
+                .positiveText("Ok")
+                .positiveColor(activity.getResources().getColor(R.color.colorPrimary))
+                .onPositive(callback)
                 .content(idResource).build();
 
         dialog.show();
