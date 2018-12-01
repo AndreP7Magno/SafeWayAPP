@@ -150,7 +150,7 @@ public class ContactFragment extends Fragment implements RecyclerItemTouchHelper
     private void initMaskTelefone() {
         final MaskedTextChangedListener listener = MaskedTextChangedListener.Companion.installOn(
                 txtTelefoneContato,
-                "([00]) [00000]-[0000]",
+                "([000]) [00000]-[0000]",
                 new MaskedTextChangedListener.ValueListener() {
                     @Override
                     public void onTextChanged(boolean maskFilled, @NonNull final String extractedValue) {
@@ -225,13 +225,6 @@ public class ContactFragment extends Fragment implements RecyclerItemTouchHelper
 
                     ((ContatosAdapter) mAdapter).removeItem(viewHolder.getAdapterPosition());
                     int del = contatoDataSource.delete(deletedItem);
-
-                    /*contatoDataSource.getByNome(deletedItem.getNome()).observe(getActivity(), new Observer<Contato>() {
-                        @Override
-                        public void onChanged(@Nullable Contato contato) {
-                            contatoDataSource.delete(deletedItem);
-                        }
-                    });*/
 
                     SnackBarHelper.getInstance(coordinatorContato).show("Excluído com sucesso!", Snackbar.LENGTH_LONG);
                     return;

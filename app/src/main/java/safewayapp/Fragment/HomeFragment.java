@@ -1,6 +1,7 @@
 package safewayapp.Fragment;
 
 import android.annotation.SuppressLint;
+import android.app.PendingIntent;
 import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -36,6 +37,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.text.Normalizer;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -224,7 +226,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         LatLng p1 = null;
 
         try {
-            // May throw an IOException
             address = coder.getFromLocationName(strAddress, 5);
             if (address == null) {
                 return null;
@@ -344,10 +345,20 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                         List<Address> addresses = coder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                         String endereco = addresses.get(0).getAddressLine(0);
 
-                        for (Contato item :
-                                contatos) {
-                            sendSMS(item.getTelefone(), "Olá " + item.getNome() + "!/n Você foi marcado como contato seguro de NOME USUARIO e esta pessoa no momento corre certo perigo./nEla se encontra no seguinte endereço " + endereco + "./nPor favor, entre com contato com ela./n/n MENSAGEM ENVIADA AUTOMATICAMENTE PELO APLICATIVO SAFEWAY");
+                        String[] separadorEndereco = endereco.split("-");
+                        String[] separadorFinal = separadorEndereco[1].trim().split(",");
+                        String enderecoFinal = separadorEndereco[0].trim() + " - " + separadorFinal[0].trim();
+
+                        String nomeUsuario = sharedPreferences.getString("NomeUsuario","");
+
+                        for (Contato item : contatos) {
+                            String textoMensagem = item.getNome() + ", o(a) " + nomeUsuario + " corre perigo. Esta localizado na " + enderecoFinal + ". MENSAGEM ENVIADA PELO SAFEWAY!";
+                            textoMensagem = stripAccents(textoMensagem);
+                            sendSMS(item.getTelefone(), textoMensagem);
                         }
+
+                        //insert registro no banco
+
                         SnackBarHelper.getInstance(home_coordinator).showBottomNaviagtion("Mensagens sendo enviadas ao seus contatos", Snackbar.LENGTH_LONG);
                         dialog.dismiss();
                     } catch (IOException e) {
@@ -358,10 +369,22 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         }
     };
 
-    public void sendSMS(String phoneNo, String msg) {
+    public static String stripAccents(String s)
+    {
+        s = Normalizer.normalize(s, Normalizer.Form.NFD);
+        s = s.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+        return s;
+    }
+
+    public void sendSMS(String phoneNumber, String message) {
         try {
-            SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(phoneNo, null, msg, null, null);
+            SmsManager sms = SmsManager.getDefault();
+            PendingIntent sentPI;
+            String SENT = "SMS_SENT";
+
+            sentPI = PendingIntent.getBroadcast(getActivity(), 0,new Intent(SENT), 0);
+
+            sms.sendTextMessage(phoneNumber, null, message, sentPI, null);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
