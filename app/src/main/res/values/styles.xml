@@ -28,6 +28,15 @@
         <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
 
+    <style name="TextLabelLogin" parent="TextAppearance.AppCompat">
+        <!-- Hint color and label color in FALSE state -->
+        <item name="android:textColorHint">@color/white</item>
+        <item name="android:textSize">20sp</item>
+        <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+        <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlActivated">@color/white</item>
+    </style>
+
     <style name="CustomCheckBoxStyle" parent="@android:style/Widget.CompoundButton.CheckBox">
         <item name="android:textColor">@android:color/black</item>
     </style>

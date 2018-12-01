@@ -3,12 +3,16 @@ package safewayapp.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.redmadrobot.inputmask.MaskedTextChangedListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,12 +56,6 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.btn_cadastro)
     Button cadastroButton;
 
-    @BindView(R.id.btn_gmail)
-    Button gmailButton;
-
-    @BindView(R.id.btn_facebook)
-    Button facebookButton;
-
     @BindView(R.id.txtForgotPass)
     TextView txtForgotPass;
 
@@ -76,14 +74,14 @@ public class LoginActivity extends AppCompatActivity {
 
         initActivity();
 
+        initMaskCPF();
+
         loginButton.setOnClickListener(onEntrarClickListener);
         txtForgotPass.setOnClickListener(onEsqueceuSenhaListener);
         cadastroButton.setOnClickListener(onCadastroClickListener);
-        gmailButton.setOnClickListener(onGmailClickListener);
-        facebookButton.setOnClickListener(onFacebookClickListener);
     }
 
-    private void initActivity(){
+    private void initActivity() {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
@@ -95,11 +93,32 @@ public class LoginActivity extends AppCompatActivity {
                 .inject(this);
     }
 
+    private void initMaskCPF() {
+        final MaskedTextChangedListener listener = MaskedTextChangedListener.Companion.installOn(
+                cpfText,
+                "[000].[000].[000]-[00]",
+                new MaskedTextChangedListener.ValueListener() {
+                    @Override
+                    public void onTextChanged(boolean maskFilled, @NonNull final String extractedValue) {
+                        Log.d("TAG", extractedValue);
+                        Log.d("TAG", String.valueOf(maskFilled));
+                    }
+                }
+        );
+
+        cpfText.setHint(listener.placeholder());
+    }
+
     private void autenticarUsuario() {
-        if (validarLogin()){
+        String cpfSemMascara = cpfText.getText().toString()
+                .replace("-", "")
+                .replace(".", "")
+                .trim();
+
+        if (validarLogin(cpfSemMascara)) {
             final ProgressDialogHelper dialog = new ProgressDialogHelper(LoginActivity.this, "Aguarde", "Validando Usuário...");
             dialog.show();
-            authenticateApi.postLogin(new LoginRequest(cpfText.getText().toString(), senhaText.getText().toString())).enqueue(new Callback<LoginResponse>() {
+            authenticateApi.postLogin(new LoginRequest(cpfSemMascara, senhaText.getText().toString())).enqueue(new Callback<LoginResponse>() {
                 @Override
                 public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                     if (response.code() == HttpURLConnection.HTTP_OK) {
@@ -111,8 +130,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         dialog.dismiss();
                         inicializarAplicacao();
-                    }
-                    else{
+                    } else {
                         try {
                             dialog.dismiss();
                             JSONObject jObjError = new JSONObject(response.errorBody().string());
@@ -134,20 +152,18 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private boolean validarLogin() {
-
-        if(cpfText.getText().toString().equals("")) {
+    private boolean validarLogin(String cpfSemMascara) {
+        if (cpfSemMascara.equals("")) {
             Toast.makeText(getApplicationContext(), "CPF é obrigatório", Toast.LENGTH_LONG).show();
             return false;
-        }
-        else{
-            if (!ValidateCPFHelper.validaCPF(cpfText.getText().toString())){
+        } else {
+            if (!ValidateCPFHelper.validaCPF(cpfSemMascara)) {
                 Toast.makeText(getApplicationContext(), "CPF Inválido", Toast.LENGTH_LONG).show();
                 return false;
             }
         }
 
-        if(senhaText.getText().toString().equals("")) {
+        if (senhaText.getText().toString().equals("")) {
             Toast.makeText(getApplicationContext(), "Senha é obrigatório", Toast.LENGTH_LONG).show();
             return false;
         }
@@ -159,7 +175,7 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         LoginResponse featureResponse = new LoginResponse();
-        Calendar.getInstance().add(Calendar.HOUR,12);
+        Calendar.getInstance().add(Calendar.HOUR, 12);
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(Calendar.getInstance().getTime());
@@ -168,15 +184,14 @@ public class LoginActivity extends AppCompatActivity {
 
         //editor.putString("Token",data.getToken());
         editor.putLong("DataExpericao", cal.getTime().getTime());
-        editor.putString("CPF",data.getCPF());
-        editor.putString("NomeUsuario",data.getName());
-        editor.putString("EmailUsuario",data.getEmail());
+        editor.putString("CPF", data.getCPF());
+        editor.putString("NomeUsuario", data.getName());
+        editor.putString("EmailUsuario", data.getEmail());
         editor.commit();
     }
 
     private void salvarUsuario(LoginResponse data) {
-        if(usuarioDataSource.getByCPF(data.getCPF()) == null)
-        {
+        if (usuarioDataSource.getByCPF(data.getCPF()) == null) {
             usuarioDataSource.insert(
                     new Usuario(
                             data.getCPF(),
@@ -199,14 +214,14 @@ public class LoginActivity extends AppCompatActivity {
         }
     };
 
-    View.OnClickListener onEsqueceuSenhaListener = new View.OnClickListener(){
+    View.OnClickListener onEsqueceuSenhaListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             Toast.makeText(getApplicationContext(), "Esquece a senha", Toast.LENGTH_SHORT).show();
         }
     };
 
-    View.OnClickListener onCadastroClickListener = new View.OnClickListener(){
+    View.OnClickListener onCadastroClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
@@ -214,18 +229,5 @@ public class LoginActivity extends AppCompatActivity {
         }
     };
 
-    View.OnClickListener onGmailClickListener = new View.OnClickListener(){
-        @Override
-        public void onClick(View view) {
-            Toast.makeText(getApplicationContext(), "Gmail", Toast.LENGTH_SHORT).show();
-        }
-    };
-
-    View.OnClickListener onFacebookClickListener = new View.OnClickListener(){
-        @Override
-        public void onClick(View view) {
-            Toast.makeText(getApplicationContext(), "Facebook", Toast.LENGTH_SHORT).show();
-        }
-    };
 
 }
