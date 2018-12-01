@@ -3,13 +3,16 @@ package safewayapp.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.redmadrobot.inputmask.MaskedTextChangedListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -73,6 +76,8 @@ public class SignUpActivity extends AppCompatActivity {
 
         initActivity();
 
+        initMaskCPF();
+
         cadastrarButton.setOnClickListener(onCadastrarClickListener);
         voltarButton.setOnClickListener(onVoltarClickListener);
     }
@@ -89,16 +94,34 @@ public class SignUpActivity extends AppCompatActivity {
                 .inject(this);
     }
 
+    private void initMaskCPF() {
+        final MaskedTextChangedListener listener = MaskedTextChangedListener.Companion.installOn(
+                cpfContato,
+                "[000].[000].[000]-[00]",
+                new MaskedTextChangedListener.ValueListener() {
+                    @Override
+                    public void onTextChanged(boolean maskFilled, @NonNull final String extractedValue) {
+                        Log.d("TAG", extractedValue);
+                        Log.d("TAG", String.valueOf(maskFilled));
+                    }
+                }
+        );
+
+        cpfContato.setHint(listener.placeholder());
+    }
+
     public void autenticarUsuario() {
-        if (validarCadastro()) {
+        String cpfSemMascara = cpfContato.getText().toString()
+                .replace("-", "")
+                .replace(".", "")
+                .trim();
+
+
+        if (validarCadastro(cpfSemMascara)) {
             final ProgressDialogHelper dialog = new ProgressDialogHelper(SignUpActivity.this, "Aguarde", "Cadastrando Usuário...");
             dialog.show();
 
-            LoginRequest teste = new LoginRequest(nomeContato.getText().toString(), emailContato.getText().toString(), cpfContato.getText().toString(), senhaContato.getText().toString());
-            Gson gson = new Gson();
-            String json = gson.toJson(teste);
-
-            authenticateApi.postCreate(new LoginRequest(nomeContato.getText().toString(), emailContato.getText().toString(), cpfContato.getText().toString(), senhaContato.getText().toString())).enqueue(new Callback<LoginResponse>() {
+            authenticateApi.postCreate(new LoginRequest(nomeContato.getText().toString(), emailContato.getText().toString(), cpfSemMascara, senhaContato.getText().toString())).enqueue(new Callback<LoginResponse>() {
                 @Override
                 public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                     if (response.code() == HttpURLConnection.HTTP_OK) {
@@ -129,16 +152,16 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
-    private boolean validarCadastro() {
+    private boolean validarCadastro(String cpfSemMascara) {
         if (nomeContato.getText().toString().trim().equals("")) {
             Toast.makeText(getApplicationContext(), "Nome é obrigatório", Toast.LENGTH_LONG).show();
             return false;
         }
-        if (cpfContato.getText().toString().trim().equals("")) {
+        if (cpfSemMascara.equals("")) {
             Toast.makeText(getApplicationContext(), "CPF é obrigatório", Toast.LENGTH_LONG).show();
             return false;
         } else {
-            if (!ValidateCPFHelper.validaCPF(cpfContato.getText().toString())) {
+            if (!ValidateCPFHelper.validaCPF(cpfSemMascara)) {
                 Toast.makeText(getApplicationContext(), "CPF Inválido", Toast.LENGTH_LONG).show();
                 return false;
             }
