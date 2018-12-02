@@ -162,7 +162,15 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
             LatLng position = getLocationFromAddress(Endereco);
             if (position == null) {
-                //chamar intent
+                Intent it = new Intent(getActivity(), NovoAssedioActivity.class);
+                it.putExtra("endereco", Endereco);
+                it.putExtra("descricao", Descricao);
+                it.putExtra("data", DataAssedio);
+                it.putExtra("cbGrave", Grave);
+                it.putExtra("cbMedio", Medio);
+                it.putExtra("cbBaixa", Baixa);
+                startActivityForResult(it, REQUEST_NOVO_ASSEDIO);
+                return;
             }
 
             final String latitude = String.valueOf(position.latitude);

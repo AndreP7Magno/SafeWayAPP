@@ -70,7 +70,8 @@
                             android:id="@+id/txtEndereco"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="15dp" />
+                            android:layout_marginRight="15dp"
+                            android:inputType="textCapSentences" />
 
                         <TextView
                             android:id="@+id/lblDescricao"

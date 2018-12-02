@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -66,7 +67,36 @@ public class NovoAssedioActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        inicializaDatas();
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String endereco = extras.getString("endereco");
+            String descricao = extras.getString("descricao");
+            String dataAssedio = extras.getString("data");
+            Boolean grave = extras.getBoolean("cbGrave");
+            Boolean medio = extras.getBoolean("cbMedio");
+            Boolean baixa = extras.getBoolean("cbBaixa");
+
+            inicializaDatas();
+
+            txtEndereco.setText(endereco);
+            txtDescricao.setText(descricao);
+            try {
+                Date data = new SimpleDateFormat("yyyy-MM-dd").parse(dataAssedio);
+                String formattedDate = new SimpleDateFormat("dd-MM-yyyy").format(data);
+
+                edtDataOcorrencia.setOnFocusChangeListener(null);
+                edtDataOcorrencia.setText(formattedDate);
+                edtDataOcorrencia.addTextChangedListener(DataOcorrenciaListener);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            cbGrave.setChecked(grave);
+            cbMedio.setChecked(medio);
+            cbBaixa.setChecked(baixa);
+            Toast.makeText(getApplicationContext(), "Ops, não foi possível cadastrar o registro. Por favor, tente novamente!", Toast.LENGTH_SHORT).show();
+        }
+        else
+            inicializaDatas();
 
         txtGrave.setOnClickListener(onGraveListener);
         txtMedio.setOnClickListener(onMedioListener);
@@ -75,7 +105,7 @@ public class NovoAssedioActivity extends AppCompatActivity {
         btnSalvarRegistroAssedio.setOnClickListener(onSalvarRegistroAssedioClickListener);
     }
 
-    private void inicializaDatas(){
+    private void inicializaDatas() {
         Date today = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(today);
@@ -93,19 +123,17 @@ public class NovoAssedioActivity extends AppCompatActivity {
     }
 
     private void CheckCombos(String tipoCheck) {
-        if (tipoCheck == "grave"){
+        if (tipoCheck == "grave") {
             if (cbGrave.isChecked())
                 cbGrave.setChecked(false);
             else
                 cbGrave.setChecked(true);
-        }
-        else if (tipoCheck == "medio"){
+        } else if (tipoCheck == "medio") {
             if (cbMedio.isChecked())
                 cbMedio.setChecked(false);
             else
                 cbMedio.setChecked(true);
-        }
-        else if (tipoCheck == "baixa"){
+        } else if (tipoCheck == "baixa") {
             if (cbBaixa.isChecked())
                 cbBaixa.setChecked(false);
             else
@@ -116,8 +144,12 @@ public class NovoAssedioActivity extends AppCompatActivity {
     private View.OnClickListener onSalvarRegistroAssedioClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (validaCampos()){
-                getIntent().putExtra("Endereco", txtEndereco.getText().toString());
+            if (validaCampos()) {
+                String enderecoSemMascara = txtEndereco.getText().toString()
+                        .replace("-", "")
+                        .replace(",", "");
+
+                getIntent().putExtra("Endereco", enderecoSemMascara);
                 getIntent().putExtra("Descricao", txtDescricao.getText().toString());
                 getIntent().putExtra("cbGrave", cbGrave.isChecked());
                 getIntent().putExtra("cbMedio", cbMedio.isChecked());
@@ -139,22 +171,19 @@ public class NovoAssedioActivity extends AppCompatActivity {
         }
     };
 
-    private boolean validaCampos(){
-        if(txtEndereco.getText().toString().trim().isEmpty()){
+    private boolean validaCampos() {
+        if (txtEndereco.getText().toString().trim().isEmpty()) {
             SnackBarHelper.getInstance(coordinatorNovoAssedio).show("Endereço é obrigatório", Snackbar.LENGTH_LONG);
             return false;
-        }
-        else if (txtDescricao.getText().toString().trim().isEmpty()){
+        } else if (txtDescricao.getText().toString().trim().isEmpty()) {
             SnackBarHelper.getInstance(coordinatorNovoAssedio).show("Descrição é obrigatório", Snackbar.LENGTH_LONG);
             return false;
-        }
-        else if (!cbGrave.isChecked() && !cbMedio.isChecked() && !cbBaixa.isChecked()){
+        } else if (!cbGrave.isChecked() && !cbMedio.isChecked() && !cbBaixa.isChecked()) {
             SnackBarHelper.getInstance(coordinatorNovoAssedio).show("Severidade é obrigatório", Snackbar.LENGTH_LONG);
             return false;
-        }
-        else if (
+        } else if (
                 (cbGrave.isChecked() && cbMedio.isChecked()) || (cbGrave.isChecked() && cbBaixa.isChecked()) ||
-                        ((cbBaixa.isChecked() && cbMedio.isChecked()))){
+                        ((cbBaixa.isChecked() && cbMedio.isChecked()))) {
             SnackBarHelper.getInstance(coordinatorNovoAssedio).show("Informe somente uma severidade", Snackbar.LENGTH_LONG);
             return false;
         }
