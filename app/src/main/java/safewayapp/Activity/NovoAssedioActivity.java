@@ -33,6 +33,9 @@ public class NovoAssedioActivity extends AppCompatActivity {
     @BindView(R.id.edtDataOcorrencia)
     EditText edtDataOcorrencia;
 
+    @BindView(R.id.edtHoraOcorrencia)
+    EditText edtHoraOcorrencia;
+
     @BindView(R.id.txtEndereco)
     EditText txtEndereco;
 
@@ -81,12 +84,15 @@ public class NovoAssedioActivity extends AppCompatActivity {
             txtEndereco.setText(endereco);
             txtDescricao.setText(descricao);
             try {
-                Date data = new SimpleDateFormat("yyyy-MM-dd").parse(dataAssedio);
+                Date data = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(dataAssedio);
                 String formattedDate = new SimpleDateFormat("dd-MM-yyyy").format(data);
+                String formattedHour = new SimpleDateFormat("HH:mm").format(data);
 
                 edtDataOcorrencia.setOnFocusChangeListener(null);
                 edtDataOcorrencia.setText(formattedDate);
                 edtDataOcorrencia.addTextChangedListener(DataOcorrenciaListener);
+
+                edtHoraOcorrencia.setText(formattedHour);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -117,9 +123,14 @@ public class NovoAssedioActivity extends AppCompatActivity {
         DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         String firstDay = sdf.format(today);
 
+        DateFormat sdfHora = new SimpleDateFormat("HH:mm");
+        String firstHour = sdfHora.format(today);
+
         edtDataOcorrencia.setOnFocusChangeListener(null);
         edtDataOcorrencia.setText(firstDay);
         edtDataOcorrencia.addTextChangedListener(DataOcorrenciaListener);
+
+        edtHoraOcorrencia.setText(firstHour);
     }
 
     private void CheckCombos(String tipoCheck) {
@@ -157,11 +168,12 @@ public class NovoAssedioActivity extends AppCompatActivity {
 
                 Date date = null;
                 try {
-                    date = new SimpleDateFormat("dd/MM/yyyy").parse(edtDataOcorrencia.getText().toString());
+                    String finalDate = edtDataOcorrencia.getText().toString() + " " + edtHoraOcorrencia.getText().toString();
+                    date = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(finalDate);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                String formattedDate = new SimpleDateFormat("yyyy-MM-dd").format(date);
+                String formattedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(date);
 
                 getIntent().putExtra("data", formattedDate);
 

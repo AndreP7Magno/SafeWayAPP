@@ -56,7 +56,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/lblMensagemConsentimento"
-                        android:layout_margin="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
                         android:orientation="vertical">
 
                         <TextView
@@ -91,28 +93,34 @@
                             android:minLines="4"
                             android:scrollbars="vertical" />
 
+                        <TextView
+                            android:id="@+id/lblDataOcorrencia"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="Data e hora da ocorrência:"
+                            android:textSize="18dp" />
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
                             android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/lblDataOcorrencia"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:text="Data da ocorrêcia:"
-                                android:textSize="18dp" />
 
                             <EditText
                                 android:id="@+id/edtDataOcorrencia"
-                                android:layout_width="115dp"
+                                android:layout_width="120dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginTop="5dp"
                                 android:inputType="number"
                                 android:text="25/11/2018"
+                                android:textSize="18dp" />
+
+                            <EditText
+                                android:id="@+id/edtHoraOcorrencia"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="2dp"
+                                android:inputType="number"
+                                android:text="13:10"
                                 android:textSize="18dp" />
 
                         </LinearLayout>
