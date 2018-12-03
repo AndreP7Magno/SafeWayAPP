@@ -6,6 +6,8 @@
     <color name="colorAccent">#E040FB</color>
     <color name="colorAccentPressed">#757575</color>
 
+    <color name="colorView">#9E9E9E</color>
+
     <color name="bg_row_background">#fa315b</color>
 
     <color name="dialogPrimary">#E43F3F</color>
