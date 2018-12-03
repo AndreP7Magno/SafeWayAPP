@@ -41,7 +41,6 @@ public class ContatosAdapter extends RecyclerView.Adapter<ContatosItemHolder> {
     public void onBindViewHolder(ContatosItemHolder holder, int position) {
         holder.txtNome.setText(mDataset.get(position).getNome());
         holder.txtTelefone.setText(mDataset.get(position).getTelefone());
-        //holder.viewForeground.setTag(mDataset.get(position).getId());
     }
 
     @Override
@@ -51,15 +50,11 @@ public class ContatosAdapter extends RecyclerView.Adapter<ContatosItemHolder> {
 
     public void removeItem(int position) {
         mDataset.remove(position);
-        // notify the item removed by position
-        // to perform recycler view delete animations
-        // NOTE: don't call notifyDataSetChanged()
         notifyItemRemoved(position);
     }
 
     public void restoreItem(Contato item, int position) {
         mDataset.add(position, item);
-        // notify item added by position
         notifyItemInserted(position);
     }
 }

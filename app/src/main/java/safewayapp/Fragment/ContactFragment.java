@@ -64,7 +64,6 @@ public class ContactFragment extends Fragment implements RecyclerItemTouchHelper
     private RecyclerView.LayoutManager mLayoutManager;
 
     private Dialog MyDialog;
-    private AppCompatButton btnVoltar;
     private AppCompatButton btnSalvar;
     private EditText txtNomeContato;
     private EditText txtTelefoneContato;
@@ -121,13 +120,11 @@ public class ContactFragment extends Fragment implements RecyclerItemTouchHelper
         MyDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         MyDialog.setContentView(R.layout.dialog_novo_contato);
 
-        btnVoltar = (AppCompatButton) MyDialog.findViewById(R.id.btnVoltarContato);
         btnSalvar = (AppCompatButton) MyDialog.findViewById(R.id.btnSalvarContato);
         txtNomeContato = (EditText) MyDialog.findViewById(R.id.txtNomeContato);
         txtTelefoneContato = (EditText) MyDialog.findViewById(R.id.txtTelefoneContato);
         coordinatorNovoContato = (CoordinatorLayout) MyDialog.findViewById(R.id.coordinator_novo_contato);
 
-        btnVoltar.setEnabled(true);
         btnSalvar.setEnabled(true);
 
         btnSalvar.setOnClickListener(new View.OnClickListener() {
@@ -137,14 +134,6 @@ public class ContactFragment extends Fragment implements RecyclerItemTouchHelper
             }
         });
 
-        btnVoltar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                txtNomeContato.setText("");
-                txtTelefoneContato.setText("");
-                MyDialog.cancel();
-            }
-        });
     }
 
     private void initMaskTelefone() {
