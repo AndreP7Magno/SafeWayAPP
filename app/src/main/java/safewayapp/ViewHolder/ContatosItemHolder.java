@@ -15,7 +15,6 @@ import safewayapp.R;
 
 public class ContatosItemHolder extends RecyclerView.ViewHolder {
 
-    public CardView cardView;
     public TextView txtNome;
     public TextView txtTelefone;
     public RelativeLayout viewBackground;
@@ -23,7 +22,6 @@ public class ContatosItemHolder extends RecyclerView.ViewHolder {
 
     public ContatosItemHolder(@NonNull View itemView) {
         super(itemView);
-        this.cardView = itemView.findViewById(R.id.cardViewContatos);
         this.txtNome = itemView.findViewById(R.id.txtItemNome);
         this.txtTelefone = itemView.findViewById(R.id.txtItemTelefone);
         viewBackground = itemView.findViewById(R.id.view_background);
