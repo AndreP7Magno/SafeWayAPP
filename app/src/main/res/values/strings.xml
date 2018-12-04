@@ -10,7 +10,7 @@
     <string name="deseja_sair">Você deseja realmente sair?</string>
     <string name="deseja_atualizar">Deseja atualizar os registros de assédio?</string>
 
-    <string name="baseURL">http://safeway.openode.io/</string>
+    <string name="baseURL">http://safewayapp.us.openode.io/</string>
 
     <string name="txtGPS">GPS</string>
     <string name="msg_ativar_gps">Você deve ativar o GPS para um correto funcionamento do aplicativo.</string>
