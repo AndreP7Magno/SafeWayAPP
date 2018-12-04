@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -28,6 +29,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -38,6 +41,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.text.Normalizer;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -295,9 +301,22 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 dialog.dismiss();
                 for (Record item : records
                         ) {
+                    Date data = null;
+                    String formattedDate = null;
+                    try {
+                        data = new SimpleDateFormat("yyyy-MM-dd").parse(item.getData());
+                        formattedDate = new SimpleDateFormat("dd/MM/yyyy").format(data);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     double latitude = Double.parseDouble(item.getLatitute());
                     double longitude = Double.parseDouble(item.getLongitude());
-                    map.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(item.getDescricao()));
+                    if (item.getSeverity().equals("baixa"))
+                        map.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(item.getDescricao()).snippet(formattedDate).icon(getMarkerIcon("#4CAF50")));
+                    else if (item.getSeverity().equals("media"))
+                        map.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(item.getDescricao()).snippet(formattedDate).icon(getMarkerIcon("#FFEB3B")));
+                    else if (item.getSeverity().equals("alta"))
+                        map.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(item.getDescricao()).snippet(formattedDate).icon(getMarkerIcon("#D32F2F")));
                 }
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
                 map.setMyLocationEnabled(true);
@@ -305,6 +324,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                         getContext(), R.raw.style_json));
             }
         });
+    }
+
+    public BitmapDescriptor getMarkerIcon(String color) {
+        float[] hsv = new float[3];
+        Color.colorToHSV(Color.parseColor(color), hsv);
+        return BitmapDescriptorFactory.defaultMarker(hsv[0]);
     }
 
     private Location verificaLocalizacao() {
