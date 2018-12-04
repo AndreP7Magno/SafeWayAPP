@@ -282,7 +282,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                             ShowMessageGPSLocation(getActivity(), R.string.msg_ativar_gps, new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-
                                     Intent i = getActivity().getBaseContext().getPackageManager()
                                             .getLaunchIntentForPackage(getActivity().getBaseContext().getPackageName());
                                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

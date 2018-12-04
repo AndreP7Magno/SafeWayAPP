@@ -118,7 +118,10 @@ public class LoginActivity extends AppCompatActivity {
         if (validarLogin(cpfSemMascara)) {
             final ProgressDialogHelper dialog = new ProgressDialogHelper(LoginActivity.this, "Aguarde", "Validando Usuário...");
             dialog.show();
-            authenticateApi.postLogin(new LoginRequest(cpfSemMascara, senhaText.getText().toString())).enqueue(new Callback<LoginResponse>() {
+
+            dialog.dismiss();
+            inicializarAplicacao();
+            /*authenticateApi.postLogin(new LoginRequest(cpfSemMascara, senhaText.getText().toString())).enqueue(new Callback<LoginResponse>() {
                 @Override
                 public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                     if (response.code() == HttpURLConnection.HTTP_OK) {
@@ -148,7 +151,7 @@ public class LoginActivity extends AppCompatActivity {
                     dialog.dismiss();
                     Toast.makeText(getApplicationContext(), "ERRO AO LOGAR", Toast.LENGTH_LONG).show();
                 }
-            });
+            });*/
         }
     }
 
