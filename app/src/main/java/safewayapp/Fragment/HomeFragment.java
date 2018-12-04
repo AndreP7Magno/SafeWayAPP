@@ -304,19 +304,21 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                     Date data = null;
                     String formattedDate = null;
                     try {
-                        data = new SimpleDateFormat("yyyy-MM-dd").parse(item.getData());
-                        formattedDate = new SimpleDateFormat("dd/MM/yyyy").format(data);
+                        data = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(item.getData());
+                        formattedDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(data);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
                     double latitude = Double.parseDouble(item.getLatitute());
                     double longitude = Double.parseDouble(item.getLongitude());
+                    String color = null;
                     if (item.getSeverity().equals("baixa"))
-                        map.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(item.getDescricao()).snippet(formattedDate).icon(getMarkerIcon("#4CAF50")));
+                        color = "#4CAF50";
                     else if (item.getSeverity().equals("media"))
-                        map.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(item.getDescricao()).snippet(formattedDate).icon(getMarkerIcon("#FFEB3B")));
+                        color = "#FFEB3B";
                     else if (item.getSeverity().equals("alta"))
-                        map.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(item.getDescricao()).snippet(formattedDate).icon(getMarkerIcon("#D32F2F")));
+                        color = "#D32F2F";
+                    map.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(item.getDescricao()).snippet(formattedDate).icon(getMarkerIcon(color)));
                 }
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
                 map.setMyLocationEnabled(true);
@@ -381,7 +383,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                         String[] separadorFinal = separadorEndereco[1].trim().split(",");
                         String enderecoFinal = separadorEndereco[0].trim() + " - " + separadorFinal[0].trim();
 
-                        String nomeUsuario = sharedPreferences.getString("NomeUsuario","");
+                        String nomeUsuario = sharedPreferences.getString("NomeUsuario", "");
 
                         for (Contato item : contatos) {
                             String textoMensagem = item.getNome() + ", o(a) " + nomeUsuario + " corre perigo. Esta localizado na " + enderecoFinal + ". MENSAGEM ENVIADA PELO SAFEWAY!";
@@ -401,8 +403,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         }
     };
 
-    public static String stripAccents(String s)
-    {
+    public static String stripAccents(String s) {
         s = Normalizer.normalize(s, Normalizer.Form.NFD);
         s = s.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
         return s;
@@ -414,7 +415,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             PendingIntent sentPI;
             String SENT = "SMS_SENT";
 
-            sentPI = PendingIntent.getBroadcast(getActivity(), 0,new Intent(SENT), 0);
+            sentPI = PendingIntent.getBroadcast(getActivity(), 0, new Intent(SENT), 0);
 
             sms.sendTextMessage(phoneNumber, null, message, sentPI, null);
         } catch (Exception ex) {
