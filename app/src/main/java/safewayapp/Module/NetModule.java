@@ -17,6 +17,8 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import safewayapp.Api.AuthenticateApi;
+import safewayapp.Api.ContactApi;
+import safewayapp.Api.EmergencyCallApi;
 import safewayapp.Api.RecordApi;
 
 @Module
@@ -73,6 +75,18 @@ public class NetModule {
     @Singleton
     RecordApi getRecordApi(Retrofit retroFit) {
         return retroFit.create(RecordApi.class);
+    }
+
+    @Provides
+    @Singleton
+    EmergencyCallApi getEmergencyCallApi(Retrofit retroFit) {
+        return retroFit.create(EmergencyCallApi.class);
+    }
+
+    @Provides
+    @Singleton
+    ContactApi getContactApi(Retrofit retroFit) {
+        return retroFit.create(ContactApi.class);
     }
 
 }

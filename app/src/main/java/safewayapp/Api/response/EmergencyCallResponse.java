@@ -1,6 +1,6 @@
 package safewayapp.Api.response;
 
-public class ContactResponse {
+public class EmergencyCallResponse {
 
     private String message;
     private String ok;
@@ -12,4 +12,5 @@ public class ContactResponse {
     public String getOk() {
         return ok;
     }
+
 }
