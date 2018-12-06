@@ -43,6 +43,7 @@ import java.net.HttpURLConnection;
 import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -51,10 +52,14 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 import safewayapp.Activity.NovoAssedioActivity;
+import safewayapp.Api.EmergencyCallApi;
 import safewayapp.Api.RecordApi;
+import safewayapp.Api.request.EmergencyCallRequest;
 import safewayapp.Api.request.RecordRequest;
+import safewayapp.Api.response.EmergencyCallResponse;
 import safewayapp.Api.response.RecordResponse;
 import safewayapp.Component.DaggerHomeComponent;
 import safewayapp.Helper.DialogHelper;
@@ -94,7 +99,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     CoordinatorLayout home_coordinator;
 
     @Inject
-    public RecordApi recordApi;
+    RecordApi recordApi;
 
     @Inject
     IContatoDataSource contatoDataSource;
@@ -104,6 +109,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
     @Inject
     IRecordDataSource recordDataSource;
+
+    @Inject
+    EmergencyCallApi emergencyCallApi;
 
     @Inject
     public SharedPreferences sharedPreferences;
@@ -383,18 +391,45 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                         String[] separadorFinal = separadorEndereco[1].trim().split(",");
                         String enderecoFinal = separadorEndereco[0].trim() + " - " + separadorFinal[0].trim();
 
-                        String nomeUsuario = sharedPreferences.getString("NomeUsuario", "");
+                        String cpf = sharedPreferences.getString("CPF", "");
+                        Usuario usuario = usuarioDataSource.getByCPF(cpf);
+                        String nomeUsuario = usuario.getNome();
+                        String idUsuario = usuario.getId();
+
+                        ArrayList<String> lstContatos = new ArrayList<>();
 
                         for (Contato item : contatos) {
                             String textoMensagem = item.getNome() + ", o(a) " + nomeUsuario + " corre perigo. Esta localizado na " + enderecoFinal + ". MENSAGEM ENVIADA PELO SAFEWAY!";
                             textoMensagem = stripAccents(textoMensagem);
                             sendSMS(item.getTelefone(), textoMensagem);
+                            lstContatos.add(item.getId());
                         }
 
-                        //insert registro no banco
+                        emergencyCallApi.postEmergencyCall(new EmergencyCallRequest(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()), idUsuario, lstContatos)).enqueue(new Callback<EmergencyCallResponse>() {
+                            @Override
+                            public void onResponse(Call<EmergencyCallResponse> call, Response<EmergencyCallResponse> response) {
+                                if (response.code() == HttpURLConnection.HTTP_OK){
+                                    SnackBarHelper.getInstance(home_coordinator).showBottomNaviagtion("Mensagens sendo enviadas ao seus contatos", Snackbar.LENGTH_LONG);
+                                    dialog.dismiss();
+                                }else {
+                                    try {
+                                        dialog.dismiss();
+                                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                                        Toast.makeText(getContext(), jObjError.getString("message"), Toast.LENGTH_LONG).show();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
 
-                        SnackBarHelper.getInstance(home_coordinator).showBottomNaviagtion("Mensagens sendo enviadas ao seus contatos", Snackbar.LENGTH_LONG);
-                        dialog.dismiss();
+                            @Override
+                            public void onFailure(Call<EmergencyCallResponse> call, Throwable t) {
+                                dialog.dismiss();
+                                Toast.makeText(getContext(), "ERRO AO SALVAR", Toast.LENGTH_LONG).show();
+                            }
+                        });
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
