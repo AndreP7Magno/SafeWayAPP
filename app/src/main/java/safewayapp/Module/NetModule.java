@@ -19,6 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import safewayapp.Api.AuthenticateApi;
 import safewayapp.Api.ContactApi;
 import safewayapp.Api.EmergencyCallApi;
+import safewayapp.Api.HistoricApi;
 import safewayapp.Api.RecordApi;
 
 @Module
@@ -87,6 +88,12 @@ public class NetModule {
     @Singleton
     ContactApi getContactApi(Retrofit retroFit) {
         return retroFit.create(ContactApi.class);
+    }
+
+    @Provides
+    @Singleton
+    HistoricApi getHistoricApi(Retrofit retroFit) {
+        return retroFit.create(HistoricApi.class);
     }
 
 }
