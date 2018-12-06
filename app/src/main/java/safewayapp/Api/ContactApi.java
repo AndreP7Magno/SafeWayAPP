@@ -1,5 +1,7 @@
 package safewayapp.Api;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -11,12 +13,12 @@ import safewayapp.Api.response.ContactResponse;
 
 public interface ContactApi {
 
-    @POST("/contact/")
+    @POST("/contact/create")
     Call<ContactResponse> postContact(@Body ContactRequest body);
 
     @GET("/contact/{id}")
-    Call<ContactResponse> getContact(@Path("id") String id);
+    Call<List<ContactResponse>> getContact(@Path("id") String id);
 
-    @DELETE("/contact/")
+    @DELETE("/contact/delete")
     Call<ContactResponse> deleteContact(@Body ContactRequest body);
 }

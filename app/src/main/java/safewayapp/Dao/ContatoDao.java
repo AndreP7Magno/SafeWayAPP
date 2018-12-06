@@ -20,6 +20,9 @@ public interface ContatoDao {
     @Query("SELECT * FROM contato WHERE Nome = :nome")
     Contato getByNome(String nome);
 
+    @Query("SELECT * FROM contato WHERE id = :id")
+    Contato getById(String id);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(Contato contato);
 
@@ -28,4 +31,7 @@ public interface ContatoDao {
 
     @Delete
     int delete(Contato contato);
+
+    @Query("DELETE FROM record")
+    void deleteAll();
 }

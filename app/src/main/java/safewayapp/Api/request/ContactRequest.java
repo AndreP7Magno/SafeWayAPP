@@ -19,4 +19,11 @@ public class ContactRequest {
         this.telefone = telefone;
     }
 
+    public ContactRequest(String id){
+        this.id = id;
+        this.user = "";
+        this.nome = "";
+        this.telefone = "";
+    }
+
 }

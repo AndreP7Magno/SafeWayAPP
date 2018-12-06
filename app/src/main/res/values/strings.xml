@@ -8,7 +8,7 @@
 
     <string name="google_maps_key">AIzaSyDjKyfkC3dYJ5Uf7ZDExT1_F0J0gENCpMk</string>
     <string name="deseja_sair">Você deseja realmente sair?</string>
-    <string name="deseja_atualizar">Deseja atualizar os registros de assédio?</string>
+    <string name="deseja_atualizar">Deseja atualizar os registros?</string>
 
     <string name="baseURL">http://safewayapp.us.openode.io/</string>
 

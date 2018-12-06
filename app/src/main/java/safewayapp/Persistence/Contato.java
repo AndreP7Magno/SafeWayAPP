@@ -8,15 +8,19 @@ import android.support.annotation.NonNull;
 public class Contato {
 
     @NonNull
+    @PrimaryKey
+    private String id;
+
+    @NonNull
     private String Nome;
 
     @NonNull
-    @PrimaryKey
     private String Telefone;
 
     public Contato(){}
 
-    public Contato(String nome, String telefone) {
+    public Contato(String id, String nome, String telefone) {
+        this.id = id;
         this.Nome = nome;
         this.Telefone = telefone;
     }
@@ -36,5 +40,13 @@ public class Contato {
 
     public void setTelefone(String telefone) {
         Telefone = telefone;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

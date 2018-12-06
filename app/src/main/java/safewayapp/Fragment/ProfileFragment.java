@@ -40,7 +40,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import safewayapp.Activity.HistoricoAtividadesActivity;
 import safewayapp.Activity.LoginActivity;
+import safewayapp.Api.ContactApi;
 import safewayapp.Api.RecordApi;
+import safewayapp.Api.response.ContactResponse;
 import safewayapp.Api.response.RecordResponse;
 import safewayapp.Component.DaggerLoginComponent;
 import safewayapp.Helper.DialogHelper;
@@ -49,9 +51,13 @@ import safewayapp.Helper.ProgressDialogHelper;
 import safewayapp.Module.AppModule;
 import safewayapp.Module.NetModule;
 import safewayapp.Module.RoomModule;
+import safewayapp.Persistence.Contato;
 import safewayapp.Persistence.Record;
+import safewayapp.Persistence.Usuario;
 import safewayapp.R;
+import safewayapp.Repository.IContatoDataSource;
 import safewayapp.Repository.IRecordDataSource;
+import safewayapp.Repository.IUsuarioDataSource;
 
 public class ProfileFragment extends Fragment {
 
@@ -85,7 +91,16 @@ public class ProfileFragment extends Fragment {
     IRecordDataSource recordDataSource;
 
     @Inject
+    IContatoDataSource contatoDataSource;
+
+    @Inject
+    IUsuarioDataSource usuarioDataSource;
+
+    @Inject
     RecordApi recordApi;
+
+    @Inject
+    ContactApi contactApi;
 
     @Inject
     public SharedPreferences sharedPreferences;
@@ -187,6 +202,8 @@ public class ProfileFragment extends Fragment {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             recordDataSource.deleteAll();
+                            contatoDataSource.deleteAll();
+
                             final ProgressDialogHelper d = new ProgressDialogHelper(getActivity(), "Atualizando dados", "Aguarde enquanto estamos atualizando os registros...");
                             d.show();
 
@@ -196,19 +213,51 @@ public class ProfileFragment extends Fragment {
                                     if (response.code() == HttpURLConnection.HTTP_OK) {
                                         List<RecordResponse> data = response.body();
                                         for (RecordResponse item : data
-                                             ) {
+                                                ) {
                                             salvarRecord(item);
                                         }
 
-                                        d.dismiss();
+                                        String cpf = sharedPreferences.getString("CPF", "");
+                                        Usuario usuario = usuarioDataSource.getByCPF(cpf);
+                                        final String user = usuario.getId();
 
-                                        Intent i = getActivity().getBaseContext().getPackageManager()
-                                                .getLaunchIntentForPackage(getActivity().getBaseContext().getPackageName());
-                                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        getActivity().startActivity(i);
-                                        getActivity().finish();
+                                        contactApi.getContact(user).enqueue(new Callback<List<ContactResponse>>() {
+                                            @Override
+                                            public void onResponse(Call<List<ContactResponse>> call, Response<List<ContactResponse>> response) {
+                                                if (response.code() == HttpURLConnection.HTTP_OK) {
+                                                    List<ContactResponse> dataContato = response.body();
+                                                    for (ContactResponse item : dataContato
+                                                            ) {
+                                                        salvarContact(item);
+                                                    }
 
-                                    }else {
+                                                    d.dismiss();
+
+                                                    Intent i = getActivity().getBaseContext().getPackageManager()
+                                                            .getLaunchIntentForPackage(getActivity().getBaseContext().getPackageName());
+                                                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                    getActivity().startActivity(i);
+                                                    getActivity().finish();
+                                                } else {
+                                                    try {
+                                                        d.dismiss();
+                                                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                                                        Toast.makeText(getContext(), jObjError.getString("message"), Toast.LENGTH_LONG).show();
+                                                    } catch (JSONException e) {
+                                                        e.printStackTrace();
+                                                    } catch (IOException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<List<ContactResponse>> call, Throwable t) {
+                                                d.dismiss();
+                                                Toast.makeText(getContext(), "ERRO AO SALVAR", Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+                                    } else {
                                         try {
                                             d.dismiss();
                                             JSONObject jObjError = new JSONObject(response.errorBody().string());
@@ -248,6 +297,14 @@ public class ProfileFragment extends Fragment {
                         data.getLongitude(),
                         data.getSeverity(),
                         data.getUser()));
+    }
+
+    private void salvarContact(ContactResponse data) {
+        contatoDataSource.insert(
+                new Contato(
+                        data.getId(),
+                        data.getName(),
+                        data.getPhonenumber()));
     }
 
     View.OnClickListener OnSairListener = new View.OnClickListener() {

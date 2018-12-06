@@ -2,6 +2,7 @@ package safewayapp.Fragment;
 
 import android.app.Dialog;
 import android.arch.lifecycle.Observer;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,29 +20,44 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.clans.fab.FloatingActionButton;
 import com.redmadrobot.inputmask.MaskedTextChangedListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import safewayapp.Adapter.ContatosAdapter;
+import safewayapp.Api.ContactApi;
+import safewayapp.Api.request.ContactRequest;
+import safewayapp.Api.response.ContactResponse;
 import safewayapp.Component.DaggerContatoComponent;
 import safewayapp.Helper.DialogHelper;
+import safewayapp.Helper.ProgressDialogHelper;
 import safewayapp.Helper.RecyclerItemTouchHelper;
 import safewayapp.Helper.SnackBarHelper;
 import safewayapp.Module.AppModule;
 import safewayapp.Module.NetModule;
 import safewayapp.Module.RoomModule;
 import safewayapp.Persistence.Contato;
+import safewayapp.Persistence.Usuario;
 import safewayapp.R;
 import safewayapp.Repository.IContatoDataSource;
+import safewayapp.Repository.IUsuarioDataSource;
 import safewayapp.ViewHolder.ContatosItemHolder;
 
 
@@ -58,7 +74,16 @@ public class ContactFragment extends Fragment implements RecyclerItemTouchHelper
     private CoordinatorLayout coordinatorNovoContato;
 
     @Inject
-    public IContatoDataSource contatoDataSource;
+    IContatoDataSource contatoDataSource;
+
+    @Inject
+    SharedPreferences sharedPreferences;
+
+    @Inject
+    ContactApi contactApi;
+
+    @Inject
+    public IUsuarioDataSource usuarioDataSource;
 
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -153,23 +178,59 @@ public class ContactFragment extends Fragment implements RecyclerItemTouchHelper
     }
 
     private void salvaContato() {
-        String telefoneSemMascara = txtTelefoneContato.getText().toString()
+        final ProgressDialogHelper dialog = new ProgressDialogHelper(getActivity(), "Aguarde", "Registrando Contato...");
+        dialog.show();
+
+        final String telefoneSemMascara = txtTelefoneContato.getText().toString()
                 .replace("(", "")
                 .replace(")", "")
                 .replace("-", "")
                 .replace(" ", "")
                 .trim();
 
-        if (validaCampos(telefoneSemMascara)) {
-            long codigo = contatoDataSource.insert(new Contato(txtNomeContato.getText().toString(), telefoneSemMascara));
+        String cpf = sharedPreferences.getString("CPF", "");
+        Usuario usuario = usuarioDataSource.getByCPF(cpf);
+        final String user = usuario.getId();
 
-            if (codigo != 0) {
-                listaContatos();
-                MyDialog.cancel();
-                SnackBarHelper.getInstance(coordinatorContato).show("Contato salvo com sucesso", Snackbar.LENGTH_LONG);
-            } else {
-                SnackBarHelper.getInstance(coordinatorContato).show("Erro ao salvar o contato", Snackbar.LENGTH_LONG);
-            }
+        if (validaCampos(telefoneSemMascara)) {
+            contactApi.postContact(new ContactRequest(user, txtNomeContato.getText().toString(), telefoneSemMascara)).enqueue(new Callback<ContactResponse>() {
+                @Override
+                public void onResponse(Call<ContactResponse> call, Response<ContactResponse> response) {
+                    if (response.code() == HttpURLConnection.HTTP_OK) {
+                        ContactResponse data = response.body();
+                        salvarContato(data, txtNomeContato.getText().toString(), telefoneSemMascara);
+                        //listaContatos();
+                        dialog.dismiss();
+                        MyDialog.cancel();
+                    } else {
+                        try {
+                            dialog.dismiss();
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            Toast.makeText(getContext(), jObjError.getString("message"), Toast.LENGTH_LONG).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ContactResponse> call, Throwable t) {
+                    dialog.dismiss();
+                    Toast.makeText(getContext(), "ERRO AO SALVAR", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+    }
+
+    private void salvarContato(ContactResponse data, String nome, String telefone) {
+        if (contatoDataSource.getById(data.getId()) == null) {
+            contatoDataSource.insert(
+                    new Contato(
+                            data.getId(),
+                            nome,
+                            telefone));
         }
     }
 
@@ -207,16 +268,44 @@ public class ContactFragment extends Fragment implements RecyclerItemTouchHelper
     @Override
     public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof ContatosItemHolder) {
+            final ProgressDialogHelper d = new ProgressDialogHelper(getActivity(), "Aguarde", "Excluindo Contato...");
+            d.show();
+
             DialogHelper.getInstance().ShowAlert(getActivity(), "Deseja realmente excluir o contato?", new MaterialDialog.SingleButtonCallback() {
                 @Override
                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                     final Contato deletedItem = ((ContatosAdapter) mAdapter).mDataset.get(viewHolder.getAdapterPosition());
 
-                    ((ContatosAdapter) mAdapter).removeItem(viewHolder.getAdapterPosition());
-                    int del = contatoDataSource.delete(deletedItem);
+                    contactApi.deleteContact(new ContactRequest(deletedItem.getId())).enqueue(new Callback<ContactResponse>() {
+                        @Override
+                        public void onResponse(Call<ContactResponse> call, Response<ContactResponse> response) {
+                            if (response.code() == HttpURLConnection.HTTP_OK) {
+                                ContactResponse data = response.body();
 
-                    SnackBarHelper.getInstance(coordinatorContato).show("Excluído com sucesso!", Snackbar.LENGTH_LONG);
-                    return;
+                                ((ContatosAdapter) mAdapter).removeItem(viewHolder.getAdapterPosition());
+                                int del = contatoDataSource.delete(deletedItem);
+                                SnackBarHelper.getInstance(coordinatorContato).show("Excluído com sucesso!", Snackbar.LENGTH_LONG);
+                                d.dismiss();
+                                return;
+                            } else {
+                                try {
+                                    d.dismiss();
+                                    JSONObject jObjError = new JSONObject(response.errorBody().string());
+                                    Toast.makeText(getContext(), jObjError.getString("message"), Toast.LENGTH_LONG).show();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ContactResponse> call, Throwable t) {
+                            d.dismiss();
+                            Toast.makeText(getContext(), "ERRO AO SALVAR", Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }
             });
             mAdapter.notifyDataSetChanged();

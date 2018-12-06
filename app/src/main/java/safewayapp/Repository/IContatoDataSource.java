@@ -11,10 +11,14 @@ public interface IContatoDataSource {
 
     Contato getByNome(String nome);
 
+    Contato getById(String id);
+
     long insert(Contato usuario);
 
     int delete(Contato usuario);
 
     void update(Contato usuario);
+
+    void deleteAll();
 
 }

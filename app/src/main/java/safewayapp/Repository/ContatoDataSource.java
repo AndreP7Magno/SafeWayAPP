@@ -29,6 +29,11 @@ public class ContatoDataSource implements IContatoDataSource {
     }
 
     @Override
+    public Contato getById(String id) {
+        return contatoDao.getById(id);
+    }
+
+    @Override
     public long insert(Contato contato) {
         return contatoDao.insert(contato);
     }
@@ -41,5 +46,10 @@ public class ContatoDataSource implements IContatoDataSource {
     @Override
     public void update(Contato contato) {
         contatoDao.update(contato);
+    }
+
+    @Override
+    public void deleteAll() {
+        contatoDao.deleteAll();
     }
 }
