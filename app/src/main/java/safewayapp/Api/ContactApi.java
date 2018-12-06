@@ -6,6 +6,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import safewayapp.Api.request.ContactRequest;
@@ -19,6 +20,6 @@ public interface ContactApi {
     @GET("/contact/{id}")
     Call<List<ContactResponse>> getContact(@Path("id") String id);
 
-    @DELETE("/contact/delete")
+    @HTTP(method = "DELETE", path = "/contact/delete", hasBody = true)
     Call<ContactResponse> deleteContact(@Body ContactRequest body);
 }
