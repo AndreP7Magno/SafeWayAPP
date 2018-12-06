@@ -44,6 +44,8 @@ public class SplashActivity extends AppCompatActivity {
                 .inject(this);
 
         verificaPerimissons();
+        if (!sharedPreferences.getBoolean("shortcut", false))
+            addShortcut();
     }
 
     private void verificaPerimissons() {
@@ -97,5 +99,26 @@ public class SplashActivity extends AppCompatActivity {
                 }
             }
         }, 2000);
+    }
+
+    private void addShortcut() {
+        Intent shortcutIntent = new Intent(getApplicationContext(),
+                MainActivity.class);
+
+        shortcutIntent.setAction(Intent.ACTION_MAIN);
+
+        Intent addIntent = new Intent();
+        addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+        addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, "SafeWay - Perigo");
+        addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
+                Intent.ShortcutIconResource.fromContext(getApplicationContext(), R.drawable.ic_shortcut_logo));
+
+        addIntent.putExtra("duplicate", false);
+        addIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+        getApplicationContext().sendBroadcast(addIntent);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("shortcut", true);
+        editor.commit();
     }
 }
