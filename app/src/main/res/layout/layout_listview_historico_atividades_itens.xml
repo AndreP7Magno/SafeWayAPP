@@ -15,7 +15,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="5dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -45,33 +46,34 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/labelLatitude"
+                    android:id="@+id/lblEnderecoAtividades"
                     android:layout_width="165dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/txtData"
                     android:layout_marginLeft="5dp"
                     android:paddingTop="2dp"
                     android:paddingRight="2dp"
-                    android:text="Latitude:"
+                    android:text="Endereço:"
                     android:textColor="@color/colorAccentPressed" />
 
                 <TextView
-                    android:id="@+id/txtLatitude"
-                    android:layout_width="165dp"
+                    android:id="@+id/txtEnderecoAtividades"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/labelLatitude"
+                    android:layout_below="@id/lblEnderecoAtividades"
                     android:layout_marginLeft="5dp"
+                    android:layout_marginRight="15dp"
                     android:paddingTop="2dp"
                     android:paddingRight="2dp"
-                    android:text="-30.048870899999997"
+                    android:text="Rua Orfanatrófio 1111"
                     android:textColor="@color/colorAccentPressed"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/lblDescricaoAtividades"
-                    android:layout_width="150dp"
+                    android:layout_width="165dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/txtLatitude"
+                    android:layout_below="@id/txtEnderecoAtividades"
                     android:layout_marginLeft="5dp"
                     android:paddingTop="2dp"
                     android:paddingRight="2dp"
@@ -110,29 +112,6 @@
                     android:paddingTop="2dp"
                     android:paddingRight="2dp"
                     android:text="Alta"
-                    android:textColor="@color/colorAccentPressed"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/lblLongitude"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/txtSeveridadeAtividades"
-                    android:layout_toEndOf="@id/labelData"
-                    android:paddingTop="2dp"
-                    android:paddingRight="2dp"
-                    android:text="Longitude:"
-                    android:textColor="@color/colorAccentPressed" />
-
-                <TextView
-                    android:id="@+id/txtLongitude"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/lblLongitude"
-                    android:layout_toEndOf="@id/labelData"
-                    android:paddingTop="2dp"
-                    android:paddingRight="2dp"
-                    android:text="-51.220271399999994"
                     android:textColor="@color/colorAccentPressed"
                     android:textStyle="bold" />
 

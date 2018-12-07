@@ -10,16 +10,14 @@ public class HistoricoAtividadesItemHolder extends RecyclerView.ViewHolder {
 
     public TextView txtData;
     public TextView txtSeveridadeAtividades;
-    public TextView txtLatitude;
-    public TextView txtLongitude;
+    public TextView txtEnderecoAtividades;
     public TextView txtDescricaoAtividades;
 
     public HistoricoAtividadesItemHolder(View itemView) {
         super(itemView);
         this.txtData = itemView.findViewById(R.id.txtData);
         this.txtSeveridadeAtividades = itemView.findViewById(R.id.txtSeveridadeAtividades);
-        this.txtLatitude = itemView.findViewById(R.id.txtLatitude);
-        this.txtLongitude = itemView.findViewById(R.id.txtLongitude);
+        this.txtEnderecoAtividades = itemView.findViewById(R.id.txtEnderecoAtividades);
         this.txtDescricaoAtividades = itemView.findViewById(R.id.txtDescricaoAtividades);
     }
 }
