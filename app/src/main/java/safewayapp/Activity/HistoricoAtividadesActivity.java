@@ -13,6 +13,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -76,6 +79,14 @@ public class HistoricoAtividadesActivity extends AppCompatActivity {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     HistoricResponse data = response.body();
                     List<Record> lstAtividades = data.getRecords();
+
+                    Collections.sort(lstAtividades, new Comparator<Record>() {
+                        @Override
+                        public int compare(Record o1, Record o2) {
+                            return o2.data.compareTo(o1.data);
+                        }
+                    });
+
                     mAdapter = new HistoricoAtividadesAdapter(lstAtividades, HistoricoAtividadesActivity.this);
                     mRecycleHistoricoAtividades.setAdapter(mAdapter);
                     mAdapter.notifyDataSetChanged();
@@ -93,7 +104,7 @@ public class HistoricoAtividadesActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<HistoricResponse> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "ERRO AO SALVAR", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "ERRO AO CONSULTAR DADOS", Toast.LENGTH_LONG).show();
             }
         });
     }

@@ -31,7 +31,7 @@ public class ContatosAdapter extends RecyclerView.Adapter<ContatosItemHolder> {
 
     @Override
     public ContatosItemHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View vw = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_listview_historico_atividades_itens, viewGroup, false);
+        View vw = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_listview_contatos_itens, viewGroup, false);
 
         ContatosItemHolder viewHolder = new ContatosItemHolder(vw);
         return viewHolder;

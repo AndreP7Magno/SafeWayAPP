@@ -17,4 +17,7 @@
     <string name="txtConfiguracoes">Configurações</string>
     <string name="txtVoltar">Voltar</string>
 
+    <string name="title_activity_historico_atividades">Histórico de Atividades</string>
+    <string name="title_activity_historico_chamados">Histórico de Chamados</string>
+
 </resources>

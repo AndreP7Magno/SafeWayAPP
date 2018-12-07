@@ -6,6 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import safewayapp.Activity.HistoricoAtividadesActivity;
@@ -25,8 +28,8 @@ public class HistoricoAtividadesAdapter extends RecyclerView.Adapter<HistoricoAt
 
     @NonNull
     @Override
-    public HistoricoAtividadesItemHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        View vw = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_listview_contatos_itens, viewGroup, false);
+    public HistoricoAtividadesItemHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType)  {
+        View vw = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_listview_historico_atividades_itens, viewGroup, false);
 
         HistoricoAtividadesItemHolder viewHolder = new HistoricoAtividadesItemHolder(vw);
         return viewHolder;
@@ -35,6 +38,19 @@ public class HistoricoAtividadesAdapter extends RecyclerView.Adapter<HistoricoAt
     @Override
     public void onBindViewHolder(@NonNull HistoricoAtividadesItemHolder holder, int position) {
 
+        Date data = null;
+        String formattedDate = null;
+        try {
+            data = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(mDataset.get(position).getData());
+            formattedDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(data);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        holder.txtData.setText(formattedDate);
+        holder.txtSeveridadeAtividades.setText(mDataset.get(position).getSeveridade());
+        holder.txtLatitude.setText(mDataset.get(position).getLatitute());
+        holder.txtLongitude.setText(mDataset.get(position).getLongitude());
+        holder.txtDescricaoAtividades.setText(mDataset.get(position).getDescricao());
     }
 
     @Override

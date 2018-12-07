@@ -101,7 +101,7 @@
                         android:layout_marginLeft="25dp"
                         android:layout_marginTop="15dp"
                         android:layout_toEndOf="@+id/iconHistoricoAtividades"
-                        android:text="Histórico de atividades"
+                        android:text="Histórico de Atividades"
                         android:textSize="18dp" />
 
                     <View
@@ -134,7 +134,7 @@
                         android:layout_marginLeft="25dp"
                         android:layout_marginTop="15dp"
                         android:layout_toEndOf="@+id/iconHistoricoSituacaoPerigo"
-                        android:text="Histórico de chamados"
+                        android:text="Histórico de Chamados"
                         android:textSize="18dp" />
 
                     <View
@@ -167,7 +167,7 @@
                         android:layout_marginLeft="25dp"
                         android:layout_marginTop="15dp"
                         android:layout_toEndOf="@+id/iconAtualizarRecord"
-                        android:text="Atualizar registros"
+                        android:text="Atualizar Registros"
                         android:textSize="18dp"/>
 
                     <View

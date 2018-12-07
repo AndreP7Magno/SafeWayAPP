@@ -49,12 +49,12 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Activity.HistoricoAtividadesActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden"
+            android:label="@string/title_activity_historico_atividades"/>
         <activity
             android:name=".Activity.HistoricoChamadosActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden"
+            android:label="@string/title_activity_historico_chamados"/>
     </application>
 
 </manifest>
