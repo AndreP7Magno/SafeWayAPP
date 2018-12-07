@@ -46,8 +46,15 @@
         <activity
             android:name=".Activity.NovoAssedioActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden"></activity>
-        <activity android:name=".Activity.HistoricoAtividadesActivity"></activity>
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activity.HistoricoAtividadesActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activity.HistoricoChamadosActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
     </application>
 
 </manifest>

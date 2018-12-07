@@ -39,8 +39,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import safewayapp.Activity.HistoricoAtividadesActivity;
+import safewayapp.Activity.HistoricoChamadosActivity;
 import safewayapp.Activity.LoginActivity;
 import safewayapp.Api.ContactApi;
+import safewayapp.Api.HistoricApi;
 import safewayapp.Api.RecordApi;
 import safewayapp.Api.response.ContactResponse;
 import safewayapp.Api.response.RecordResponse;
@@ -190,7 +192,8 @@ public class ProfileFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(getActivity(), "Histórico de Situação de Perigo", Toast.LENGTH_SHORT).show();
+            Intent it = new Intent(getActivity(), HistoricoChamadosActivity.class);
+            startActivity(it);
         }
     };
 
