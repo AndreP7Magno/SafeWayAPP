@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp">
+
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        app:cardCornerRadius="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp">
+
+                <TextView
+                    android:id="@+id/labelData"
+                    android:layout_width="165dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:paddingTop="5dp"
+                    android:paddingRight="2dp"
+                    android:text="Data:"
+                    android:textColor="@color/colorAccentPressed" />
+
+                <TextView
+                    android:id="@+id/txtData"
+                    android:layout_width="165dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/labelData"
+                    android:layout_marginLeft="5dp"
+                    android:paddingTop="2dp"
+                    android:paddingRight="2dp"
+                    android:text="07/12/2018"
+                    android:textColor="@color/colorAccentPressed"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/labelLatitude"
+                    android:layout_width="165dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txtData"
+                    android:layout_marginLeft="5dp"
+                    android:paddingTop="2dp"
+                    android:paddingRight="2dp"
+                    android:text="Latitude:"
+                    android:textColor="@color/colorAccentPressed" />
+
+                <TextView
+                    android:id="@+id/txtModalidade"
+                    android:layout_width="165dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/labelLatitude"
+                    android:layout_marginLeft="5dp"
+                    android:paddingTop="2dp"
+                    android:paddingRight="2dp"
+                    android:text="-30.048870899999997"
+                    android:textColor="@color/colorAccentPressed"
+                    android:textStyle="bold" />
+
+
+
+                <TextView
+                    android:id="@+id/lblSeveridade"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/labelData"
+                    android:paddingTop="5dp"
+                    android:paddingRight="2dp"
+                    android:text="Severidade:"
+                    android:textColor="@color/colorAccentPressed" />
+
+                <TextView
+                    android:id="@+id/txtSeveridade"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/lblSeveridade"
+                    android:layout_toEndOf="@id/labelData"
+                    android:paddingTop="2dp"
+                    android:paddingRight="2dp"
+                    android:text="Alta"
+                    android:textColor="@color/colorAccentPressed"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/lblLongitude"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txtSeveridade"
+                    android:layout_toEndOf="@id/labelData"
+                    android:paddingTop="2dp"
+                    android:paddingRight="2dp"
+                    android:text="Longitude:"
+                    android:textColor="@color/colorAccentPressed" />
+
+                <TextView
+                    android:id="@+id/txtLongitude"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/lblLongitude"
+                    android:layout_toEndOf="@id/labelData"
+                    android:paddingTop="2dp"
+                    android:paddingRight="2dp"
+                    android:text="-51.220271399999994"
+                    android:textColor="@color/colorAccentPressed"
+                    android:textStyle="bold" />
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

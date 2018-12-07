@@ -2,12 +2,15 @@ package safewayapp.Adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
 
 import safewayapp.Activity.HistoricoAtividadesActivity;
 import safewayapp.Api.response.Record;
+import safewayapp.R;
 import safewayapp.ViewHolder.HistoricoAtividadesItemHolder;
 
 public class HistoricoAtividadesAdapter extends RecyclerView.Adapter<HistoricoAtividadesItemHolder>{
@@ -22,8 +25,11 @@ public class HistoricoAtividadesAdapter extends RecyclerView.Adapter<HistoricoAt
 
     @NonNull
     @Override
-    public HistoricoAtividadesItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+    public HistoricoAtividadesItemHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        View vw = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_listview_contatos_itens, viewGroup, false);
+
+        HistoricoAtividadesItemHolder viewHolder = new HistoricoAtividadesItemHolder(vw);
+        return viewHolder;
     }
 
     @Override
