@@ -198,8 +198,8 @@ public class ContactFragment extends Fragment implements RecyclerItemTouchHelper
                 public void onResponse(Call<ContactResponse> call, Response<ContactResponse> response) {
                     if (response.code() == HttpURLConnection.HTTP_OK) {
                         ContactResponse data = response.body();
+
                         salvarContato(data, txtNomeContato.getText().toString(), telefoneSemMascara);
-                        //listaContatos();
                         dialog.dismiss();
                         MyDialog.cancel();
                     } else {
@@ -225,10 +225,10 @@ public class ContactFragment extends Fragment implements RecyclerItemTouchHelper
     }
 
     private void salvarContato(ContactResponse data, String nome, String telefone) {
-        if (contatoDataSource.getById(data.getId()) == null) {
+        if (contatoDataSource.getById(data.getContato().getId()) == null) {
             contatoDataSource.insert(
                     new Contato(
-                            data.getId(),
+                            data.getContato().getId(),
                             nome,
                             telefone));
         }
