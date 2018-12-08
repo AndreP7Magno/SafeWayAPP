@@ -225,10 +225,10 @@ public class ContactFragment extends Fragment implements RecyclerItemTouchHelper
     }
 
     private void salvarContato(ContactResponse data, String nome, String telefone) {
-        if (contatoDataSource.getById(data.getContato().getId()) == null) {
+        if (contatoDataSource.getById(data.getId()) == null) {
             contatoDataSource.insert(
                     new Contato(
-                            data.getContato().getId(),
+                            data.getId(),
                             nome,
                             telefone));
         }

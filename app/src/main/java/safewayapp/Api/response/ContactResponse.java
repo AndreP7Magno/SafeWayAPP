@@ -4,15 +4,15 @@ import com.google.gson.annotations.SerializedName;
 
 public class ContactResponse {
 
-    @SerializedName("data")
-    private Contact contato;
-
     private String message;
     private String ok;
 
     @SerializedName("_id")
     private String id;
-    private String user;
+
+    @SerializedName("user")
+    private User user;
+
     private String name;
     private String phonenumber;
 
@@ -28,7 +28,7 @@ public class ContactResponse {
         return id;
     }
 
-    public String getUser() {
+    public User getUser() {
         return user;
     }
 
@@ -40,8 +40,4 @@ public class ContactResponse {
         return phonenumber;
     }
 
-
-    public Contact getContato() {
-        return contato;
-    }
 }

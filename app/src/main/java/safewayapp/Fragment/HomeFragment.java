@@ -399,13 +399,16 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                         ArrayList<String> lstContatos = new ArrayList<>();
 
                         for (Contato item : contatos) {
-                            String textoMensagem = item.getNome() + ", o(a) " + nomeUsuario + " corre perigo. Esta localizado na " + enderecoFinal + ". MENSAGEM ENVIADA PELO SAFEWAY!";
+                            lstContatos.add(item.getId());
+                            String textoMensagem = item.getNome() + ", seu amigo(a) " + nomeUsuario + " sinalizou que se encontra numa situacao de perigo. Ele(a) esta localizado no endereco: " + enderecoFinal + ". MENSAGEM ENVIADA POR MEIO DO APLICATIVO SAFEWAY!";
                             textoMensagem = stripAccents(textoMensagem);
                             sendSMS(item.getTelefone(), textoMensagem);
-                            lstContatos.add(item.getId());
                         }
 
-                        emergencyCallApi.postEmergencyCall(new EmergencyCallRequest(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()), idUsuario, lstContatos)).enqueue(new Callback<EmergencyCallResponse>() {
+                        SnackBarHelper.getInstance(home_coordinator).showBottomNaviagtion("Mensagens sendo enviadas ao seus contatos", Snackbar.LENGTH_LONG);
+                        dialog.dismiss();
+
+                        /*emergencyCallApi.postEmergencyCall(new EmergencyCallRequest(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()), idUsuario, lstContatos)).enqueue(new Callback<EmergencyCallResponse>() {
                             @Override
                             public void onResponse(Call<EmergencyCallResponse> call, Response<EmergencyCallResponse> response) {
                                 if (response.code() == HttpURLConnection.HTTP_OK){
@@ -429,7 +432,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                                 dialog.dismiss();
                                 Toast.makeText(getContext(), "ERRO AO SALVAR", Toast.LENGTH_LONG).show();
                             }
-                        });
+                        });*/
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
