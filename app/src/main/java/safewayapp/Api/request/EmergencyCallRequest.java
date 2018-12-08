@@ -2,7 +2,6 @@ package safewayapp.Api.request;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class EmergencyCallRequest {
@@ -14,11 +13,14 @@ public class EmergencyCallRequest {
     private String user;
     @SerializedName("contacts")
     private List<String> contacts;
+    @SerializedName("date")
+    private String date;
 
-    public EmergencyCallRequest(String latitute, String longitude, String user, List<String> contacts) {
+    public EmergencyCallRequest(String latitute, String longitude, String user, List<String> contacts, String date) {
         this.latitute = latitute;
         this.longitude = longitude;
         this.user = user;
         this.contacts = contacts;
+        this.date = date;
     }
 }

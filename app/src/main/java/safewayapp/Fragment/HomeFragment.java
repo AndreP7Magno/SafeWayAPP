@@ -40,6 +40,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.text.DateFormat;
 import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -400,7 +401,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
                         for (Contato item : contatos) {
                             lstContatos.add(item.getId());
-                            String textoMensagem = item.getNome() + ", seu amigo(a) " + nomeUsuario + " sinalizou que se encontra numa situacao de perigo. Ele(a) esta localizado no endereco: " + enderecoFinal + ". MENSAGEM ENVIADA POR MEIO DO APLICATIVO SAFEWAY!";
+                            String textoMensagem = item.getNome() + ", " + nomeUsuario + " informou que esta numa situacao de perigo. Endereco: " + enderecoFinal + ". MENSAGEM ENVIADA PELO APLICATIVO SAFEWAY!";
                             textoMensagem = stripAccents(textoMensagem);
                             sendSMS(item.getTelefone(), textoMensagem);
                         }
@@ -408,7 +409,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                         SnackBarHelper.getInstance(home_coordinator).showBottomNaviagtion("Mensagens sendo enviadas ao seus contatos", Snackbar.LENGTH_LONG);
                         dialog.dismiss();
 
-                        /*emergencyCallApi.postEmergencyCall(new EmergencyCallRequest(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()), idUsuario, lstContatos)).enqueue(new Callback<EmergencyCallResponse>() {
+                        Date today = new Date();
+                        DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+                        String dataFormatada = sdf.format(today);
+
+                        emergencyCallApi.postEmergencyCall(new EmergencyCallRequest(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()), idUsuario, lstContatos, dataFormatada)).enqueue(new Callback<EmergencyCallResponse>() {
                             @Override
                             public void onResponse(Call<EmergencyCallResponse> call, Response<EmergencyCallResponse> response) {
                                 if (response.code() == HttpURLConnection.HTTP_OK){
@@ -432,7 +437,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                                 dialog.dismiss();
                                 Toast.makeText(getContext(), "ERRO AO SALVAR", Toast.LENGTH_LONG).show();
                             }
-                        });*/
+                        });
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
