@@ -29,6 +29,7 @@ import safewayapp.Api.HistoricApi;
 import safewayapp.Api.response.EmergencyCall;
 import safewayapp.Api.response.HistoricResponse;
 import safewayapp.Component.DaggerHistoricoChamadosComponent;
+import safewayapp.Helper.ProgressDialogHelper;
 import safewayapp.Module.AppModule;
 import safewayapp.Module.NetModule;
 import safewayapp.Module.RoomModule;
@@ -72,6 +73,9 @@ public class HistoricoChamadosActivity extends AppCompatActivity {
         Usuario usuario = usuarioDataSource.getByCPF(cpf);
         final String user = usuario.getId();
 
+        final ProgressDialogHelper dialog = new ProgressDialogHelper(HistoricoChamadosActivity.this, "Aguarde", "Consultando seus chamados...");
+        dialog.show();
+
         historicApi.getHistoric(user).enqueue(new Callback<HistoricResponse>() {
             @Override
             public void onResponse(Call<HistoricResponse> call, Response<HistoricResponse> response) {
@@ -89,8 +93,10 @@ public class HistoricoChamadosActivity extends AppCompatActivity {
                     mAdapter = new HistoricoChamadosAdapter(lstChamados, mRecycleHistoricoChamados, HistoricoChamadosActivity.this);
                     mRecycleHistoricoChamados.setAdapter(mAdapter);
                     mAdapter.notifyDataSetChanged();
+                    dialog.dismiss();
                 } else {
                     try {
+                        dialog.dismiss();
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
                         Toast.makeText(getApplicationContext(), jObjError.getString("message"), Toast.LENGTH_LONG).show();
                     } catch (JSONException e) {
@@ -103,6 +109,7 @@ public class HistoricoChamadosActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<HistoricResponse> call, Throwable t) {
+                dialog.dismiss();
                 Toast.makeText(getApplicationContext(), "ERRO AO CONSULTAR DADOS", Toast.LENGTH_LONG).show();
             }
         });
