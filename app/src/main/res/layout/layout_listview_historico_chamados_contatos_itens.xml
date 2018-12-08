@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="45dp">
+
+    <TextView
+        android:id="@+id/lblNomeItemContato"
+        android:layout_width="165dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:paddingTop="5dp"
+        android:paddingRight="2dp"
+        android:text="Nome:"
+        android:textColor="@color/colorAccentPressed" />
+
+    <TextView
+        android:id="@+id/txtNomeItemContato"
+        android:layout_width="165dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lblNomeItemContato"
+        android:layout_marginLeft="5dp"
+        android:paddingTop="2dp"
+        android:paddingRight="2dp"
+        android:text="André Magno"
+        android:textColor="@color/colorAccentPressed"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/lblTelefoneItemContato"
+        android:layout_width="165dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_toEndOf="@+id/lblNomeItemContato"
+        android:paddingTop="5dp"
+        android:paddingRight="2dp"
+        android:text="Telefone:"
+        android:textColor="@color/colorAccentPressed" />
+
+    <TextView
+        android:id="@+id/txtTelefoneItemContato"
+        android:layout_width="165dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lblTelefoneItemContato"
+        android:layout_marginLeft="5dp"
+        android:layout_toEndOf="@+id/lblNomeItemContato"
+        android:paddingTop="2dp"
+        android:paddingRight="2dp"
+        android:text="051991956035"
+        android:textColor="@color/colorAccentPressed"
+        android:textStyle="bold" />
+
+</RelativeLayout>
