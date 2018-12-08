@@ -111,7 +111,7 @@ public class SplashActivity extends AppCompatActivity {
         addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
         addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, "SafeWay - Perigo");
         addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
-                Intent.ShortcutIconResource.fromContext(getApplicationContext(), R.drawable.ic_shortcut_logo));
+                Intent.ShortcutIconResource.fromContext(getApplicationContext(), R.mipmap.ic_shortcut_logo));
 
         addIntent.putExtra("duplicate", false);
         addIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");

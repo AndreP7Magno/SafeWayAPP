@@ -4,11 +4,11 @@
     android:background="@drawable/login_gradients">
 
     <ImageView
-        android:layout_width="230dp"
-        android:layout_height="50dp"
+        android:layout_width="150dp"
+        android:layout_height="80dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="20dp"
-        android:src="@drawable/vistomobi"/>
+        android:layout_marginRight="5dp"
+        android:src="@drawable/splash_safeway"/>
 
 </RelativeLayout>
