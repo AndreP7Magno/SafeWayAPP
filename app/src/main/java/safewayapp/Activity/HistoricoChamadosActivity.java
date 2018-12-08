@@ -6,6 +6,8 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -44,6 +46,9 @@ public class HistoricoChamadosActivity extends AppCompatActivity {
 
     @BindView(R.id.coordinator_historico_chamados)
     CoordinatorLayout coordinatorHistoricoChamados;
+
+    @BindView(R.id.relativeSemHistoricoChamados)
+    RelativeLayout relativeSemHistoricoChamados;
 
     @Inject
     IUsuarioDataSource usuarioDataSource;
@@ -94,6 +99,11 @@ public class HistoricoChamadosActivity extends AppCompatActivity {
                     mRecycleHistoricoChamados.setAdapter(mAdapter);
                     mAdapter.notifyDataSetChanged();
                     dialog.dismiss();
+
+                    if (lstChamados.isEmpty())
+                        relativeSemHistoricoChamados.setVisibility(View.VISIBLE);
+                    else
+                        relativeSemHistoricoChamados.setVisibility(View.GONE);
                 } else {
                     try {
                         dialog.dismiss();

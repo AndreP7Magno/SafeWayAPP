@@ -7,6 +7,31 @@
     tools:context="safewayapp.Activity.HistoricoChamadosActivity">
 
     <RelativeLayout
+        android:id="@+id/relativeSemHistoricoChamados"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/imgSemHistoricoChamados"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/no_historic" />
+
+        <TextView
+            android:id="@+id/txtSemHistoricoChamados"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imgSemHistoricoChamados"
+            android:layout_marginTop="10dp"
+            android:text="Não possui histórico."
+            android:textAlignment="center"
+            android:textSize="15dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -70,6 +71,9 @@ public class ContactFragment extends Fragment implements RecyclerItemTouchHelper
 
     @BindView(R.id.coordinator_contato)
     CoordinatorLayout coordinatorContato;
+
+    @BindView(R.id.relativeSemContatos)
+    RelativeLayout relativeSemContatos;
 
     private CoordinatorLayout coordinatorNovoContato;
 
@@ -261,6 +265,11 @@ public class ContactFragment extends Fragment implements RecyclerItemTouchHelper
                 mAdapter = new ContatosAdapter(contatos, contatoDataSource, ContactFragment.this);
                 mRecycleContatos.setAdapter(mAdapter);
                 mAdapter.notifyDataSetChanged();
+
+                if (contatos.isEmpty())
+                    relativeSemContatos.setVisibility(View.VISIBLE);
+                else
+                    relativeSemContatos.setVisibility(View.GONE);
             }
         });
     }

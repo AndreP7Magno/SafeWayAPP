@@ -6,6 +6,8 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -13,7 +15,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -45,6 +46,9 @@ public class HistoricoAtividadesActivity extends AppCompatActivity {
 
     @BindView(R.id.coordinator_historico_atividades)
     CoordinatorLayout coordinatorHistoricoAtividades;
+
+    @BindView(R.id.relativeSemHistoricoAtividades)
+    RelativeLayout relativeSemHistoricoAtividades;
 
     @Inject
     IUsuarioDataSource usuarioDataSource;
@@ -95,6 +99,11 @@ public class HistoricoAtividadesActivity extends AppCompatActivity {
                     mRecycleHistoricoAtividades.setAdapter(mAdapter);
                     mAdapter.notifyDataSetChanged();
                     dialog.dismiss();
+
+                    if (lstAtividades.isEmpty())
+                        relativeSemHistoricoAtividades.setVisibility(View.VISIBLE);
+                    else
+                        relativeSemHistoricoAtividades.setVisibility(View.GONE);
                 } else {
                     try {
                         dialog.dismiss();
