@@ -106,8 +106,6 @@ public class SignUpActivity extends AppCompatActivity {
                     }
                 }
         );
-
-        cpfContato.setHint(listener.placeholder());
     }
 
     public void autenticarUsuario() {

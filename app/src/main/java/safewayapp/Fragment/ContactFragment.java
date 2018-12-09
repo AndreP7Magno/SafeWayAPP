@@ -125,7 +125,6 @@ public class ContactFragment extends Fragment implements RecyclerItemTouchHelper
             @Override
             public void onClick(View view) {
                 txtNomeContato.setText("");
-                txtTelefoneContato.setText("");
                 MyDialog.show();
             }
         });
@@ -177,8 +176,6 @@ public class ContactFragment extends Fragment implements RecyclerItemTouchHelper
                     }
                 }
         );
-
-        txtTelefoneContato.setHint(listener.placeholder());
     }
 
     private void salvaContato() {

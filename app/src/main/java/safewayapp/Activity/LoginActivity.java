@@ -105,8 +105,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }
         );
-
-        cpfText.setHint(listener.placeholder());
     }
 
     private void autenticarUsuario() {
